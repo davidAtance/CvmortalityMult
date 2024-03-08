@@ -1,6 +1,12 @@
 library(devtools)
 library(roxygen2)
 library(Rdpack)
+library(usethis)
+library(testthat)
+library(available)
+available::available("CvmortalityMult", browse = FALSE)
+
+## easilyr
 
 #Construct help files
 #roxygenise()
