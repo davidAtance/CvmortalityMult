@@ -10,13 +10,10 @@
 \item{fitted.obj}{object developed using function fit.additive.LC.multi() and fit.multiplicative.LC.multi()}
 }
 \value{
-plot the different parameters for the multi-population mortality models \eqn{\alpha_x}, \eqn{\beta_x}, \eqn{k_t} and \eqn{I_i}.
+plot the different parameters for the multi-population mortality models \code{ax}, \code{bx}, \code{kt} and \code{Ii}.
 This function is valid for both approaches Additive and Multiplicative multi-population mortality models.
 }
 \description{
-FUNCTION TO PLOT MULTI-POPULATION MORTALITY MODEL
-}
-\details{
 R function to plot the parameters for the Additive (Debon et al., 2011) and Multiplicative (Russolillo et al., 2011) Multi-Populationn mortality model.
 It should be mentioned that in case that this function is developed for fitting several populations.
 However, in case you only consider one population, the function will fit the one-population Lee-Carter model (Lee and Carter, 1992).
@@ -31,7 +28,7 @@ multiplicative_Spainmales <- fit.multiplicative.LC.multi(qxt = SpainRegions$qx_m
                               nPop = 18,
                               lxt = SpainRegions$lx_male)
 
-Once, we have fit the data, it is possible to see the \eqn{\alpha_x}, \eqn{\beta_x}, \eqn{k_t}, and \eqn{I_i} provided parameters for the fitting.
+Once, we have fit the data, it is possible to see the ax, bx, kt, and Ii provided parameters for the fitting.
 plot.fit.LC.multi(multiplicative_Spainmales)
 
 Equal to the previous step but in this case for females and without providing lxt.
@@ -62,5 +59,5 @@ Scandinavian Actuarial Journal, 2011(2), 96-117.
 \seealso{
 \code{\link{fit.additive.LC.multi}}, \code{\link{fit.multiplicative.LC.multi}},
 \code{\link{forecast.additive.LC.multi}}, \code{\link{forecast.multiplicative.LC.multi}},
-\code{\link{multipopulation_cv}},
+\code{\link{multipopulation_cv}}, \code{\link{multipopulation_loocv}}
 }

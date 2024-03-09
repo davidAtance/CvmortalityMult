@@ -10,6 +10,8 @@
 #' @param main the specific title of the map plot
 #' @param name the assigned name for the legend in map plot.
 #'
+#' @return a map from the regions of Spain colored with the variable provided by the user.
+#'
 #' @references
 #'
 #' Spanish National Institute of Statistics (INE) (2023). Tablas de mortalidad, metodologia.
@@ -50,7 +52,6 @@ SpainMap <- function(regionvalue, main, name){
     install.packages("sf")
     library(sf)
   } else {library(sf)}
-  nPop <- length(Ipop)
   autonomias <- cbind(regions, regionvalue)
   colnames(autonomias)[4] <- name
 

@@ -1,13 +1,9 @@
 #' FUNCTION TO FORECAST MULTIPLICATIVE MULTI-POPULATION MORTALITY MODEL
-#'
-#' R function for forecasting multiplicative multi-population mortality model developed by: Russolillo et al (2011).
+#' @description R function for forecasting multiplicative multi-population mortality model developed by: Russolillo et al (2011).
 #' This model follows the structure of the well-known Lee-Carter model (Lee and Carter, 1992) but including a multiplicative parameter to capture the behavior of each population considered.
 #' This parameter seeks to capture the individual behavior of every population considered.
 #' It should be mentioned that in case that this function is developed for forecasting several populations.
 #' However, in case you only consider one population, the function will forecast the Lee-Carter model for one population.
-#'
-#' @seealso \code{\link{fit.additive.LC.multi}}, \code{\link{fit.multiplicative.LC.multi}},
-#' \code{\link{forecast.additive.LC.multi}}, \code{\link{multipopulation_cv}},
 #'
 #' @param fitted.obj object developed using function fit.mutliplicative.LC.multi()
 #' @param nahead number of periods ahead to forecast
@@ -15,33 +11,23 @@
 #' @param kt_include.cte if you want that kt include constant in the arima process.
 #'
 #' @return A list with different components of the forecasting process:
-#' \item{ax}{ parameter that captures the average shape of the mortality curve in all considered populations.}
+#' * `ax` parameter that captures the average shape of the mortality curve in all considered populations.
+#' * `bx` parameter that explains the age effect x with respect to the general trend (kt) in the mortality rates of all considered populations.
+#' * `arimakt` the arima selected for the \eqn{k_t} time series.
+#' * `kt.fitted` obtained \eqn{k_t} values for the tendency behaviour.
+#' * `kt.fut`\eqn{k_t} projected values for the nahead periods ahead.
+#' * `kt.futintervals`\eqn{k_t} arima selected and future values for this parameter with the different intervals, lower and upper, 80\% and 90\%.
+#' * `Ii` gives an idea of the differences in the pattern of mortality in any region i with respect to Region 1.
+#' * `formula` additive multi-population mortality formula used to fit the mortality rates.
+#' * `qxt.real` real mortality rates.
+#' * `qxt.fitted` fitted mortality rates using the additive multi-population mortality model.
+#' * `logit.qxt.fitted` fitted mortality rates in logit way estimated with the additive multi-population mortality model.
+#' * `qxt.future` future mortality rates estimated with the additive multi-population mortality model.
+#' * `logit.qxt.future` future mortality rates in logit way estimated with the additive multi-population mortality model.
+#' * `nPop` provided number of populations to fit the periods.
 #'
-#' \item{bx}{ parameter that explains the age effect x with respect to the general trend (kt) in the mortality rates of all considered populations.}
-#'
-#' \item{arimakt}{ the arima selected for the \eqn{k_t} time series.}
-#'
-#' \item{kt.fitted}{ obtained \eqn{k_t} values for the tendency behaviour.}
-#'
-#' \item{kt.fut}{ \eqn{k_t} projected values for the nahead periods ahead.}
-#'
-#' \item{kt.futintervals}{ \eqn{k_t} arima selected and future values for this parameter with the different intervals, lower and upper, 80\% and 90\%.}
-#'
-#' \item{Ii}{ gives an idea of the differences in the pattern of mortality in any region i with respect to Region 1.}
-#'
-#' \item{formula}{ additive multi-population mortality formula used to fit the mortality rates.}
-#'
-#' \item{qxt.real}{ real mortality rates.}
-#'
-#' \item{qxt.fitted}{ fitted mortality rates using the additive multi-population mortality model.}
-#'
-#' \item{logit.qxt.fitted}{ fitted mortality rates in logit way estimated with the additive multi-population mortality model.}
-#'
-#' \item{qxt.future}{ future mortality rates estimated with the additive multi-population mortality model.}
-#'
-#' \item{logit.qxt.future}{ future mortality rates in logit way estimated with the additive multi-population mortality model.}
-#'
-#' \item{nPop}{ provided number of populations to fit the periods.}
+#' @seealso \code{\link{fit.additive.LC.multi}}, \code{\link{fit.multiplicative.LC.multi}},
+#' \code{\link{forecast.additive.LC.multi}}, \code{\link{multipopulation_cv}},
 #'
 #' @references
 #'

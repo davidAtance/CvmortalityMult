@@ -1,6 +1,6 @@
 #' FUNCTION TO APPLY LEAVE-ONE-OUT CROSS-VALIDATION TECHNIQUE FOR TESTING THE FORECASTING ACCURACY
 #' OF MULTI-POPULATION MORTALITY MODELS
-#'
+#' @description
 #' R function for testing the accuracy out-of-sample of different multi-population mortality models, Additive (Debon et al., 2011) and Multiplicative (Russolillo et al., 2011).
 #' We provide a R function that employ the leave-one-out cross-validation technique for data panel-time series (Atance et al. 2020) to test the forecasting accuracy of one-multipopulation mortality model.
 #' This technique consists on split the database in two parts: training set (to run the model) and test set (to check the forecasting accuracy of the model) with only one data (one period in this case).
@@ -12,11 +12,6 @@
 #' However, in case you only consider one population, the function will forecast the Lee-Carter model for one population.
 #' To test the forecasting accuracy of the selected model, the function provides five different measures: SSE, MSE, MAE, MAPE or All. Depending on how you want to check the forecasting accuracy of the model you could select one or other.
 #' In this case, the measures will be obtained using the mortality rates in the normal scale as recommended by Santolino (2023) against the log scale.
-#'
-#'
-#' @seealso \code{\link{multipopulation_cv}}, \code{\link{fit.additive.LC.multi}}, \code{\link{fit.multiplicative.LC.multi}},
-#' \code{\link{forecast.additive.LC.multi}}, \code{\link{forecast.multiplicative.LC.multi}},
-#' \code{\link{plot.fit.additive.LC.multi}}, \code{\link{SSE}}, \code{\link{MAE}}, \code{\link{MAPE}}.
 #'
 #' @param qxt mortality rates used to fit the multi-population mortality models. This rates can be provided in matrix or in data.frame.
 #' @param model choose the multi-population mortality model to fit the mortality rates c("additive", "multiplicative")
@@ -30,36 +25,25 @@
 #' @param trainset1 vector with the periods for the first trainning set.  This value must be greater than 2 to meet the minimum time series size (Hyndman and Khandakar, 2008).
 #'
 #' @return A list with different components of the cross-validation process:
+#' * `ax` parameter that captures the average shape of the mortality curve in all considered populations.
+#' * `bx` parameter that explains the age effect x with respect to the general trend `kt` in the mortality rates of all considered populations.
+#' * `kt.fitted` obtained `kt` values for the tendency behaviour.
+#' * `kt.future` `kt` future values for every iteration in the cross-validation.
+#' * `kt.arima`the arima selected for each `kt` time series.
+#' * `Ii` paramater that captures the differences in the pattern of mortality in any region i with respect to Region 1.
+#' * `formula` multi-population mortality formula used to fit the mortality rates.
+#' * `nPop` provided number of populations to fit the periods.
+#' * `qxt.real` real mortality rates.
+#' * `qxt.future` future mortality rates estimated with the multi-population mortality model.
+#' * `logit.qxt.future` future mortality rates in logit way estimated with the multi-population mortality model.
+#' * `meas_ages` measure of forecasting accuracy through the ages of the study.
+#' * `meas_periodsfut` measure of forecasting accuracy in every forecasting period(s) of the study.
+#' * `meas_pop` measure of forecasting accuracy through the populations considered in the study.
+#' * `meas_total` a global measure of forecasting accuracy through the ages, periods and populations of the study.
 #'
-#' \item{ax}{ parameter that captures the average shape of the mortality curve in all considered populations.}
-#'
-#' \item{bx}{ parameter that explains the age effect x with respect to the general trend (kt) in the mortality rates of all considered populations.}
-#'
-#' \item{kt.fitted}{ obtained \eqn{k_t} values for the tendency behaviour.}
-#'
-#' \item{kt.future}{ \eqn{k_t} future values for every iteration in the cross-validation.}
-#'
-#' \item{kt.arima}{ the arima selected for each \eqn{k_t} time series..}
-#'
-#' \item{Ii}{ paramater that captures the differences in the pattern of mortality in any region i with respect to Region 1..}
-#'
-#' \item{formula}{ multi-population mortality formula used to fit the mortality rates..}
-#'
-#' \item{nPop}{ provided number of populations to fit the periods..}
-#'
-#' \item{qxt.real}{ real mortality rates..}
-#'
-#' \item{qxt.future}{ future mortality rates estimated with the multi-population mortality model.}
-#'
-#' \item{logit.qxt.future}{ future mortality rates in logit way estimated with the multi-population mortality model.}
-#'
-#' \item{meas_ages}{ measure of forecasting accuracy through the ages of the study.}
-#'
-#' \item{meas_periodsfut}{ measure of forecasting accuracy in every forecasting period(s) of the study.}
-#'
-#' \item{meas_pop}{ measure of forecasting accuracy through the populations considered in the study..}
-#'
-#' \item{meas_total}{ a global measure of forecasting accuracy through the ages, periods and populations of the study..}
+#' @seealso \code{\link{multipopulation_cv}}, \code{\link{fit.additive.LC.multi}}, \code{\link{fit.multiplicative.LC.multi}},
+#' \code{\link{forecast.additive.LC.multi}}, \code{\link{forecast.multiplicative.LC.multi}},
+#' \code{\link{plot.fit.additive.LC.multi}}, \code{\link{SSE}}, \code{\link{MAE}}, \code{\link{MAPE}}.
 #'
 #' @references
 #' Atance, D., Debon, A., and Navarro, E. (2020).
@@ -234,7 +218,7 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
       #Check how the matrix is formed (by ages/columns or by period/columns)
 
       #Estimate lx for every population, age and period
-      if(is.null(lx)){
+      if(is.null(lxt)){
 
         lxt.vector <- c()
         for(j in 1:nperiods){

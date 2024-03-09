@@ -1,13 +1,10 @@
 #' FUNCTION TO FIT MULTIPLICATIVE MULTI-POPULATION MORTALITY MODEL
-#'
+#' @description
 #' R function for fitting multiplicative multi-population mortality model developed by: Russolillo et al (2011).
 #' This model follows the structure of the well-known Lee-Carter model (Lee and Carter, 1992) but including a multiplicative parameter to capture the behavior of each population considered.
 #' This parameter seeks to capture the individual behavior of every population considered.
 #' It should be mentioned that in case that this function is developed for fitting several populations.
 #' However, in case you only consider one population, the function will fit the one-population Lee-Carter model.
-#'
-#' @seealso \code{\link{fit.additive.LC.multi}}, \code{\link{forecast.additive.LC.multi}},
-#' \code{\link{forecast.multiplicative.LC.multi}}, \code{\link{multipopulation_cv}},
 #'
 #' @param qxt mortality rates used to fit the additive multipopulation mortality model. This rates can be provided in matrix or in data.frame.
 #' @param periods periods considered in the fitting in a vector way c(minyear:maxyear).
@@ -16,29 +13,21 @@
 #' @param lxt survivor function considered for every population, not necesarry to provide.
 #'
 #' @return A list with different components of the fitting process:
-#' \item{ax}{parameter that captures the average shape of the mortality curve in all considered populations.}
+#' * `ax` parameter that captures the average shape of the mortality curve in all considered populations.
+#' * `bx` parameter that explains the age effect x with respect to the general trend (kt) in the mortality rates of all considered populations.
+#' * `kt` represent the national tendency of multi-mortality populations during the period.
+#' * `Ii`  gives an idea of the differences in the pattern of mortality in any region i with respect to Region 1.
+#' * `formula`  additive multi-population mortality formula used to fit the mortality rates.
+#' * `data.used`  mortality rates used to fit the data.
+#' * `qxt.real`  real mortality rates.
+#' * `qxt.fitted`  fitted mortality rates using the additive  multi-population mortality model.
+#' * `logit.qxt.fitted`  fitted mortality rates in logit way.
+#' * `Ages`  provided ages to fit the data.
+#' * `Periods`  provided periods to fit the peridos.
+#' * `nPop`  provided number of populations to fit the periods.
 #'
-#' \item{bx}{parameter that explains the age effect x with respect to the general trend (kt) in the mortality rates of all considered populations.}
-#'
-#' \item{kt}{represent the national tendency of multi-mortality populations during the period.}
-#'
-#' \item{Ii}{ gives an idea of the differences in the pattern of mortality in any region i with respect to Region 1.}
-#'
-#' \item{formula}{ additive multi-population mortality formula used to fit the mortality rates.}
-#'
-#' \item{data.used}{ mortality rates used to fit the data.}
-#'
-#' \item{qxt.real}{ real mortality rates.}
-#'
-#' \item{qxt.fitted}{ fitted mortality rates using the additive  multi-population mortality model.}
-#'
-#' \item{logit.qxt.fitted}{ fitted mortality rates in logit way.}
-#'
-#' \item{Ages}{ provided ages to fit the data.}
-#'
-#' \item{Periods}{ provided periods to fit the peridos.}
-#'
-#' \item{nPop}{ provided number of populations to fit the periods.}
+#' @seealso \code{\link{fit.additive.LC.multi}}, \code{\link{forecast.additive.LC.multi}},
+#' \code{\link{forecast.multiplicative.LC.multi}}, \code{\link{multipopulation_cv}},
 #'
 #' @references
 #'
@@ -146,7 +135,7 @@ fit.multiplicative.LC.multi <- function(qxt, periods, ages, nPop, lxt = NULL){
       #Check how the matrix is formed (by ages/columns or by period/columns)
 
       #Estimate lx for every population, age and period
-      if(is.null(lx)){
+      if(is.null(lxt)){
 
         lxt.vector <- c()
         for(j in 1:nperiods){

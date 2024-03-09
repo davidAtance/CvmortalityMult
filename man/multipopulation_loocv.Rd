@@ -41,36 +41,23 @@ multipopulation_loocv(
 }
 \value{
 A list with different components of the cross-validation process:
-
-\item{ax}{ parameter that captures the average shape of the mortality curve in all considered populations.}
-
-\item{bx}{ parameter that explains the age effect x with respect to the general trend (kt) in the mortality rates of all considered populations.}
-
-\item{kt.fitted}{ obtained \eqn{k_t} values for the tendency behaviour.}
-
-\item{kt.future}{ \eqn{k_t} future values for every iteration in the cross-validation.}
-
-\item{kt.arima}{ the arima selected for each \eqn{k_t} time series..}
-
-\item{Ii}{ paramater that captures the differences in the pattern of mortality in any region i with respect to Region 1..}
-
-\item{formula}{ multi-population mortality formula used to fit the mortality rates..}
-
-\item{nPop}{ provided number of populations to fit the periods..}
-
-\item{qxt.real}{ real mortality rates..}
-
-\item{qxt.future}{ future mortality rates estimated with the multi-population mortality model.}
-
-\item{logit.qxt.future}{ future mortality rates in logit way estimated with the multi-population mortality model.}
-
-\item{meas_ages}{ measure of forecasting accuracy through the ages of the study.}
-
-\item{meas_periodsfut}{ measure of forecasting accuracy in every forecasting period(s) of the study.}
-
-\item{meas_pop}{ measure of forecasting accuracy through the populations considered in the study..}
-
-\item{meas_total}{ a global measure of forecasting accuracy through the ages, periods and populations of the study..}
+\itemize{
+\item \code{ax} parameter that captures the average shape of the mortality curve in all considered populations.
+\item \code{bx} parameter that explains the age effect x with respect to the general trend \code{kt} in the mortality rates of all considered populations.
+\item \code{kt.fitted} obtained \code{kt} values for the tendency behaviour.
+\item \code{kt.future} \code{kt} future values for every iteration in the cross-validation.
+\item \code{kt.arima}the arima selected for each \code{kt} time series.
+\item \code{Ii} paramater that captures the differences in the pattern of mortality in any region i with respect to Region 1.
+\item \code{formula} multi-population mortality formula used to fit the mortality rates.
+\item \code{nPop} provided number of populations to fit the periods.
+\item \code{qxt.real} real mortality rates.
+\item \code{qxt.future} future mortality rates estimated with the multi-population mortality model.
+\item \code{logit.qxt.future} future mortality rates in logit way estimated with the multi-population mortality model.
+\item \code{meas_ages} measure of forecasting accuracy through the ages of the study.
+\item \code{meas_periodsfut} measure of forecasting accuracy in every forecasting period(s) of the study.
+\item \code{meas_pop} measure of forecasting accuracy through the populations considered in the study.
+\item \code{meas_total} a global measure of forecasting accuracy through the ages, periods and populations of the study.
+}
 }
 \description{
 R function for testing the accuracy out-of-sample of different multi-population mortality models, Additive (Debon et al., 2011) and Multiplicative (Russolillo et al., 2011).

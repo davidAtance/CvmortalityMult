@@ -22,33 +22,22 @@ forecast.multiplicative.LC.multi(
 }
 \value{
 A list with different components of the forecasting process:
-\item{ax}{ parameter that captures the average shape of the mortality curve in all considered populations.}
-
-\item{bx}{ parameter that explains the age effect x with respect to the general trend (kt) in the mortality rates of all considered populations.}
-
-\item{arimakt}{ the arima selected for the \eqn{k_t} time series.}
-
-\item{kt.fitted}{ obtained \eqn{k_t} values for the tendency behaviour.}
-
-\item{kt.fut}{ \eqn{k_t} projected values for the nahead periods ahead.}
-
-\item{kt.futintervals}{ \eqn{k_t} arima selected and future values for this parameter with the different intervals, lower and upper, 80\\% and 90\\%.}
-
-\item{Ii}{ gives an idea of the differences in the pattern of mortality in any region i with respect to Region 1.}
-
-\item{formula}{ additive multi-population mortality formula used to fit the mortality rates.}
-
-\item{qxt.real}{ real mortality rates.}
-
-\item{qxt.fitted}{ fitted mortality rates using the additive multi-population mortality model.}
-
-\item{logit.qxt.fitted}{ fitted mortality rates in logit way estimated with the additive multi-population mortality model.}
-
-\item{qxt.future}{ future mortality rates estimated with the additive multi-population mortality model.}
-
-\item{logit.qxt.future}{ future mortality rates in logit way estimated with the additive multi-population mortality model.}
-
-\item{nPop}{ provided number of populations to fit the periods.}
+\itemize{
+\item \code{ax} parameter that captures the average shape of the mortality curve in all considered populations.
+\item \code{bx} parameter that explains the age effect x with respect to the general trend (kt) in the mortality rates of all considered populations.
+\item \code{arimakt} the arima selected for the \eqn{k_t} time series.
+\item \code{kt.fitted} obtained \eqn{k_t} values for the tendency behaviour.
+\item \code{kt.fut}\eqn{k_t} projected values for the nahead periods ahead.
+\item \code{kt.futintervals}\eqn{k_t} arima selected and future values for this parameter with the different intervals, lower and upper, 80\\% and 90\\%.
+\item \code{Ii} gives an idea of the differences in the pattern of mortality in any region i with respect to Region 1.
+\item \code{formula} additive multi-population mortality formula used to fit the mortality rates.
+\item \code{qxt.real} real mortality rates.
+\item \code{qxt.fitted} fitted mortality rates using the additive multi-population mortality model.
+\item \code{logit.qxt.fitted} fitted mortality rates in logit way estimated with the additive multi-population mortality model.
+\item \code{qxt.future} future mortality rates estimated with the additive multi-population mortality model.
+\item \code{logit.qxt.future} future mortality rates in logit way estimated with the additive multi-population mortality model.
+\item \code{nPop} provided number of populations to fit the periods.
+}
 }
 \description{
 R function for forecasting multiplicative multi-population mortality model developed by: Russolillo et al (2011).

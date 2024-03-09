@@ -13,6 +13,9 @@ SpainMap
 
 \item{name}{the assigned name for the legend in map plot.}
 }
+\value{
+a map from the regions of Spain colored with the variable provided by the user.
+}
 \description{
 This data contains information to plot the panish regions using
 }

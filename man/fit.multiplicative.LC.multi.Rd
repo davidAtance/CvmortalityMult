@@ -19,29 +19,20 @@ fit.multiplicative.LC.multi(qxt, periods, ages, nPop, lxt = NULL)
 }
 \value{
 A list with different components of the fitting process:
-\item{ax}{parameter that captures the average shape of the mortality curve in all considered populations.}
-
-\item{bx}{parameter that explains the age effect x with respect to the general trend (kt) in the mortality rates of all considered populations.}
-
-\item{kt}{represent the national tendency of multi-mortality populations during the period.}
-
-\item{Ii}{ gives an idea of the differences in the pattern of mortality in any region i with respect to Region 1.}
-
-\item{formula}{ additive multi-population mortality formula used to fit the mortality rates.}
-
-\item{data.used}{ mortality rates used to fit the data.}
-
-\item{qxt.real}{ real mortality rates.}
-
-\item{qxt.fitted}{ fitted mortality rates using the additive  multi-population mortality model.}
-
-\item{logit.qxt.fitted}{ fitted mortality rates in logit way.}
-
-\item{Ages}{ provided ages to fit the data.}
-
-\item{Periods}{ provided periods to fit the peridos.}
-
-\item{nPop}{ provided number of populations to fit the periods.}
+\itemize{
+\item \code{ax} parameter that captures the average shape of the mortality curve in all considered populations.
+\item \code{bx} parameter that explains the age effect x with respect to the general trend (kt) in the mortality rates of all considered populations.
+\item \code{kt} represent the national tendency of multi-mortality populations during the period.
+\item \code{Ii}  gives an idea of the differences in the pattern of mortality in any region i with respect to Region 1.
+\item \code{formula}  additive multi-population mortality formula used to fit the mortality rates.
+\item \code{data.used}  mortality rates used to fit the data.
+\item \code{qxt.real}  real mortality rates.
+\item \code{qxt.fitted}  fitted mortality rates using the additive  multi-population mortality model.
+\item \code{logit.qxt.fitted}  fitted mortality rates in logit way.
+\item \code{Ages}  provided ages to fit the data.
+\item \code{Periods}  provided periods to fit the peridos.
+\item \code{nPop}  provided number of populations to fit the periods.
+}
 }
 \description{
 R function for fitting multiplicative multi-population mortality model developed by: Russolillo et al (2011).
