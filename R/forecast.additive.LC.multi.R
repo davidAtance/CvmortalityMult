@@ -5,18 +5,18 @@
 #' It should be mentioned that in case that this function is developed for forecasting several populations.
 #' However, in case you only consider one population, the function will forecast the Lee-Carter model for one population.
 #'
-#' @param fitted.obj object developed using function fit.additive.LC.multi().
+#' @param fitted.obj object developed using function `fit.additive.LC.multi()`.
 #' @param nahead number of periods ahead to forecast.
-#' @param ktmethod method used to forecast the value of kt Arima(p,d,q) or ARIMA(0,1,0); c("Arimapdq", "arima010").
-#' @param kt_include.cte if you want that kt include constant in the arima process.
+#' @param ktmethod method used to forecast the value of `kt` Arima(p,d,q) or ARIMA(0,1,0); c("`Arimapdq`", "`arima010`").
+#' @param kt_include.cte if you want that `kt` include constant in the arima process.
 #'
 #' @return A list with different components of the forecasting process:
 #' * `ax` parameter that captures the average shape of the mortality curve in all considered populations.
-#' * `bx` parameter that explains the age effect x with respect to the general trend (kt) in the mortality rates of all considered populations.
-#' * `arimakt` the arima selected for the \eqn{k_t} time series.
-#' * `kt.fitted` obtained \eqn{k_t} values for the tendency behaviour.
-#' * `kt.fut` \eqn{k_t} projected values for the nahead periods ahead.
-#' * `kt.futintervals` \eqn{k_t} arima selected and future values for this parameter with the different intervals, lower and upper, 80\% and 90\%.
+#' * `bx` parameter that explains the age effect x with respect to the general trend `kt` in the mortality rates of all considered populations.
+#' * `arimakt` the arima selected for the `kt` time series.
+#' * `kt.fitted` obtained values for the tendency behaviour captured by `kt`.
+#' * `kt.fut` projected values of `kt` for the nahead periods ahead.
+#' * `kt.futintervals` arima selected and future values of `kt` with the different intervals, lower and upper, 80\% and 90\%.
 #' * `Ii` paramater that captures the differences in the pattern of mortality in any region i with respect to Region 1.
 #' * `formula` additive multi-population mortality formula used to fit the mortality rates.
 #' * `qxt.real` real mortality rates.
@@ -51,21 +51,24 @@
 #'                                              ages = c(ages),
 #'                                              nPop = 18,
 #'                                              lxt = SpainRegions$lx_male)
-#' #Once, we have fit the data, it is possible to see the \eqn{\alpha_x}, \eqn{\beta_x}, \eqn{k_t}, and \eqn{I_i} provided parameters for the fitting.
+#' #Once, we have fit the data, it is possible to see the ax, bx, kt, and Ii
+#' #provided parameters for the fitting.
 #' plot.fit.additive.LC.multi(additive_Spainmales)
 #'
 #' #Finally, we forecast 10 years ahead the additive multi-population mortality model
 #'
 #' fut_additive_Spainmales <- forecast.additive.LC.multi(fitted.obj = additive_Spainmales, nahead = 10,
 #'                                                       ktmethod = "Arimapdq", kt_include.cte = TRUE)
-#' #As we mentioned in the details of the function, if we only provide the data from one-population the function
-#' #\code{\link{fit.additive.LC.multi}} will fit the Lee-Carter model for single populations.
+#' #As we mentioned in the details of the function, if we only provide
+#' #the data from one-population the function \code{\link{fit.additive.LC.multi}}
+#' #will fit the Lee-Carter model for single populations.
 #' LC_Spainmales <- fit.additive.LC.multi(qxt = SpainNat$qx_male,
 #'                               periods = c(1991:2020),
 #'                               ages = ages,
 #'                               nPop = 1)
 #' plot.fit.LC.multi(LC_Spainmales)
-#' #Again, we can forecast 10 years ahead using the LC mortality model for one-single population.
+#' #Again, we can forecast 10 years ahead using the LC mortality model for
+#' #one-single population.
 #' fut_LC_Spainmales <- forecast.additive.LC.multi(fitted.obj = LC_Spainmales,
 #'         nahead = 10,ktmethod = "Arimapdq", kt_include.cte = TRUE)
 #'

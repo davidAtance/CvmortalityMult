@@ -1,5 +1,5 @@
 #' MEAN ABSOLUTE ERRORS (MAE)
-#'
+#' @description
 #' R function to estimate the mean absolute errors (MAE) for the mortality rates;
 #' \deqn{\frac{1}{n}\sum_{x} \sum_{t} \left| qx1 - qxt2 \right|}.
 #' where qxt1 is the real mortality rates `qxt_re`, and qxt2 is the adjusted mortality rates `qxt_aju`.
@@ -10,12 +10,13 @@
 #' @param qxt_re real mortality rates used to check the goodness of fit measure.
 #' @param qxt_aju adjusted mortality rates using a specific mode.
 #' @param wxt weights of the mortality rates or data provided.
+#'
+#' @return A value of MAE for the data provided.
+#'
 #' @seealso \code{\link{fit.additive.LC.multi}}, \code{\link{fit.multiplicative.LC.multi}},
 #' \code{\link{forecast.additive.LC.multi}}, \code{\link{forecast.multiplicative.LC.multi}},
 #' \code{\link{SSE}}, \code{\link{MSE}}, \code{\link{MAPE}},
 #' \code{\link{multipopulation_cv}}.
-#'
-#' @return A value of MAE for the data provided.
 #'
 #' @references
 #' Atance, D., Debón, A., & Navarro, E. (2020).
@@ -23,20 +24,20 @@
 #' Mathematics, 8(9), 1550.
 #'
 #' @examples
-#'
 #' #To show how the function works, we need to provide fitted or forecasted data and the real data.
 #' #In this case, we employ the following data of the library:
 #' SpainRegions
 #' ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
 #' #In this case, we fit for males providing the lxt
-#' #multiplicative_Spainmales <- fit.multiplicative.LC.multi(qxt = SpainRegions$qx_male,
+#' multiplicative_Spainmales <- fit.multiplicative.LC.multi(qxt = SpainRegions$qx_male,
 #'                               periods = c(1991:2020),
 #'                               ages = c(ages),
 #'                               nPop = 18,
 #'                               lxt = SpainRegions$lx_male)
 #'
 #' #Once, we have the fitted data, we will obtain the SSE for the first population.
-#' #We need to obtain wxt (weight of the mortality rates or data provided) using a specific function from the StMoMo R-package.
+#' #We need to obtain wxt (weight of the mortality rates or data provided) using a
+#' #specific function from the StMoMo R-package.
 #' library(StMoMo)
 #' wxt_1pob <- genWeightMat(ages = ages, years = c(1991:2020), clip = 0)
 #' MAE(qxt_re = multiplicative_Spainmales$qxt.real$pob1,

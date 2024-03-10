@@ -21,9 +21,9 @@ multipopulation_cv(
 \arguments{
 \item{qxt}{mortality rates used to fit the multi-population mortality models. This rates can be provided in matrix or in data.frame.}
 
-\item{model}{choose the multi-population mortality model to fit the mortality rates c("additive", "multiplicative")}
+\item{model}{choose the multi-population mortality model to fit the mortality rates c("\code{additive}", "\code{multiplicative}")}
 
-\item{periods}{periods considered in the fitting in a vector way c(minyear:maxyear).}
+\item{periods}{periods considered in the fitting in a vector way c(\code{minyear}:\code{maxyear}).}
 
 \item{ages}{vector with the ages considered in the fitting. If the mortality rates provide from an abbridged life tables, it is necessary to provide a vector with the ages, see the example.}
 
@@ -31,20 +31,22 @@ multipopulation_cv(
 
 \item{lxt}{survivor function considered for every population, not necessary to provide.}
 
-\item{ktmethod}{mmethod used to forecast the value of kt Arima(p,d,q) or ARIMA(0,1,0); c("Arimapdq", "arima010").}
+\item{nahead}{is a vector specifying the number of periods to block in the blocked CV. The function operates by using the sum of the periods in nahead and three (the minimum number of years required to construct a time series), as the initial training set. This ensures that the first train set has sufficient observations to forecast the initial test set, which will be of length \code{nahead}.}
 
-\item{kt_include.cte}{if you want that kt include constant in the arima process.}
+\item{ktmethod}{method used to forecast the value of \code{kt} Arima(p,d,q) or ARIMA(0,1,0); c("\code{Arimapdq}", "\code{arima010}").}
 
-\item{measures}{choose the non-penalized measure of forecasting accuracy that you want to use; c("SSE", "MSE", "MAE", "MAPE", "All"). Check the function}
+\item{kt_include.cte}{if you want that \code{kt} include constant in the arima process.}
+
+\item{measures}{choose the non-penalized measure of forecasting accuracy that you want to use; c("\code{SSE}", "\code{MSE}", "\code{MAE}", "\code{MAPE}", "\code{All}"). Check the function}
 }
 \value{
 A list with different components of the cross-validation process:
 \itemize{
 \item \code{ax} parameter that captures the average shape of the mortality curve in all considered populations.
 \item \code{bx} parameter that explains the age effect x with respect to the general trend \code{kt} in the mortality rates of all considered populations.
-\item \code{kt.fitted} obtained \eqn{k_t} values for the tendency behaviour.
-\item \code{kt.future} \eqn{k_t} future values for every iteration in the cross-validation.
-\item \code{kt.arima}  the arima selected for each \eqn{k_t} time series.
+\item \code{kt.fitted} obtained values for the tendency behaviour captured by \code{kt} .
+\item \code{kt.future} future values of \code{kt} for every iteration in the cross-validation.
+\item \code{kt.arima}  the arima selected for each \code{kt} time series.
 \item \code{Ii} paramater that captures the differences in the pattern of mortality in any region i with respect to Region 1.
 \item \code{formula} multi-population mortality formula used to fit the mortality rates.
 \item \code{nPop} provided number of populations to fit the periods.

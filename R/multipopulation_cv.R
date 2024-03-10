@@ -14,21 +14,22 @@
 #' In this case, the measures will be obtained using the mortality rates in the normal scale as recommended by Santolino (2023) against the log scale.
 #'
 #' @param qxt mortality rates used to fit the multi-population mortality models. This rates can be provided in matrix or in data.frame.
-#' @param model choose the multi-population mortality model to fit the mortality rates c("additive", "multiplicative")
-#' @param periods periods considered in the fitting in a vector way c(minyear:maxyear).
+#' @param model choose the multi-population mortality model to fit the mortality rates c("`additive`", "`multiplicative`")
+#' @param periods periods considered in the fitting in a vector way c(`minyear`:`maxyear`).
 #' @param ages vector with the ages considered in the fitting. If the mortality rates provide from an abbridged life tables, it is necessary to provide a vector with the ages, see the example.
 #' @param nPop number of population considered for fitting.
 #' @param lxt survivor function considered for every population, not necessary to provide.
-#' @param ktmethod mmethod used to forecast the value of kt Arima(p,d,q) or ARIMA(0,1,0); c("Arimapdq", "arima010").
-#' @param kt_include.cte if you want that kt include constant in the arima process.
-#' @param measures choose the non-penalized measure of forecasting accuracy that you want to use; c("SSE", "MSE", "MAE", "MAPE", "All"). Check the function
+#' @param nahead is a vector specifying the number of periods to block in the blocked CV. The function operates by using the sum of the periods in nahead and three (the minimum number of years required to construct a time series), as the initial training set. This ensures that the first train set has sufficient observations to forecast the initial test set, which will be of length `nahead`.
+#' @param ktmethod method used to forecast the value of `kt` Arima(p,d,q) or ARIMA(0,1,0); c("`Arimapdq`", "`arima010`").
+#' @param kt_include.cte if you want that `kt` include constant in the arima process.
+#' @param measures choose the non-penalized measure of forecasting accuracy that you want to use; c("`SSE`", "`MSE`", "`MAE`", "`MAPE`", "`All`"). Check the function
 #'
 #' @return A list with different components of the cross-validation process:
 #' * `ax` parameter that captures the average shape of the mortality curve in all considered populations.
 #' * `bx` parameter that explains the age effect x with respect to the general trend `kt` in the mortality rates of all considered populations.
-#' * `kt.fitted` obtained \eqn{k_t} values for the tendency behaviour.
-#' * `kt.future` \eqn{k_t} future values for every iteration in the cross-validation.
-#' * `kt.arima`  the arima selected for each \eqn{k_t} time series.
+#' * `kt.fitted` obtained values for the tendency behaviour captured by `kt` .
+#' * `kt.future` future values of `kt` for every iteration in the cross-validation.
+#' * `kt.arima`  the arima selected for each `kt` time series.
 #' * `Ii` paramater that captures the differences in the pattern of mortality in any region i with respect to Region 1.
 #' * `formula` multi-population mortality formula used to fit the mortality rates.
 #' * `nPop` provided number of populations to fit the periods.
@@ -228,7 +229,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative"),
       df_actual <- data.frame(rep((i-1), nages*periods),
                               sec.per,
                               rep(ages, nperiods),
-                              qxt.vector,
+                              qxt,
                               lxt.vector)
 
       df_qxtdata <- rbind(df_qxtdata, df_actual)

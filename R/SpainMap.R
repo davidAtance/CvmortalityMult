@@ -1,11 +1,6 @@
 #' Spain National map information
-#'
-#' This data contains information to plot the panish regions using
-#'
-#' @name SpainMap
-#'
-#' @usage SpainMap
-#'
+#' @description
+#' This data contains information to plot the percentiles plot in Spanish regions. Therefore, the users only have to provide a specific variable to show in regions of Spain.
 #' @param regionvalue vector with the values that you want to plot in percentiles in the Spain map.
 #' @param main the specific title of the map plot
 #' @param name the assigned name for the legend in map plot.
@@ -13,7 +8,6 @@
 #' @return a map from the regions of Spain colored with the variable provided by the user.
 #'
 #' @references
-#'
 #' Spanish National Institute of Statistics (INE) (2023). Tablas de mortalidad, metodologia.
 #' Technical report, Instituto Nacional de Estadistica
 #'

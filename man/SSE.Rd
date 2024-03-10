@@ -30,14 +30,15 @@ These variables must have the same dimensions to be compared.
 SpainRegions
 ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
 #In this case, we fit for males providing the lxt
-#multiplicative_Spainmales <- fit.multiplicative.LC.multi(qxt = SpainRegions$qx_male,
+multiplicative_Spainmales <- fit.multiplicative.LC.multi(qxt = SpainRegions$qx_male,
                               periods = c(1991:2020),
                               ages = c(ages),
                               nPop = 18,
                               lxt = SpainRegions$lx_male)
 
 #Once, we have the fitted data, we will obtain the SSE for the first population.
-#We need to obtain wxt (weight of the mortality rates or data provided) using a specific function from the StMoMo R-package.
+#We need to obtain wxt (weight of the mortality rates or data provided) using a
+#specific function from the StMoMo R-package.
 library(StMoMo)
 wxt_1pob <- genWeightMat(ages = ages, years = c(1991:2020), clip = 0)
 SSE(qxt_re = multiplicative_Spainmales$qxt.real$pob1,

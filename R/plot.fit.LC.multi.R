@@ -6,8 +6,7 @@
 #'
 #' @param fitted.obj object developed using function fit.additive.LC.multi() and fit.multiplicative.LC.multi()
 #'
-#' @return plot the different parameters for the multi-population mortality models `ax`, `bx`, `kt` and `Ii`.
-#' This function is valid for both approaches Additive and Multiplicative multi-population mortality models.
+#' @return plot the different parameters for the multi-population mortality models `ax`, `bx`, `kt` and `Ii`. This function is valid for both approaches Additive and Multiplicative multi-population mortality models.
 #'
 #' @seealso \code{\link{fit.additive.LC.multi}}, \code{\link{fit.multiplicative.LC.multi}},
 #' \code{\link{forecast.additive.LC.multi}}, \code{\link{forecast.multiplicative.LC.multi}},
@@ -28,25 +27,28 @@
 #' Scandinavian Actuarial Journal, 2011(2), 96-117.
 #'
 #' @examples
-#' #' SpainRegions
+#' SpainRegions
 #' ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
-#' In this case, we fit for males providing the lxt
+#' #In this case, we fit for males providing the lxt
 #' multiplicative_Spainmales <- fit.multiplicative.LC.multi(qxt = SpainRegions$qx_male,
 #'                               periods = c(1991:2020),
 #'                               ages = c(ages),
 #'                               nPop = 18,
 #'                               lxt = SpainRegions$lx_male)
 #'
-#' Once, we have fit the data, it is possible to see the ax, bx, kt, and Ii provided parameters for the fitting.
+#' #Once, we have fit the data, it is possible to see the ax, bx, kt, and Ii
+#' #provided parameters for the fitting.
 #' plot.fit.LC.multi(multiplicative_Spainmales)
 #'
-#' Equal to the previous step but in this case for females and without providing lxt.
+#' #Equal to the previous step but in this case for females and without
+#' #providing lxt.
 #' multiplicative_Spainfemales <- fit.multiplicative.LC.multi(qxt = SpainRegions$qx_female,
 #'                               periods = c(1991:2020),
 #'                               ages = c(ages),
 #'                               nPop = 18)
 #'
-#' Once, we have fit the data, it is possible to see the \eqn{\alpha_x}, \eqn{\beta_x}, \eqn{k_t}, and \eqn{I_i} provided parameters for the fitting.
+#' #Once, we have fit the data, it is possible to see the ax, bx, kt
+#' #provided parameters for the fitting.
 #' plot.fit.LC.multi(multiplicative_Spainmales)
 #'
 #' @export

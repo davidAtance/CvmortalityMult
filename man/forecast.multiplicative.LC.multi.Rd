@@ -12,11 +12,11 @@ forecast.multiplicative.LC.multi(
 )
 }
 \arguments{
-\item{fitted.obj}{object developed using function fit.mutliplicative.LC.multi()}
+\item{fitted.obj}{object developed using function \code{fit.mutliplicative.LC.multi()}}
 
 \item{nahead}{number of periods ahead to forecast}
 
-\item{ktmethod}{method used to forecast the value of kt Arima(p,d,q) or ARIMA(0,1,0); c("Arimapdq", "arima010").}
+\item{ktmethod}{method used to forecast the value of kt Arima(p,d,q) or ARIMA(0,1,0); c("\code{Arimapdq}", "\code{arima010}").}
 
 \item{kt_include.cte}{if you want that kt include constant in the arima process.}
 }
@@ -24,11 +24,11 @@ forecast.multiplicative.LC.multi(
 A list with different components of the forecasting process:
 \itemize{
 \item \code{ax} parameter that captures the average shape of the mortality curve in all considered populations.
-\item \code{bx} parameter that explains the age effect x with respect to the general trend (kt) in the mortality rates of all considered populations.
-\item \code{arimakt} the arima selected for the \eqn{k_t} time series.
-\item \code{kt.fitted} obtained \eqn{k_t} values for the tendency behaviour.
-\item \code{kt.fut}\eqn{k_t} projected values for the nahead periods ahead.
-\item \code{kt.futintervals}\eqn{k_t} arima selected and future values for this parameter with the different intervals, lower and upper, 80\\% and 90\\%.
+\item \code{bx} parameter that explains the age effect x with respect to the general trend \code{kt} in the mortality rates of all considered populations.
+\item \code{arimakt} the arima selected for the \code{kt} time series.
+\item \code{kt.fitted} obtained values for the tendency behaviour captured by \code{kt}.
+\item \code{kt.fut} projected values of \code{kt} for the nahead periods ahead.
+\item \code{kt.futintervals} arima selected and future values of \code{kt} with the different intervals, lower and upper, 80\\% and 90\\%.
 \item \code{Ii} gives an idea of the differences in the pattern of mortality in any region i with respect to Region 1.
 \item \code{formula} additive multi-population mortality formula used to fit the mortality rates.
 \item \code{qxt.real} real mortality rates.
@@ -58,21 +58,26 @@ multiplicative_Spainmales <- fit.multiplicative.LC.multi(qxt = SpainRegions$qx_m
                                              ages = c(ages),
                                              nPop = 18,
                                              lxt = SpainRegions$lx_male)
-#Once, we have fit the data, it is possible to see the \eqn{\alpha_x}, \eqn{\beta_x}, \eqn{k_t}, and \eqn{I_i} provided parameters for the fitting.
+#Once, we have fit the data, it is possible to see the ax, bx, kt, and Ii
+#provided parameters for the fitting.
 plot.fit.LC.multi(multiplicative_Spainmales)
 
 #Finally, we forecast 10 years ahead the multiplicative multi-population mortality model
-
-fut_multiplicative_Spainmales <- forecast.multiplicative.LC.multi(fitted.obj = additive_Spainmales, nahead = 10,
-                                                      ktmethod = "Arimapdq", kt_include.cte = TRUE)
-#As we mentioned in the details of the function, if we only provide the data from one-population the function
-#\code{\link{fit.multiplicative.LC.multi}} will fit the Lee-Carter model for single populations.
+fut_multiplicative_Spainmales <- forecast.multiplicative.LC.multi(
+                  fitted.obj = additive_Spainmales,
+                  nahead = 10,
+                  ktmethod = "Arimapdq",
+                  kt_include.cte = TRUE)
+#As we mentioned in the details of the function, if we only provide the data
+#from one-population the function fit.multiplicative.LC.multi()
+#will fit the Lee-Carter model for single populations.
 LC_Spainmales <- fit.multiplicative.LC.multi(qxt = SpainNat$qx_male,
                               periods = c(1991:2020),
                               ages = ages,
                               nPop = 1)
 plot.fit.multiplicative.LC.multi(LC_Spainmales)
-#Again, we can forecast 10 years ahead using the LC mortality model for one-single population.
+#Again, we can forecast 10 years ahead using the LC mortality model for
+#one-single population.
 fut_LC_Spainmales <- forecast.multiplicative.LC.multi(fitted.obj = LC_Spainmales,
         nahead = 10,ktmethod = "Arimapdq", kt_include.cte = TRUE)
 

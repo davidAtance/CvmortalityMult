@@ -21,7 +21,7 @@ fit.additive.LC.multi(qxt, periods, ages, nPop, lxt = NULL)
 A list with different components of the fitting process:
 \itemize{
 \item \code{ax} parameter that captures the average shape of the mortality curve in all considered populations.
-\item \code{bx} parameter that explains the age effect x with respect to the general trend (kt) in the mortality rates of all considered populations.
+\item \code{bx} parameter that explains the age effect x with respect to the general trend \code{kt} in the mortality rates of all considered populations.
 \item \code{kt} represent the national tendency of multi-mortality populations during the period.
 \item \code{Ii} gives an idea of the differences in the pattern of mortality in any region i with respect to Region 1.
 \item \code{formula} additive multi-population mortality formula used to fit the mortality rates.
@@ -33,9 +33,6 @@ A list with different components of the fitting process:
 \item \code{Periods} provided periods to fit the peridos.
 \item \code{nPop} provided number of populations to fit the periods.
 }
-
-#' @seealso \code{\link{fit.multiplicative.LC.multi}}, \code{\link{forecast.additive.LC.multi}},
-\code{\link{forecast.multiplicative.LC.multi}}, \code{\link{multipopulation_cv}}
 }
 \description{
 R function for fitting additive multi-population mortality model developed by: Debon et al (2011).
@@ -55,7 +52,8 @@ additive_Spainmales <- fit.additive.LC.multi(qxt = SpainRegions$qx_male,
                               nPop = 18,
                               lxt = SpainRegions$lx_male)
 
-#Once, we have fit the data, it is possible to see the \eqn{\alpha_x}, \eqn{\beta_x}, \eqn{k_t}, and \eqn{I_i} provided parameters for the fitting.
+#Once, we have fit the data, it is possible to see the ax, bx, kt, and Ii
+#provided parameters for the fitting.
 plot.fit.additive.LC.multi(additive_Spainmales)
 
 #Equal to the previous step but in this case for females and without providing lxt.
@@ -64,11 +62,13 @@ additive_Spainfemales <- fit.additive.LC.multi(qxt = SpainRegions$qx_female,
                               ages = c(ages),
                               nPop = 18)
 
-#Once, we have fit the data, it is possible to see the ax, bx, kt, and Ii provided parameters for the fitting.
+#Once, we have fit the data, it is possible to see the ax, bx, kt, and Ii
+#provided parameters for the fitting.
 plot.fit.additive.LC.multi(additive_Spainfemales)
 
-#As we mentioned in the details of the function, if we only provide the data from one-population the function
-#\code{\link{fit.additive.LC.multi}} will fit the Lee-Carter model for single populations.
+#As we mentioned in the details of the function, if we only provide the data
+#from one-population the function fit.additive.LC.multi()
+#will fit the Lee-Carter model for single populations.
 LC_Spainmales <- fit.additive.LC.multi(qxt = SpainNat$qx_male,
                               periods = c(1991:2020),
                               ages = ages,
@@ -84,4 +84,8 @@ European Actuarial Journal, 1, 291-308.
 Lee, R.D. & Carter, L.R. (1992).
 Modeling and forecasting US mortality.
 Journal of the American Statistical Association, 87(419), 659–671.
+}
+\seealso{
+\code{\link{fit.multiplicative.LC.multi}}, \code{\link{forecast.additive.LC.multi}},
+\code{\link{forecast.multiplicative.LC.multi}}, \code{\link{multipopulation_cv}}
 }

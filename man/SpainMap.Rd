@@ -4,7 +4,7 @@
 \alias{SpainMap}
 \title{Spain National map information}
 \usage{
-SpainMap
+SpainMap(regionvalue, main, name)
 }
 \arguments{
 \item{regionvalue}{vector with the values that you want to plot in percentiles in the Spain map.}
@@ -17,7 +17,7 @@ SpainMap
 a map from the regions of Spain colored with the variable provided by the user.
 }
 \description{
-This data contains information to plot the panish regions using
+This data contains information to plot the percentiles plot in Spanish regions. Therefore, the users only have to provide a specific variable to show in regions of Spain.
 }
 \examples{
 ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40,

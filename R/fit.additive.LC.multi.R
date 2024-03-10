@@ -14,7 +14,7 @@
 #'
 #' @return A list with different components of the fitting process:
 #' * `ax` parameter that captures the average shape of the mortality curve in all considered populations.
-#' * `bx` parameter that explains the age effect x with respect to the general trend (kt) in the mortality rates of all considered populations.
+#' * `bx` parameter that explains the age effect x with respect to the general trend `kt` in the mortality rates of all considered populations.
 #' * `kt` represent the national tendency of multi-mortality populations during the period.
 #' * `Ii` gives an idea of the differences in the pattern of mortality in any region i with respect to Region 1.
 #' * `formula` additive multi-population mortality formula used to fit the mortality rates.
@@ -26,7 +26,7 @@
 #' * `Periods` provided periods to fit the peridos.
 #' * `nPop` provided number of populations to fit the periods.
 #'
-#'#' @seealso \code{\link{fit.multiplicative.LC.multi}}, \code{\link{forecast.additive.LC.multi}},
+#' @seealso \code{\link{fit.multiplicative.LC.multi}}, \code{\link{forecast.additive.LC.multi}},
 #' \code{\link{forecast.multiplicative.LC.multi}}, \code{\link{multipopulation_cv}}
 #'
 #' @references
@@ -49,7 +49,8 @@
 #'                               nPop = 18,
 #'                               lxt = SpainRegions$lx_male)
 #'
-#' #Once, we have fit the data, it is possible to see the \eqn{\alpha_x}, \eqn{\beta_x}, \eqn{k_t}, and \eqn{I_i} provided parameters for the fitting.
+#' #Once, we have fit the data, it is possible to see the ax, bx, kt, and Ii
+#' #provided parameters for the fitting.
 #' plot.fit.additive.LC.multi(additive_Spainmales)
 #'
 #' #Equal to the previous step but in this case for females and without providing lxt.
@@ -58,18 +59,20 @@
 #'                               ages = c(ages),
 #'                               nPop = 18)
 #'
-#' #Once, we have fit the data, it is possible to see the ax, bx, kt, and Ii provided parameters for the fitting.
+#' #Once, we have fit the data, it is possible to see the ax, bx, kt, and Ii
+#' #provided parameters for the fitting.
 #' plot.fit.additive.LC.multi(additive_Spainfemales)
 #'
-#' #As we mentioned in the details of the function, if we only provide the data from one-population the function
-#' #\code{\link{fit.additive.LC.multi}} will fit the Lee-Carter model for single populations.
+#' #As we mentioned in the details of the function, if we only provide the data
+#' #from one-population the function fit.additive.LC.multi()
+#' #will fit the Lee-Carter model for single populations.
 #' LC_Spainmales <- fit.additive.LC.multi(qxt = SpainNat$qx_male,
 #'                               periods = c(1991:2020),
 #'                               ages = ages,
 #'                               nPop = 1)
 #' plot.fit.LC.multi(LC_Spainmales)
 #'
-#'@importFrom gnm gnm
+#' @importFrom gnm gnm residSVD
 #'
 #' @export
 fit.additive.LC.multi <- function(qxt, periods, ages, nPop, lxt = NULL){
@@ -157,7 +160,7 @@ fit.additive.LC.multi <- function(qxt, periods, ages, nPop, lxt = NULL){
       df_actual <- data.frame(rep((i-1), nages*periods),
                               sec.per,
                               rep(ages, nperiods),
-                              qxt.vector,
+                              qxt,
                               lxt.vector)
 
       df_qxtdata <- rbind(df_qxtdata, df_actual)
@@ -232,7 +235,7 @@ fit.additive.LC.multi <- function(qxt, periods, ages, nPop, lxt = NULL){
   #1. we estimate the starting values for the model
   if(nPop != 1){
     emptymodel <- gnm(qxt ~ -1 + factor(age), weights=lx,
-                    family= quasibinomial, data=df_qxtdata)
+                    family= 'quasibinomial', data=df_qxtdata)
     biplotStart <- residSVD(emptymodel,
                           factor(df_qxtdata$age),
                           factor(df_qxtdata$period),1)
@@ -244,7 +247,7 @@ fit.additive.LC.multi <- function(qxt, periods, ages, nPop, lxt = NULL){
     ###################
     #modelo aditivo
     lee.geo3 <- gnm(qxt ~ -1 + factor(age) + Mult(factor(period),factor(age)) + factor(pop),
-                  weights = lx, family = quasibinomial,
+                  weights = lx, family = 'quasibinomial',
                   constrain=c((nages+1), (nages+nperiods+1)), constrainTo=c(0,1),
                   data=df_qxtdata, start=c(aini,kini,bini,rep(0,(nPop-1))))
 
@@ -255,7 +258,7 @@ fit.additive.LC.multi <- function(qxt, periods, ages, nPop, lxt = NULL){
   } else {
     cat("You only provide one country. Thus, we fit LC one-single model population.")
     emptymodel <- gnm(qxt ~ -1 + factor(age), weights = lx,
-                      family=quasibinomial, data=df_qxtdata)
+                      family='quasibinomial', data=df_qxtdata)
     biplotStart <- residSVD(emptymodel,
                             factor(df_qxtdata$age), factor(df_qxtdata$period),1)
     aini <- coef(emptymodel)+biplotStart[1]*biplotStart[(nages+1)]*biplotStart[1:nages]/biplotStart[1]
@@ -263,7 +266,7 @@ fit.additive.LC.multi <- function(qxt, periods, ages, nPop, lxt = NULL){
     kini <- biplotStart[1]*biplotStart[(nages+1):(nages+nperiods)]-biplotStart[1]*biplotStart[(nages+1)]
 
     lee.geo3 <- gnm(qxt ~ -1 + factor(age) + Mult(factor(period), factor(age)),
-                    weights = lx, family = quasibinomial,
+                    weights = lx, family = 'quasibinomial',
                     constrain = c((nages+1), (nages+nperiods+1)), constrainTo=c(0,1),
                     data = df_qxtdata, start = c(aini, bini, kini))
     ax.geo3 <- as.numeric(coef(lee.geo3)[1:nages])

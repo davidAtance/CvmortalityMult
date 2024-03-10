@@ -7,28 +7,28 @@
 #' This procedure is repeated several times trying to check the forecasting accuracy in different ways enlarging the training set one period-ahead.
 #' With this function, the user can provide its own mortality rates for different populations. The function will split the database chronologically (Bergmeir and Benitez, 2012) based on the trainset1 which consist on the length of the first training set.
 #' We have include the following Figure 2 to understand how the R function works.
-#' {\figure{LOOCV.jpg}{options: width="100\%" alt="Figure: mai.png"}}
+#' {\figure{LOOCV.png}{options: width="100\%" alt="Figure: mai.png"}}
 #' It should be mentioned that this function is developed for testing the the forecasting accuracy of several populations using leave-one-out cross-validation .
 #' However, in case you only consider one population, the function will forecast the Lee-Carter model for one population.
 #' To test the forecasting accuracy of the selected model, the function provides five different measures: SSE, MSE, MAE, MAPE or All. Depending on how you want to check the forecasting accuracy of the model you could select one or other.
 #' In this case, the measures will be obtained using the mortality rates in the normal scale as recommended by Santolino (2023) against the log scale.
 #'
 #' @param qxt mortality rates used to fit the multi-population mortality models. This rates can be provided in matrix or in data.frame.
-#' @param model choose the multi-population mortality model to fit the mortality rates c("additive", "multiplicative")
+#' @param model choose the multi-population mortality model to fit the mortality rates c("`additive`", "`multiplicative`")
 #' @param periods periods considered in the fitting in a vector way c(minyear:maxyear).
 #' @param ages vector with the ages considered in the fitting. If the mortality rates provide from an abbridged life tables, it is necessary to provide a vector with the ages, see the example.
 #' @param nPop number of population considered for fitting.
 #' @param lxt survivor function considered for every population, not necessary to provide.
-#' @param ktmethod mmethod used to forecast the value of kt Arima(p,d,q) or ARIMA(0,1,0); c("Arimapdq", "arima010").
-#' @param kt_include.cte if you want that kt include constant in the arima process.
-#' @param measures choose the non-penalized measure of forecasting accuracy that you want to use; c("SSE", "MSE", "MAE", "MAPE", "All"). Check the function
+#' @param ktmethod mmethod used to forecast the value of `kt` Arima(p,d,q) or ARIMA(0,1,0); c("`Arimapdq`", "`arima010`").
+#' @param kt_include.cte if you want that `kt` include constant in the arima process.
+#' @param measures choose the non-penalized measure of forecasting accuracy that you want to use; c("`SSE`", "`MSE`", "`MAE`", "`MAPE`", "`All`"). Check the function
 #' @param trainset1 vector with the periods for the first trainning set.  This value must be greater than 2 to meet the minimum time series size (Hyndman and Khandakar, 2008).
 #'
 #' @return A list with different components of the cross-validation process:
 #' * `ax` parameter that captures the average shape of the mortality curve in all considered populations.
 #' * `bx` parameter that explains the age effect x with respect to the general trend `kt` in the mortality rates of all considered populations.
-#' * `kt.fitted` obtained `kt` values for the tendency behaviour.
-#' * `kt.future` `kt` future values for every iteration in the cross-validation.
+#' * `kt.fitted` obtained values for the tendency behaviour captured by `kt`.
+#' * `kt.future` future values of `kt` for every iteration in the cross-validation.
 #' * `kt.arima`the arima selected for each `kt` time series.
 #' * `Ii` paramater that captures the differences in the pattern of mortality in any region i with respect to Region 1.
 #' * `formula` multi-population mortality formula used to fit the mortality rates.
@@ -43,7 +43,7 @@
 #'
 #' @seealso \code{\link{multipopulation_cv}}, \code{\link{fit.additive.LC.multi}}, \code{\link{fit.multiplicative.LC.multi}},
 #' \code{\link{forecast.additive.LC.multi}}, \code{\link{forecast.multiplicative.LC.multi}},
-#' \code{\link{plot.fit.additive.LC.multi}}, \code{\link{SSE}}, \code{\link{MAE}}, \code{\link{MAPE}}.
+#' \code{\link{plot.fit.LC.multi}}, \code{\link{SSE}}, \code{\link{MAE}}, \code{\link{MAPE}}.
 #'
 #' @references
 #' Atance, D., Debon, A., and Navarro, E. (2020).
@@ -79,8 +79,8 @@
 #' Risks, 11(10), 170.
 #'
 #' @examples
-#' #We present the leave-one-out cross-validation (LOOCV) method for spanish male regions.
-#' The idea is to get the same results as in the short paper published in Risk Congress 2023.
+#' #We present the leave-one-out cross-validation (LOOCV) method for spanish male regions
+#' #The idea is to get the same results as in the short paper published in Risk Congress 2023
 # 'SpainRegions
 #'
 #'ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40,
@@ -238,7 +238,7 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
       df_actual <- data.frame(rep((i-1), nages*periods),
                               sec.per,
                               rep(ages, nperiods),
-                              qxt.vector,
+                              qxt,
                               lxt.vector)
 
       df_qxtdata <- rbind(df_qxtdata, df_actual)
