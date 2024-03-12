@@ -73,7 +73,7 @@ LC_Spainmales <- fit.multiplicative.LC.multi(qxt = SpainNat$qx_male,
                               periods = c(1991:2020),
                               ages = ages,
                               nPop = 1)
-plot.fit.multiplicative.LC.multi(LC_Spainmales)
+plot.fit.LC.multi(LC_Spainmales)
 
 }
 \references{

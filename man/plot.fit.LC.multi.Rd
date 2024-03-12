@@ -33,14 +33,20 @@ plot.fit.LC.multi(multiplicative_Spainmales)
 
 #Equal to the previous step but in this case for females and without
 #providing lxt.
-multiplicative_Spainfemales <- fit.multiplicative.LC.multi(qxt = SpainRegions$qx_female,
+additive_Spainfemales <- fit.additive.LC.multi(qxt = SpainRegions$qx_female,
                               periods = c(1991:2020),
                               ages = c(ages),
                               nPop = 18)
 
-#Once, we have fit the data, it is possible to see the ax, bx, kt
+#Once, we have fit the data, it is possible to see the ax, bx, kt, Ii
 #provided parameters for the fitting.
-plot.fit.LC.multi(multiplicative_Spainmales)
+plot.fit.LC.multi(additive_Spainmales)
+
+LC_Spainmales <- fit.additive.LC.multi(qxt = SpainNat$qx_male,
+                              periods = c(1991:2020),
+                              ages = ages,
+                              nPop = 1)
+plot.fit.LC.multi(LC_Spainmales)
 
 }
 \references{

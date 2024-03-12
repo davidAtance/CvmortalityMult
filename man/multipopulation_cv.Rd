@@ -112,11 +112,16 @@ cv_Spainmales_multi$meas_total
 cv_Spainmales_LC <- multipopulation_cv(qxt = SpainNat$qx_male,
                                        model = c("multiplicative"),
                                        periods =  c(1991:2020), ages = c(ages),
-                                       nPop = 18, lxt = SpainNat$lx_male,
-                                         nahead = 5,
-                                         ktmethod = c("Arimapdq"),
-                                         kt_include.cte = TRUE,
-                                         measures = c("SSE"))
+                                       nPop = 1, lxt = SpainNat$lx_male,
+                                       nahead = 5,
+                                       ktmethod = c("Arimapdq"),
+                                       kt_include.cte = TRUE,
+                                       measures = c("SSE"))
+
+cv_Spainmales_LC$meas_ages
+cv_Spainmales_LC$meas_periodsfut
+cv_Spainmales_LC$meas_pop
+cv_Spainmales_LC$meas_total
 
 }
 \references{

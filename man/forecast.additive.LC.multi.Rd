@@ -4,7 +4,7 @@
 \alias{forecast.additive.LC.multi}
 \title{FUNCTION TO FORECAST ADDITIVE MULTI-POPULATION MORTALITY MODEL}
 \usage{
-forecast.additive.LC.multi(
+\method{forecast}{additive.LC.multi}(
   fitted.obj,
   nahead,
   ktmethod = c("Arimapdq", "arima010"),
@@ -60,14 +60,14 @@ additive_Spainmales <- fit.additive.LC.multi(qxt = SpainRegions$qx_male,
                                              lxt = SpainRegions$lx_male)
 #Once, we have fit the data, it is possible to see the ax, bx, kt, and Ii
 #provided parameters for the fitting.
-plot.fit.additive.LC.multi(additive_Spainmales)
+plot.fit.LC.multi(additive_Spainmales)
 
 #Finally, we forecast 10 years ahead the additive multi-population mortality model
 
 fut_additive_Spainmales <- forecast.additive.LC.multi(fitted.obj = additive_Spainmales, nahead = 10,
                                                       ktmethod = "Arimapdq", kt_include.cte = TRUE)
 #As we mentioned in the details of the function, if we only provide
-#the data from one-population the function \code{\link{fit.additive.LC.multi}}
+#the data from one-population the function fit.additive.LC.multi()
 #will fit the Lee-Carter model for single populations.
 LC_Spainmales <- fit.additive.LC.multi(qxt = SpainNat$qx_male,
                               periods = c(1991:2020),

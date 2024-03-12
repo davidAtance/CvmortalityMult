@@ -38,8 +38,6 @@ multiplicative_Spainmales <- fit.multiplicative.LC.multi(qxt = SpainRegions$qx_m
 
 #Once, we have the fitted data, we will obtain the SSE for the first population.
 #We need to obtain wxt (weight of the mortality rates or data provided) using a
-#specific function from the StMoMo R-package.
-library(StMoMo)
 wxt_1pob <- genWeightMat(ages = ages, years = c(1991:2020), clip = 0)
 MSE(qxt_re = multiplicative_Spainmales$qxt.real$pob1,
     qxt_aju = multiplicative_Spainmales$qxt.fitted$pob1,
@@ -55,5 +53,5 @@ Mathematics, 8(9), 1550.
 \code{\link{fit.additive.LC.multi}}, \code{\link{fit.multiplicative.LC.multi}},
 \code{\link{forecast.additive.LC.multi}}, \code{\link{forecast.multiplicative.LC.multi}},
 \code{\link{MAE}}, \code{\link{SSE}}, \code{\link{MAPE}},
-\code{\link{multipopulation_cv}}.
+\code{\link{multipopulation_cv}},  \code{\link{multipopulation_loocv}}.
 }

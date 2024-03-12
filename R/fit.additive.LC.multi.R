@@ -8,7 +8,7 @@
 #'
 #' @param qxt mortality rates used to fit the additive multipopulation mortality model. This rates can be provided in matrix or in data.frame.
 #' @param periods periods considered in the fitting in a vector way c(minyear:maxyear).
-#' @param ages vector with the ages considered in the fitting. If the mortality rates provide from an abbridged life tables, it is necessary to provide a vector with the ages, see the example.
+#' @param ages vector with the ages considered in the fitting. If the mortality rates provide from an abridged life tables, it is necessary to provide a vector with the ages, see the example.
 #' @param nPop number of population considered for fitting.
 #' @param lxt survivor function considered for every population, not necessary to provide.
 #'
@@ -30,13 +30,17 @@
 #' \code{\link{forecast.multiplicative.LC.multi}}, \code{\link{multipopulation_cv}}
 #'
 #' @references
-#' Debon, A., Montes, F., & Martiez-Ruiz, F. (2011).
+#' Debon, A., Montes, F., and Martinez-Ruiz, F. (2011).
 #' Statistical methods to compare mortality for a group with non-divergent populations: an application to Spanish regions.
 #' European Actuarial Journal, 1, 291-308.
 #'
-#' Lee, R.D. & Carter, L.R. (1992).
+#' Lee, R.D. and Carter, L.R. (1992).
 #' Modeling and forecasting US mortality.
 #' Journal of the American Statistical Association, 87(419), 659–671.
+#'
+#' @importFrom gnm gnm residSVD
+#' @importFrom utils install.packages
+#' @importFrom stats coef
 #'
 #' @examples
 #' #The data that we are going to use:
@@ -51,7 +55,7 @@
 #'
 #' #Once, we have fit the data, it is possible to see the ax, bx, kt, and Ii
 #' #provided parameters for the fitting.
-#' plot.fit.additive.LC.multi(additive_Spainmales)
+#' plot.fit.LC.multi(additive_Spainmales)
 #'
 #' #Equal to the previous step but in this case for females and without providing lxt.
 #' additive_Spainfemales <- fit.additive.LC.multi(qxt = SpainRegions$qx_female,
@@ -61,7 +65,7 @@
 #'
 #' #Once, we have fit the data, it is possible to see the ax, bx, kt, and Ii
 #' #provided parameters for the fitting.
-#' plot.fit.additive.LC.multi(additive_Spainfemales)
+#' plot.fit.LC.multi(additive_Spainfemales)
 #'
 #' #As we mentioned in the details of the function, if we only provide the data
 #' #from one-population the function fit.additive.LC.multi()
@@ -72,16 +76,9 @@
 #'                               nPop = 1)
 #' plot.fit.LC.multi(LC_Spainmales)
 #'
-#' @importFrom gnm gnm residSVD
-#'
 #' @export
 fit.additive.LC.multi <- function(qxt, periods, ages, nPop, lxt = NULL){
   #Check several things before start
-  #1. Check the package are instaled
-  if (!require("gnm", character.only = TRUE)) {
-    install.packages("gnm")
-    library(gnm)
-  } else {library(gnm)}
 
   if(is.null(qxt) || is.null(periods) || is.null(ages) || is.null(nPop)){
     stop("Arguments qxt, periods, ages, and nPop, need to be provided.")

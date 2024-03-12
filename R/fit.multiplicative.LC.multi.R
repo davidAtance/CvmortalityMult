@@ -39,6 +39,10 @@
 #' Extending the Lee–Carter model: a three-way decomposition.
 #' Scandinavian Actuarial Journal, 2011(2), 96-117.
 #'
+#' @importFrom gnm gnm residSVD
+#' @importFrom utils install.packages
+#' @importFrom stats coef
+#'
 #' @examples
 #' #The data that we are going to use:
 #' SpainRegions
@@ -71,16 +75,11 @@
 #'                               periods = c(1991:2020),
 #'                               ages = ages,
 #'                               nPop = 1)
-#' plot.fit.multiplicative.LC.multi(LC_Spainmales)
+#' plot.fit.LC.multi(LC_Spainmales)
 #'
 #' @export
 fit.multiplicative.LC.multi <- function(qxt, periods, ages, nPop, lxt = NULL){
   #Check several things before start
-  #1. Check the package are instaled
-  if (!require("gnm", character.only = TRUE)) {
-    install.packages("gnm")
-    library(gnm)
-  } else {library(gnm)}
 
   if(is.null(qxt) || is.null(periods) || is.null(ages) || is.null(nPop)){
     stop("Arguments qxt, periods, ages, and nPop, need to be provided.")
@@ -236,7 +235,7 @@ fit.multiplicative.LC.multi <- function(qxt, periods, ages, nPop, lxt = NULL){
   #1. we estimate the starting values for the model
   if(nPop != 1){
     emptymodel <- gnm(qxt ~ -1 + factor(age), weights=lx,
-                    family= quasibinomial, data=df_qxtdata)
+                    family= 'quasibinomial', data=df_qxtdata)
     biplotStart <- residSVD(emptymodel,
                           factor(df_qxtdata$age),
                           factor(df_qxtdata$period),1)
@@ -250,7 +249,7 @@ fit.multiplicative.LC.multi <- function(qxt, periods, ages, nPop, lxt = NULL){
     ###################
     #multiplicative model
     lee.geo3 <- gnm(qxt ~ -1 + factor(age) + Mult(factor(period), factor(age), factor(pop)),
-                  weights = lx, family = quasibinomial,
+                  weights = lx, family = 'quasibinomial',
                   constrain=c((nages+1), (nages+nperiods+1), (nages+nperiods+nages+1)),
                   constrainTo=c(0, 1, 1),
                   data=df_qxtdata, start=c(aini, bini, kini, exp(Iini)))
@@ -261,7 +260,7 @@ fit.multiplicative.LC.multi <- function(qxt, periods, ages, nPop, lxt = NULL){
   } else {
     cat("You only provide one country. Thus, we fit LC one-single model population.")
     emptymodel <- gnm(qxt ~ -1 + factor(age), weights = lx,
-                      family=quasibinomial, data=df_qxtdata)
+                      family='quasibinomial', data=df_qxtdata)
     biplotStart <- residSVD(emptymodel,
                             factor(df_qxtdata$age), factor(df_qxtdata$period),1)
     aini <- coef(emptymodel)+biplotStart[1]*biplotStart[(nages+1)]*biplotStart[1:nages]/biplotStart[1]
@@ -269,7 +268,7 @@ fit.multiplicative.LC.multi <- function(qxt, periods, ages, nPop, lxt = NULL){
     kini <- biplotStart[1]*biplotStart[(nages+1):(nages+nperiods)]-biplotStart[1]*biplotStart[(nages+1)]
 
     lee.geo3 <- gnm(qxt ~ -1 + factor(age) + Mult(factor(period), factor(age)),
-                    weights = lx, family = quasibinomial,
+                    weights = lx, family = 'quasibinomial',
                     constrain = c((nages+1), (nages+nperiods+1)), constrainTo=c(0,1),
                     data = df_qxtdata, start = c(aini, bini, kini))
     ax.geo3 <- as.numeric(coef(lee.geo3)[1:nages])

@@ -78,6 +78,11 @@
 #' Should Selection of the Optimum Stochastic Mortality Model Be Based on the Original or the Logarithmic Scale of the Mortality Rate?.
 #' Risks, 11(10), 170.
 #'
+#' @importFrom gnm gnm residSVD
+#' @importFrom forecast Arima auto.arima forecast
+#' @importFrom StMoMo genWeightMat
+#' @importFrom utils install.packages
+#'
 #' @examples
 #' #We present the leave-one-out cross-validation (LOOCV) method for spanish male regions
 #' #The idea is to get the same results as in the short paper published in Risk Congress 2023
@@ -87,7 +92,7 @@
 #'          45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
 #'
 #' #Let start with a simple trainset1 = 10 CV method obtaining the SSE forecasting measure of accuracy
-#'loocv_Spainmales_addit <- multipopulation_loocv(qxt = SpainRegions$qx_male,
+#' loocv_Spainmales_addit <- multipopulation_loocv(qxt = SpainRegions$qx_male,
 #'                                          model = c("additive"),
 #'                                          periods =  c(1991:2020), ages = c(ages),
 #'                                          nPop = 18, lxt = SpainRegions$lx_male,
@@ -117,7 +122,7 @@
 #' loocv_Spainmales_multi$meas_total
 #'
 #' #The cross-validation function works with one-population using the single popualtion LC model.
-#' loocv_Spainmales_LC <- multipopulation_cv(qxt = SpainNat$qx_male,
+#' loocv_Spainmales_LC <- multipopulation_loocv(qxt = SpainNat$qx_male,
 #'                                        model = c("multiplicative"),
 #'                                        periods =  c(1991:2020), ages = c(ages),
 #'                                        nPop = 1, lxt = SpainNat$lx_male,
@@ -125,6 +130,11 @@
 #'                                          kt_include.cte = TRUE,
 #'                                          measures = c("SSE"),
 #'                                          trainset1 = 10)
+#'
+#' loocv_Spainmales_LC$meas_ages
+#' loocv_Spainmales_LC$meas_periodsfut
+#' loocv_Spainmales_LC$meas_pop
+#' loocv_Spainmales_LC$meas_total
 #'
 #' @export
 multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
@@ -134,23 +144,6 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
                                measures = c("SSE", "MSE", "MAE", "MAPE", "All"),
                                trainset1){
   #Check several things before start
-  #1. Check the package are instaled
-  if (!require("gnm", character.only = TRUE)) {
-    install.packages("gnm")
-    library(gnm)
-  } else {library(gnm)}
-
-  if (!require("StMoMo", character.only = TRUE)) {
-    install.packages("StMoMo")
-    library(StMoMo)
-  } else {library(StMoMo)}
-
-  if (!require("forecast", character.only = TRUE)) {
-    install.packages("forecast")
-    library(forecast)
-  } else {library(forecast)}
-
-
   if(is.null(qxt) || is.null(periods) || is.null(ages) ||
      is.null(nPop) || is.null(model) || is.null(trainset1)){
     stop("Arguments qxt, periods, ages, nPop, model, nahead, and trainset1 need to be provided.")
@@ -344,7 +337,7 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
   logit.qxt.forecast <- qxt.forecast
 
   fitting.data <- forecasting.data <- list()
-  ax <- bx <- kt <- Ipop <- kt.fut <- kt.arima <- list()
+  ax <- bx <- kt <- Ii <- kt.fut <- kt.arima <- list()
   #reps <- 1
   for(reps in 1:nrep){
     if(reps == 1){
@@ -398,7 +391,7 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
     ax[[paste0("loop-", reps, " from ", periods[1], " to ", periods2-1)]] <- fitted.obj$ax
     bx[[paste0("loop-", reps, " from ", periods[1], " to ", periods2-1)]] <- fitted.obj$bx
     kt[[paste0("loop-", reps, " from ", periods[1], " to ", periods2-1)]] <- fitted.obj$kt
-    Ipop[[paste0("loop-", reps, " from ", periods[1], " to ", periods2-1)]] <- fitted.obj$Ii
+    Ii[[paste0("loop-", reps, " from ", periods[1], " to ", periods2-1)]] <- fitted.obj$Ii
 
     kt.fut[[paste0("loop-", reps, " for ", periods2)]] <- forecast.obj$kt.fut
     kt.arima[[paste0("loop-", reps, " for ", periods2)]] <- forecast.obj$arimakt
@@ -843,7 +836,7 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
                  kt.fitted = kt,
                  kt.future = kt.fut,
                  kt.arima = kt.arima,
-                 Ii = Ipop,
+                 Ii = Ii,
                  formula = fitted.obj$formula,
                  nPop = nPop,
                  qxt.real = mat_qxt,

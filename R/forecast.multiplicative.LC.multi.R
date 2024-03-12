@@ -39,6 +39,9 @@
 #' Extending the Lee–Carter model: a three-way decomposition.
 #' Scandinavian Actuarial Journal, 2011(2), 96-117.
 #'
+#' @importFrom forecast Arima auto.arima forecast
+#' @importFrom utils install.packages
+#'
 #' @examples
 #' #First, we present the data that we are going to use
 #' SpainRegions
@@ -68,7 +71,7 @@
 #'                               periods = c(1991:2020),
 #'                               ages = ages,
 #'                               nPop = 1)
-#' plot.fit.multiplicative.LC.multi(LC_Spainmales)
+#' plot.fit.LC.multi(LC_Spainmales)
 #' #Again, we can forecast 10 years ahead using the LC mortality model for
 #' #one-single population.
 #' fut_LC_Spainmales <- forecast.multiplicative.LC.multi(fitted.obj = LC_Spainmales,
@@ -78,11 +81,6 @@
 forecast.multiplicative.LC.multi <- function(fitted.obj, nahead,
                                        ktmethod = c("Arimapdq", "arima010"),
                                        kt_include.cte = TRUE){
-  #Install library taht we need to forecast
-  if (!require("forecast", character.only = TRUE)) {
-    install.packages("forecast")
-    library(forecast)
-  } else {library(forecast)}
 
   #First check the structure of fitted.obj is equal to the previous object created using our function
   if(!identical(names(fitted.obj), c("ax", "bx", "kt", "Ii", "formula", "data.used",
@@ -143,7 +141,7 @@ forecast.multiplicative.LC.multi <- function(fitted.obj, nahead,
                  kt.fut = matrix(kt.var$mean.kt[1:nahead], nrow= nahead, ncol=1,
                                  dimnames= list(c(max(fitted.obj$Periods+1):(max(fitted.obj$Periods)+nahead)),"kt")),
                  kt.fut.values = kt.var,
-                 Ii = matrix(fitted.obj$Ii, nrow = fitted.obj$nPop, ncol = 1, dimnames = list(c(1:fitted.obj$nPop), "Ipop")),
+                 Ii = matrix(fitted.obj$Ii, nrow = fitted.obj$nPop, ncol = 1, dimnames = list(c(1:fitted.obj$nPop), "Ii")),
                  formula = fitted.obj$formula,
                  qxt.real = fitted.obj$qxt.real,
                  qxt.fitted = fitted.obj$qxt.fitted.qxt,

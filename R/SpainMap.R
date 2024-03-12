@@ -11,6 +11,9 @@
 #' Spanish National Institute of Statistics (INE) (2023). Tablas de mortalidad, metodologia.
 #' Technical report, Instituto Nacional de Estadistica
 #'
+#' @importFrom tmap tm_shape tm_polygons tm_layout tm_borders
+#' @importFrom stats quantile
+#' @importFrom utils install.packages
 #'
 #' @examples
 #' ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40,
@@ -34,20 +37,9 @@ SpainMap <- function(regionvalue, main, name){
     stop("The regionvalue is not a vector of length 17.")
   }
 
-  if (!require("rgdal", character.only = TRUE)) {
-    devtools::install_github("CRAN/rgdal")
-    library(rgdal)
-  } else {library(rgdal)}
-  if (!require("tmap", character.only = TRUE)) {
-    install.packages("tmap")
-    library(tmap)
-  } else {library(tmap)}
-  if (!require("sf", character.only = TRUE)) {
-    install.packages("sf")
-    library(sf)
-  } else {library(sf)}
-  autonomias <- cbind(regions, regionvalue)
-  colnames(autonomias)[4] <- name
+  autonomias <- regions
+  autonomias$Ii <- regionvalue
+  names(autonomias)[4] <- name
 
   tm_shape(autonomias) +
     tm_polygons(col=name, palette = c("#FF0000", "#FF9D00", "#FFD800", "#FFFFAF"),

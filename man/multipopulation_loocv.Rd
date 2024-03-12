@@ -110,7 +110,7 @@ loocv_Spainmales_multi$meas_pop
 loocv_Spainmales_multi$meas_total
 
 #The cross-validation function works with one-population using the single popualtion LC model.
-loocv_Spainmales_LC <- multipopulation_cv(qxt = SpainNat$qx_male,
+loocv_Spainmales_LC <- multipopulation_loocv(qxt = SpainNat$qx_male,
                                        model = c("multiplicative"),
                                        periods =  c(1991:2020), ages = c(ages),
                                        nPop = 1, lxt = SpainNat$lx_male,
@@ -118,6 +118,11 @@ loocv_Spainmales_LC <- multipopulation_cv(qxt = SpainNat$qx_male,
                                          kt_include.cte = TRUE,
                                          measures = c("SSE"),
                                          trainset1 = 10)
+
+loocv_Spainmales_LC$meas_ages
+loocv_Spainmales_LC$meas_periodsfut
+loocv_Spainmales_LC$meas_pop
+loocv_Spainmales_LC$meas_total
 
 }
 \references{

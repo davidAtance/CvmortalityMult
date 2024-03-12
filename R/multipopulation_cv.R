@@ -74,6 +74,11 @@
 #' Should Selection of the Optimum Stochastic Mortality Model Be Based on the Original or the Logarithmic Scale of the Mortality Rate?.
 #' Risks, 11(10), 170.
 #'
+#' @importFrom gnm gnm residSVD
+#' @importFrom forecast Arima auto.arima forecast
+#' @importFrom StMoMo genWeightMat
+#' @importFrom utils install.packages
+#'
 #' @examples
 #' #We present a cross-validation method for spanish male regions
 # 'SpainRegions
@@ -82,7 +87,7 @@
 #'          45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
 #'
 #' #Let start with a simple nahead=5 CV method obtaining the SSE forecasting measure of accuracy
-#'cv_Spainmales_addit <- multipopulation_cv(qxt = SpainRegions$qx_male,
+#' cv_Spainmales_addit <- multipopulation_cv(qxt = SpainRegions$qx_male,
 #'                                          model = c("additive"),
 #'                                          periods =  c(1991:2020), ages = c(ages),
 #'                                          nPop = 18, lxt = SpainRegions$lx_male,
@@ -115,11 +120,16 @@
 #' cv_Spainmales_LC <- multipopulation_cv(qxt = SpainNat$qx_male,
 #'                                        model = c("multiplicative"),
 #'                                        periods =  c(1991:2020), ages = c(ages),
-#'                                        nPop = 18, lxt = SpainNat$lx_male,
-#'                                          nahead = 5,
-#'                                          ktmethod = c("Arimapdq"),
-#'                                          kt_include.cte = TRUE,
-#'                                          measures = c("SSE"))
+#'                                        nPop = 1, lxt = SpainNat$lx_male,
+#'                                        nahead = 5,
+#'                                        ktmethod = c("Arimapdq"),
+#'                                        kt_include.cte = TRUE,
+#'                                        measures = c("SSE"))
+#'
+#' cv_Spainmales_LC$meas_ages
+#' cv_Spainmales_LC$meas_periodsfut
+#' cv_Spainmales_LC$meas_pop
+#' cv_Spainmales_LC$meas_total
 #'
 #' @export
 multipopulation_cv <- function(qxt, model = c("additive", "multiplicative"),
@@ -129,23 +139,6 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative"),
                                kt_include.cte = TRUE,
                                measures = c("SSE", "MSE", "MAE", "MAPE", "All")){
   #Check several things before start
-  #1. Check the package are instaled
-  if (!require("gnm", character.only = TRUE)) {
-    install.packages("gnm")
-    library(gnm)
-  } else {library(gnm)}
-
-  if (!require("StMoMo", character.only = TRUE)) {
-    install.packages("StMoMo")
-    library(StMoMo)
-  } else {library(StMoMo)}
-
-  if (!require("forecast", character.only = TRUE)) {
-    install.packages("forecast")
-    library(forecast)
-  } else {library(forecast)}
-
-
   if(is.null(qxt) || is.null(periods) || is.null(ages) ||
      is.null(nPop) || is.null(model) || is.null(nahead)){
     stop("Arguments qxt, periods, ages, nPop, and model, need to be provided.")
@@ -337,7 +330,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative"),
   logit.qxt.forecast <- qxt.forecast
 
   fitting.data <- forecasting.data <- list()
-  ax <- bx <- kt <- Ipop <- kt.fut <- kt.arima <- list()
+  ax <- bx <- kt <- Ii <- kt.fut <- kt.arima <- list()
   #reps <- 1
   for(reps in 1:nrep){
     fitting.years1 <- 3 + nahead*reps
@@ -387,7 +380,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative"),
     ax[[paste0("loop-", reps, " from ", periods[1], " to ", periods2-1)]] <- fitted.obj$ax
     bx[[paste0("loop-", reps, " from ", periods[1], " to ", periods2-1)]] <- fitted.obj$bx
     kt[[paste0("loop-", reps, " from ", periods[1], " to ", periods2-1)]] <- fitted.obj$kt
-    Ipop[[paste0("loop-", reps, " from ", periods[1], " to ", periods2-1)]] <- fitted.obj$Ipop
+    Ii[[paste0("loop-", reps, " from ", periods[1], " to ", periods2-1)]] <- fitted.obj$Ii
 
     kt.fut[[paste0("loop-", reps, " from ", periods2, " to ", (periods2+test1[reps]-1))]] <- forecast.obj$kt.fut
     kt.arima[[paste0("loop-", reps, " from ", periods2, " to ", (periods2+test1[reps]-1))]] <- forecast.obj$arimakt
@@ -1106,7 +1099,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative"),
                  kt.fitted = kt,
                  kt.future = kt.fut,
                  kt.arima = kt.arima,
-                 Ii = Ipop,
+                 Ii = Ii,
                  formula = fitted.obj$formula,
                  nPop = nPop,
                  qxt.real = mat_qxt,

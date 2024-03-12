@@ -22,7 +22,11 @@ Imports: Rdpack,
         StMoMo,
         forecast,
         gnm,
-        roxygen2
+        roxygen2,
+        tmap,
+        sf, 
+        rgdal, 
+        devtools
 RdMacros: Rdpack
 Encoding: UTF-8
 Suggests: 

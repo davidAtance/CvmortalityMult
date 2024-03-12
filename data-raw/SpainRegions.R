@@ -57,18 +57,25 @@ SpainNat <- Spain_Nat
 SpainNat
 SpainRegions
 
+save(SpainNat, file = "data/SpainNat.RData")
+save(SpainRegions, file = "data/SpainRegions.RData")
+
 usethis::use_data_raw()
 regions <- autonomias
 
 save(regions, file = "regions.RData")
 regions <- structure(regions,
-                     class = "myclass1")
+                     class = "myclass2")
 
-print.myclass1 <- function(x) {
+print.myclass2 <- function(x) {
   cat("Spain Regions\n")
   cat("geometry to contruct maps")
 }
 regions
+SpainNat
+SpainRegions
+
+save(regions, file = "data/regions.RData")
 
 print.myclass(autonomias)
 autonomias

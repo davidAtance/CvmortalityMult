@@ -1,13 +1,25 @@
 #' Spain Regions Mortality data
-#' @description
+#'
 #' Data from the spanish region of Spain from the Spanish National Institute of Statistics (INE) for both genders years 1991-2020 and abridged ages from 0 to 90.
 #' This dataset contains mortality rates (qxt) from 18 different regions of Spain.
 #' Additionally, the dataset includes the number of people alive (lxt) for each age and period.
 #'
 #' @name SpainRegions
 #'
+#' @format A data frame with 10800 rows and 9 columns with the following information
+#' * `ccaa` a vector containing all the regions of Spain. Indeed, the column takes the following information: Spain, Andalucia, Aragon, Asturias, Baleares, Canarias, Cantabria, Castillayla Mancha, CastillayLeon, Cataluna, ComunidadValenciana, Extremadura, Galicia, Madrid, Murcia, Navarra, Paisasco, and LaRioja.
+#' * `years` a vector containing the periods of the dataset from 1991 to 2020.
+#' * `ages` a vector containing the abridged ages considered in the dataset, 0, <1, 1-4, 5-9, 10-14, 15-19, 20-24, 25-29, 30-34, 35-39, 40-44, 45-49, 50-54, 55-59, 60-64, 65-69, 70-74, 75-79, 80-84, 85-89, and 90-94.
+#' * `qx_male` mortality rates for the males in every region of Spain including Nation data.
+#' * `qx_female` mortality rates for the females in every region of Spain including Nation data.
+#' * `lx_male` survivor function considered for the males in every region of Spain including Nation data.
+#' * `lx_female` survivor function considered for the females in every region of Spain including Nation data.
+#' * `series` information for the series of data provided.
+#' * `label` the assigned tag to the data frame.
+#'
 #' @docType data
-#' @return a data.frame with the mortality data from Spain regions.
+#'
+#' @usage SpainRegions
 #'
 #' @references
 #' Spanish National Institute of Statistics (INE) (2023). Tablas de mortalidad, metodologia.
@@ -20,5 +32,5 @@
 #'                                                 ages = c(ages),
 #'                                                 nPop = 18,
 #'                                                 lxt = SpainRegions$lx_male)
-#' @export
-#' SpainRegions
+#'
+"SpainRegions"

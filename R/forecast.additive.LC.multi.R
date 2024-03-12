@@ -39,6 +39,9 @@
 #' Modeling and forecasting US mortality.
 #' Journal of the American Statistical Association, 87(419), 659–671.
 #'
+#' @importFrom forecast Arima auto.arima forecast
+#' @importFrom utils install.packages
+#'
 #' @examples
 #' #First, we present the data that we are going to use
 #' SpainRegions
@@ -53,14 +56,14 @@
 #'                                              lxt = SpainRegions$lx_male)
 #' #Once, we have fit the data, it is possible to see the ax, bx, kt, and Ii
 #' #provided parameters for the fitting.
-#' plot.fit.additive.LC.multi(additive_Spainmales)
+#' plot.fit.LC.multi(additive_Spainmales)
 #'
 #' #Finally, we forecast 10 years ahead the additive multi-population mortality model
 #'
 #' fut_additive_Spainmales <- forecast.additive.LC.multi(fitted.obj = additive_Spainmales, nahead = 10,
 #'                                                       ktmethod = "Arimapdq", kt_include.cte = TRUE)
 #' #As we mentioned in the details of the function, if we only provide
-#' #the data from one-population the function \code{\link{fit.additive.LC.multi}}
+#' #the data from one-population the function fit.additive.LC.multi()
 #' #will fit the Lee-Carter model for single populations.
 #' LC_Spainmales <- fit.additive.LC.multi(qxt = SpainNat$qx_male,
 #'                               periods = c(1991:2020),
@@ -76,11 +79,6 @@
 forecast.additive.LC.multi <- function(fitted.obj, nahead,
                                        ktmethod = c("Arimapdq", "arima010"),
                                        kt_include.cte = TRUE){
-  #Install library taht we need to forecast
-  if (!require("forecast", character.only = TRUE)) {
-    install.packages("forecast")
-    library(forecast)
-  } else {library(forecast)}
 
   #First check the structure of fitted.obj is equal to the previous object created using our function
   if(!identical(names(fitted.obj), c("ax", "bx", "kt", "Ii", "formula", "data.used",
@@ -141,7 +139,7 @@ forecast.additive.LC.multi <- function(fitted.obj, nahead,
                  kt.fut = matrix(kt.var$mean.kt[1:nahead], nrow= nahead, ncol=1,
                                  dimnames= list(c(max(fitted.obj$Periods+1):(max(fitted.obj$Periods)+nahead)),"kt")),
                  kt.futintervals = kt.var,
-                 Ipop = matrix(fitted.obj$Ii, nrow = fitted.obj$nPop, ncol = 1, dimnames = list(c(1:fitted.obj$nPop), "Ipop")),
+                 Ii = matrix(fitted.obj$Ii, nrow = fitted.obj$nPop, ncol = 1, dimnames = list(c(1:fitted.obj$nPop), "Ii")),
                  formula = fitted.obj$formula,
                  qxt.real = fitted.obj$qxt.real,
                  qxt.fitted = fitted.obj$qxt.fitted.qxt,

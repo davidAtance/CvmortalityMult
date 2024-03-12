@@ -4,7 +4,7 @@
 \alias{forecast.multiplicative.LC.multi}
 \title{FUNCTION TO FORECAST MULTIPLICATIVE MULTI-POPULATION MORTALITY MODEL}
 \usage{
-forecast.multiplicative.LC.multi(
+\method{forecast}{multiplicative.LC.multi}(
   fitted.obj,
   nahead,
   ktmethod = c("Arimapdq", "arima010"),
@@ -75,7 +75,7 @@ LC_Spainmales <- fit.multiplicative.LC.multi(qxt = SpainNat$qx_male,
                               periods = c(1991:2020),
                               ages = ages,
                               nPop = 1)
-plot.fit.multiplicative.LC.multi(LC_Spainmales)
+plot.fit.LC.multi(LC_Spainmales)
 #Again, we can forecast 10 years ahead using the LC mortality model for
 #one-single population.
 fut_LC_Spainmales <- forecast.multiplicative.LC.multi(fitted.obj = LC_Spainmales,
