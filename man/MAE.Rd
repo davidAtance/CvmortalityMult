@@ -30,7 +30,7 @@ These variables must have the same dimensions to be compared.
 SpainRegions
 ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
 #In this case, we fit for males providing the lxt
-multiplicative_Spainmales <- fit.multiplicative.LC.multi(qxt = SpainRegions$qx_male,
+multiplicative_Spainmales <- fit_multiplicative.LC.multi(qxt = SpainRegions$qx_male,
                               periods = c(1991:2020),
                               ages = c(ages),
                               nPop = 18,
@@ -38,6 +38,7 @@ multiplicative_Spainmales <- fit.multiplicative.LC.multi(qxt = SpainRegions$qx_m
 
 #Once, we have the fitted data, we will obtain the SSE for the first population.
 #We need to obtain wxt (weight of the mortality rates or data provided) using a
+library(StMoMo)
 wxt_1pob <- genWeightMat(ages = ages, years = c(1991:2020), clip = 0)
 MAE(qxt_re = multiplicative_Spainmales$qxt.real$pob1,
     qxt_aju = multiplicative_Spainmales$qxt.fitted$pob1,
@@ -50,8 +51,8 @@ A comparison of forecasting mortality models using resampling methods.
 Mathematics, 8(9), 1550.
 }
 \seealso{
-\code{\link{fit.additive.LC.multi}}, \code{\link{fit.multiplicative.LC.multi}},
-\code{\link{forecast.additive.LC.multi}}, \code{\link{forecast.multiplicative.LC.multi}},
+\code{\link{fit_additive.LC.multi}}, \code{\link{fit_multiplicative.LC.multi}},
+\code{\link{for_additive.LC.multi}}, \code{\link{for_multiplicative.LC.multi}},
 \code{\link{SSE}}, \code{\link{MSE}}, \code{\link{MAPE}},
 \code{\link{multipopulation_cv}}, \code{\link{multipopulation_loocv}}.
 }

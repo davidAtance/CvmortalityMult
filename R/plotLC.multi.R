@@ -4,15 +4,15 @@
 #' It should be mentioned that in case that this function is developed for fitting several populations.
 #' However, in case you only consider one population, the function will fit the one-population Lee-Carter model (Lee and Carter, 1992).
 #'
-#' @param fitted.obj object developed using function fit.additive.LC.multi() and fit.multiplicative.LC.multi()
+#' @param fitted.obj object developed using function `fit.additive.LC.multi()` and `fit.multiplicative.LC.multi()`.
 #'
 #' @return plot the different parameters for the multi-population mortality models `ax`, `bx`, `kt` and `Ii`. This function is valid for both approaches Additive and Multiplicative multi-population mortality models.
 #'
-#' @seealso \code{\link{fit.additive.LC.multi}}, \code{\link{fit.multiplicative.LC.multi}},
-#' \code{\link{forecast.additive.LC.multi}}, \code{\link{forecast.multiplicative.LC.multi}},
+#' @seealso \code{\link{fit_additive.LC.multi}}, \code{\link{fit_multiplicative.LC.multi}},
+#' \code{\link{for_additive.LC.multi}}, \code{\link{for_multiplicative.LC.multi}},
 #' \code{\link{multipopulation_cv}}, \code{\link{multipopulation_loocv}}
 #'
-#' @references'
+#' @references
 #' Debon, A., Montes, F., & Martiez-Ruiz, F. (2011).
 #' Statistical methods to compare mortality for a group with non-divergent populations: an application to Spanish regions.
 #' European Actuarial Journal, 1, 291-308.
@@ -33,7 +33,7 @@
 #' SpainRegions
 #' ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
 #' #In this case, we fit for males providing the lxt
-#' multiplicative_Spainmales <- fit.multiplicative.LC.multi(qxt = SpainRegions$qx_male,
+#' multiplicative_Spainmales <- fit_multiplicative.LC.multi(qxt = SpainRegions$qx_male,
 #'                               periods = c(1991:2020),
 #'                               ages = c(ages),
 #'                               nPop = 18,
@@ -41,27 +41,27 @@
 #'
 #' #Once, we have fit the data, it is possible to see the ax, bx, kt, and Ii
 #' #provided parameters for the fitting.
-#' plot.fit.LC.multi(multiplicative_Spainmales)
+#' plotLC.multi(multiplicative_Spainmales)
 #'
 #' #Equal to the previous step but in this case for females and without
 #' #providing lxt.
-#' additive_Spainfemales <- fit.additive.LC.multi(qxt = SpainRegions$qx_female,
+#' additive_Spainfemales <- fit_additive.LC.multi(qxt = SpainRegions$qx_female,
 #'                               periods = c(1991:2020),
 #'                               ages = c(ages),
 #'                               nPop = 18)
 #'
 #' #Once, we have fit the data, it is possible to see the ax, bx, kt, Ii
 #' #provided parameters for the fitting.
-#' plot.fit.LC.multi(additive_Spainmales)
+#' plotLC.multi(additive_Spainmales)
 #'
-#' LC_Spainmales <- fit.additive.LC.multi(qxt = SpainNat$qx_male,
+#' LC_Spainmales <- fit_additive.LC.multi(qxt = SpainNat$qx_male,
 #'                               periods = c(1991:2020),
 #'                               ages = ages,
 #'                               nPop = 1)
-#' plot.fit.LC.multi(LC_Spainmales)
+#' plotLC.multi(LC_Spainmales)
 #'
 #' @export
-plot.fit.LC.multi <- function(fitted.obj){
+plotLC.multi <- function(fitted.obj){
   pers <- fitted.obj$Periods
   ages <- fitted.obj$Ages
   pops <- fitted.obj$nPop

@@ -13,8 +13,8 @@
 #'
 #' @return A value of MAPE for the data provided.
 #'
-#' @seealso \code{\link{fit.additive.LC.multi}}, \code{\link{fit.multiplicative.LC.multi}},
-#' \code{\link{forecast.additive.LC.multi}}, \code{\link{forecast.multiplicative.LC.multi}},
+#' @seealso \code{\link{fit_additive.LC.multi}}, \code{\link{fit_multiplicative.LC.multi}},
+#' \code{\link{for_additive.LC.multi}}, \code{\link{for_multiplicative.LC.multi}},
 #' \code{\link{MAE}}, \code{\link{MSE}}, \code{\link{SSE}},
 #' \code{\link{multipopulation_cv}},\code{\link{multipopulation_loocv}}.
 #'
@@ -24,13 +24,15 @@
 #' A comparison of forecasting mortality models using resampling methods.
 #' Mathematics, 8(9), 1550.
 #'
+#' @importFrom StMoMo genWeightMat
+#'
 #' @examples
 #' #To show how the function works, we need to provide fitted or forecasted data and the real data.
 #' #In this case, we employ the following data of the library:
 #' SpainRegions
 #' ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
 #' #In this case, we fit for males providing the lxt
-#' multiplicative_Spainmales <- fit.multiplicative.LC.multi(qxt = SpainRegions$qx_male,
+#' multiplicative_Spainmales <- fit_multiplicative.LC.multi(qxt = SpainRegions$qx_male,
 #'                               periods = c(1991:2020),
 #'                               ages = c(ages),
 #'                               nPop = 18,

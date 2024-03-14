@@ -21,7 +21,7 @@
 #'
 #' @examples
 #' regions
-#' multiplicative_Spainmales <- fit.multiplicative.LC.multi(qxt = SpainRegions$qx_male,
+#' multiplicative_Spainmales <- fit_multiplicative.LC.multi(qxt = SpainRegions$qx_male,
 #'                                                 periods = c(1991:2020),
 #'                                                 ages = c(ages),
 #'                                                 nPop = 18,

@@ -159,7 +159,7 @@ Should Selection of the Optimum Stochastic Mortality Model Be Based on the Origi
 Risks, 11(10), 170.
 }
 \seealso{
-\code{\link{multipopulation_cv}}, \code{\link{fit.additive.LC.multi}}, \code{\link{fit.multiplicative.LC.multi}},
-\code{\link{forecast.additive.LC.multi}}, \code{\link{forecast.multiplicative.LC.multi}},
-\code{\link{plot.fit.LC.multi}}, \code{\link{SSE}}, \code{\link{MAE}}, \code{\link{MAPE}}.
+\code{\link{multipopulation_cv}}, \code{\link{fit_additive.LC.multi}}, \code{\link{fit_multiplicative.LC.multi}},
+\code{\link{for_additive.LC.multi}}, \code{\link{for_multiplicative.LC.multi}},
+\code{\link{plotfit_LC.multi}}, \code{\link{SSE}}, \code{\link{MAE}}, \code{\link{MAPE}}.
 }

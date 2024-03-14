@@ -28,7 +28,7 @@ Additionally, the dataset includes the number of people alive (lxt) for each age
 }
 \examples{
 SpainNat
-LC_Spainmales <- fit.additive.LC.multi(qxt = SpainNat$qx_male,
+LC_Spainmales <- fit_additive.LC.multi(qxt = SpainNat$qx_male,
                                        periods = c(1991:2020),
                                        ages = ages,
                                        nPop = 1)

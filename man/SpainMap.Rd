@@ -23,7 +23,7 @@ This data contains information to plot the percentiles plot in Spanish regions. 
 ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40,
 45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
 #We fit the additive multi-population mortality model for spain males
-additive_Spainmales <- fit.additive.LC.multi(qxt = SpainRegions$qx_male,
+additive_Spainmales <- fit_additive.LC.multi(qxt = SpainRegions$qx_male,
                               periods = c(1991:2020),
                               ages = c(ages),
                               nPop = 18,

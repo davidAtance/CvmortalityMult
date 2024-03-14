@@ -1,14 +1,14 @@
-#' FUNCTION TO FORECAST ADDITIVE MULTI-POPULATION MORTALITY MODEL
-#' @description R function for forecasting additive multi-population mortality model developed by: Debon et al (2011).
-#' This model follows the structure of the well-known Lee-Carter model (Lee and Carter, 1992) but including an additive parameter to capture the behavior of each population considered.
+#' FUNCTION TO FORECAST MULTIPLICATIVE MULTI-POPULATION MORTALITY MODEL
+#' @description R function for forecasting multiplicative multi-population mortality model developed by: Russolillo et al (2011).
+#' This model follows the structure of the well-known Lee-Carter model (Lee and Carter, 1992) but including a multiplicative parameter to capture the behavior of each population considered.
 #' This parameter seeks to capture the individual behavior of every population considered.
 #' It should be mentioned that in case that this function is developed for forecasting several populations.
 #' However, in case you only consider one population, the function will forecast the Lee-Carter model for one population.
 #'
-#' @param fitted.obj object developed using function `fit.additive.LC.multi()`.
-#' @param nahead number of periods ahead to forecast.
-#' @param ktmethod method used to forecast the value of `kt` Arima(p,d,q) or ARIMA(0,1,0); c("`Arimapdq`", "`arima010`").
-#' @param kt_include.cte if you want that `kt` include constant in the arima process.
+#' @param fitted.obj object developed using function `fit_mutliplicative.LC.multi()`
+#' @param nahead number of periods ahead to forecast
+#' @param ktmethod method used to forecast the value of kt Arima(p,d,q) or ARIMA(0,1,0); c("`Arimapdq`", "`arima010`").
+#' @param kt_include.cte if you want that kt include constant in the arima process.
 #'
 #' @return A list with different components of the forecasting process:
 #' * `ax` parameter that captures the average shape of the mortality curve in all considered populations.
@@ -17,7 +17,7 @@
 #' * `kt.fitted` obtained values for the tendency behaviour captured by `kt`.
 #' * `kt.fut` projected values of `kt` for the nahead periods ahead.
 #' * `kt.futintervals` arima selected and future values of `kt` with the different intervals, lower and upper, 80\% and 90\%.
-#' * `Ii` paramater that captures the differences in the pattern of mortality in any region i with respect to Region 1.
+#' * `Ii` gives an idea of the differences in the pattern of mortality in any region i with respect to Region 1.
 #' * `formula` additive multi-population mortality formula used to fit the mortality rates.
 #' * `qxt.real` real mortality rates.
 #' * `qxt.fitted` fitted mortality rates using the additive multi-population mortality model.
@@ -26,18 +26,18 @@
 #' * `logit.qxt.future` future mortality rates in logit way estimated with the additive multi-population mortality model.
 #' * `nPop` provided number of populations to fit the periods.
 #'
-#' @seealso \code{\link{fit.additive.LC.multi}}, \code{\link{fit.multiplicative.LC.multi}},
-#' \code{\link{forecast.multiplicative.LC.multi}}, \code{\link{multipopulation_cv}},
-#'
+#' @seealso \code{\link{fit_additive.LC.multi}}, \code{\link{fit_multiplicative.LC.multi}},
+#' \code{\link{for_additive.LC.multi}}, \code{\link{multipopulation_cv}},
 #'
 #' @references
-#' Debon, A., Montes, F., & Martiez-Ruiz, F. (2011).
-#' Statistical methods to compare mortality for a group with non-divergent populations: an application to Spanish regions.
-#' European Actuarial Journal, 1, 291-308.
 #'
 #' Lee, R.D. & Carter, L.R. (1992).
 #' Modeling and forecasting US mortality.
 #' Journal of the American Statistical Association, 87(419), 659–671.
+#'
+#' Russolillo, M., Giordano, G., & Haberman, S. (2011).
+#' Extending the Lee–Carter model: a three-way decomposition.
+#' Scandinavian Actuarial Journal, 2011(2), 96-117.
 #'
 #' @importFrom forecast Arima auto.arima forecast
 #' @importFrom utils install.packages
@@ -48,35 +48,37 @@
 #' ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
 #'
 #' #Before forecast the future value of the mortality rates for different populations
-#' #we need the object the fitted values of the additive multi-population mortality model.
-#' additive_Spainmales <- fit.additive.LC.multi(qxt = SpainRegions$qx_male,
+#' #we need the object the fitted values of the multiplicative multi-population mortality model.
+#' multiplicative_Spainmales <- fit_multiplicative.LC.multi(qxt = SpainRegions$qx_male,
 #'                                              periods = c(1991:2020),
 #'                                              ages = c(ages),
 #'                                              nPop = 18,
 #'                                              lxt = SpainRegions$lx_male)
 #' #Once, we have fit the data, it is possible to see the ax, bx, kt, and Ii
 #' #provided parameters for the fitting.
-#' plot.fit.LC.multi(additive_Spainmales)
+#' plotLC.multi(multiplicative_Spainmales)
 #'
-#' #Finally, we forecast 10 years ahead the additive multi-population mortality model
-#'
-#' fut_additive_Spainmales <- forecast.additive.LC.multi(fitted.obj = additive_Spainmales, nahead = 10,
-#'                                                       ktmethod = "Arimapdq", kt_include.cte = TRUE)
-#' #As we mentioned in the details of the function, if we only provide
-#' #the data from one-population the function fit.additive.LC.multi()
+#' #Finally, we forecast 10 years ahead the multiplicative multi-population mortality model
+#' fut_multiplicative_Spainmales <- for_multiplicative.LC.multi(
+#'                   fitted.obj = additive_Spainmales,
+#'                   nahead = 10,
+#'                   ktmethod = "Arimapdq",
+#'                   kt_include.cte = TRUE)
+#' #As we mentioned in the details of the function, if we only provide the data
+#' #from one-population the function fit_multiplicative.LC.multi()
 #' #will fit the Lee-Carter model for single populations.
-#' LC_Spainmales <- fit.additive.LC.multi(qxt = SpainNat$qx_male,
+#' LC_Spainmales <- fit_multiplicative.LC.multi(qxt = SpainNat$qx_male,
 #'                               periods = c(1991:2020),
 #'                               ages = ages,
 #'                               nPop = 1)
-#' plot.fit.LC.multi(LC_Spainmales)
+#' plotLC.multi(LC_Spainmales)
 #' #Again, we can forecast 10 years ahead using the LC mortality model for
 #' #one-single population.
-#' fut_LC_Spainmales <- forecast.additive.LC.multi(fitted.obj = LC_Spainmales,
+#' fut_LC_Spainmales <- for_multiplicative.LC.multi(fitted.obj = LC_Spainmales,
 #'         nahead = 10,ktmethod = "Arimapdq", kt_include.cte = TRUE)
 #'
 #' @export
-forecast.additive.LC.multi <- function(fitted.obj, nahead,
+for_multiplicative.LC.multi <- function(fitted.obj, nahead,
                                        ktmethod = c("Arimapdq", "arima010"),
                                        kt_include.cte = TRUE){
 
@@ -87,7 +89,7 @@ forecast.additive.LC.multi <- function(fitted.obj, nahead,
     stop("The fitted.obj does not have the structure of R-library")
   }
   if(!is.list(fitted.obj)){
-    stop("The fitted.obj is not a list. Use 'fit.additive.LC.multi' function first")
+    stop("The fitted.obj is not a list. Use 'fit_mutiplicative.LC.multi' function first")
   }
 
   if (!is.numeric(nahead)) {
@@ -124,7 +126,7 @@ forecast.additive.LC.multi <- function(fitted.obj, nahead,
   #it <- 1
   for(it in 1:fitted.obj$nPop){
     lee.fut.logit[[paste0("pob", it)]] <- matrix(rep(fitted.obj$ax, nahead), nrow= nages, ncol = nahead)+
-      (matrix(fitted.obj$bx, nrow=nages, ncol=1)%*%matrix(kt.var$mean.kt[1:nahead], nrow=1, ncol=nahead)) +
+      (matrix(fitted.obj$bx, nrow=nages, ncol=1)%*%matrix(kt.var$mean.kt[1:nahead], nrow=1, ncol=nahead)) *
       matrix(rep(fitted.obj$Ii[it], nages*nahead), nrow= nages, ncol = nahead)
 
     lee.fut.qxt[[paste0("pob", it)]] <- inv.logit(lee.fut.logit[[it]])
@@ -138,12 +140,12 @@ forecast.additive.LC.multi <- function(fitted.obj, nahead,
                  kt.fitted = matrix(fitted.obj$kt, nrow = length(fitted.obj$Periods), ncol = 1, dimnames = list(fitted.obj$Periods, "kt")),
                  kt.fut = matrix(kt.var$mean.kt[1:nahead], nrow= nahead, ncol=1,
                                  dimnames= list(c(max(fitted.obj$Periods+1):(max(fitted.obj$Periods)+nahead)),"kt")),
-                 kt.futintervals = kt.var,
+                 kt.fut.values = kt.var,
                  Ii = matrix(fitted.obj$Ii, nrow = fitted.obj$nPop, ncol = 1, dimnames = list(c(1:fitted.obj$nPop), "Ii")),
                  formula = fitted.obj$formula,
                  qxt.real = fitted.obj$qxt.real,
                  qxt.fitted = fitted.obj$qxt.fitted.qxt,
-                 logit.qxt.fitted = fitted.obj$logit.qxt.fitted,
+                 logit.qxt.fitted = fitted.obj$lee.logit,
                  qxt.future = lee.fut.qxt,
                  logit.qxt.future = lee.fut.logit,
                  nPop = fitted.obj$nPop)

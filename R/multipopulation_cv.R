@@ -7,7 +7,7 @@
 #' This procedure is repeated several times trying to check the forecasting accuracy in different ways.
 #' With this function, the user can provide its own mortality rates for different populations. The function will split the database chronologically (Bergmeir and Benitez, 2012) based on the nahead which consist on the length of the training set.
 #' We have include the following Figure 1 to understand how the R function works.
-#' {\figure{CV_technique.jpg}{options: width="100\%" alt="Figure: mai.png"}}
+#' {\figure{CV_technique.png}{options: width="100\%" alt="Figure: mai.png"}}
 #' It should be mentioned that this function is developed for cross-validation the forecasting accuracy of several populations.
 #' However, in case you only consider one population, the function will forecast the Lee-Carter model for one population.
 #' To test the forecasting accuracy of the selected model, the function provides five different measures: SSE, MSE, MAE, MAPE or All. Depending on how you want to check the forecasting accuracy of the model you could select one or other.
@@ -41,9 +41,9 @@
 #' * `meas_pop` measure of forecasting accuracy through the populations considered in the study.
 #' * `meas_total` a global measure of forecasting accuracy through the ages, periods and populations of the study.
 #'
-#' @seealso \code{\link{multipopulation_loocv}}, \code{\link{fit.additive.LC.multi}}, \code{\link{fit.multiplicative.LC.multi}},
-#' \code{\link{forecast.additive.LC.multi}}, \code{\link{forecast.multiplicative.LC.multi}},
-#' \code{\link{plot.fit.LC.multi}}, \code{\link{SSE}}, \code{\link{MAE}}, \code{\link{MAPE}}.
+#' @seealso \code{\link{multipopulation_loocv}}, \code{\link{fit_additive.LC.multi}}, \code{\link{fit_multiplicative.LC.multi}},
+#' \code{\link{for_additiveLC.multi}}, \code{\link{for_multiplicative.LC.multi}},
+#' \code{\link{plotfit_LC.multi}}, \code{\link{SSE}}, \code{\link{MAE}}, \code{\link{MAPE}}.
 #'
 #' @references
 #' Atance, D., Debon, A., and Navarro, E. (2020).
@@ -83,7 +83,7 @@
 #' #We present a cross-validation method for spanish male regions
 # 'SpainRegions
 #'
-#'ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40,
+#' ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40,
 #'          45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
 #'
 #' #Let start with a simple nahead=5 CV method obtaining the SSE forecasting measure of accuracy
@@ -339,21 +339,21 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative"),
     df_qxtdata2 <- df_qxtdata[df_qxtdata$period < periods2,]
 
     if(model == "additive"){
-      fitted.obj <- fit.additive.LC.multi(qxt = df_qxtdata2$qxt,
+      fitted.obj <- fit_additive.LC.multi(qxt = df_qxtdata2$qxt,
                                           periods = c(min(periods):(periods2-1)),
                                           ages = ages,
                                           nPop = nPop, lxt = df_qxtdata2$lxt)
-      forecast.obj <- forecast.additive.LC.multi(fitted.obj,
+      forecast.obj <- for_additive.LC.multi(fitted.obj,
                                                  nahead = test1[reps],
                                                  ktmethod = ktmethod,
                                                  kt_include.cte = kt_include.cte)
 
     } else if(model == "multiplicative"){
-      fitted.obj <- fit.multiplicative.LC.multi(qxt = df_qxtdata2$qxt,
+      fitted.obj <- fit_multiplicative.LC.multi(qxt = df_qxtdata2$qxt,
                                                 periods = c(min(periods):(periods2-1)),
                                                 ages = ages,
                                                 nPop = nPop, lxt = df_qxtdata2$lxt)
-      forecast.obj <- forecast.multiplicative.LC.multi(fitted.obj,
+      forecast.obj <- for_multiplicative.LC.multi(fitted.obj,
                                                  nahead = test1[reps],
                                                  ktmethod = ktmethod,
                                                  kt_include.cte = kt_include.cte)

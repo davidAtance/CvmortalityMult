@@ -41,9 +41,9 @@
 #' * `meas_pop` measure of forecasting accuracy through the populations considered in the study.
 #' * `meas_total` a global measure of forecasting accuracy through the ages, periods and populations of the study.
 #'
-#' @seealso \code{\link{multipopulation_cv}}, \code{\link{fit.additive.LC.multi}}, \code{\link{fit.multiplicative.LC.multi}},
-#' \code{\link{forecast.additive.LC.multi}}, \code{\link{forecast.multiplicative.LC.multi}},
-#' \code{\link{plot.fit.LC.multi}}, \code{\link{SSE}}, \code{\link{MAE}}, \code{\link{MAPE}}.
+#' @seealso \code{\link{multipopulation_cv}}, \code{\link{fit_additive.LC.multi}}, \code{\link{fit_multiplicative.LC.multi}},
+#' \code{\link{for_additive.LC.multi}}, \code{\link{for_multiplicative.LC.multi}},
+#' \code{\link{plotfit_LC.multi}}, \code{\link{SSE}}, \code{\link{MAE}}, \code{\link{MAPE}}.
 #'
 #' @references
 #' Atance, D., Debon, A., and Navarro, E. (2020).
@@ -88,7 +88,7 @@
 #' #The idea is to get the same results as in the short paper published in Risk Congress 2023
 # 'SpainRegions
 #'
-#'ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40,
+#' ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40,
 #'          45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
 #'
 #' #Let start with a simple trainset1 = 10 CV method obtaining the SSE forecasting measure of accuracy
@@ -350,21 +350,21 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
     df_qxtdata2 <- df_qxtdata[df_qxtdata$period < periods2,]
 
     if(model == "additive"){
-      fitted.obj <- fit.additive.LC.multi(qxt = df_qxtdata2$qxt,
+      fitted.obj <- fit_additive.LC.multi(qxt = df_qxtdata2$qxt,
                                           periods = c(min(periods):(periods2-1)),
                                           ages = ages,
                                           nPop = nPop, lxt = df_qxtdata2$lxt)
-      forecast.obj <- forecast.additive.LC.multi(fitted.obj,
+      forecast.obj <- for_additive.LC.multi(fitted.obj,
                                                  nahead = test1[reps],
                                                  ktmethod = ktmethod,
                                                  kt_include.cte = kt_include.cte)
 
     } else if(model == "multiplicative"){
-      fitted.obj <- fit.multiplicative.LC.multi(qxt = df_qxtdata2$qxt,
+      fitted.obj <- fit_multiplicative.LC.multi(qxt = df_qxtdata2$qxt,
                                                 periods = c(min(periods):(periods2-1)),
                                                 ages = ages,
                                                 nPop = nPop, lxt = df_qxtdata2$lxt)
-      forecast.obj <- forecast.multiplicative.LC.multi(fitted.obj,
+      forecast.obj <- for_multiplicative.LC.multi(fitted.obj,
                                                  nahead = test1[reps],
                                                  ktmethod = ktmethod,
                                                  kt_include.cte = kt_include.cte)
