@@ -16,7 +16,7 @@
 #' @param qxt mortality rates used to fit the multi-population mortality models. This rates can be provided in matrix or in data.frame.
 #' @param model choose the multi-population mortality model to fit the mortality rates c("`additive`", "`multiplicative`")
 #' @param periods periods considered in the fitting in a vector way c(`minyear`:`maxyear`).
-#' @param ages vector with the ages considered in the fitting. If the mortality rates provide from an abbridged life tables, it is necessary to provide a vector with the ages, see the example.
+#' @param ages vector with the ages considered in the fitting. If the mortality rates provide from an abridged life tables, it is necessary to provide a vector with the ages, see the example.
 #' @param nPop number of population considered for fitting.
 #' @param lxt survivor function considered for every population, not necessary to provide.
 #' @param nahead is a vector specifying the number of periods to block in the blocked CV. The function operates by using the sum of the periods in nahead and three (the minimum number of years required to construct a time series), as the initial training set. This ensures that the first train set has sufficient observations to forecast the initial test set, which will be of length `nahead`.
@@ -27,10 +27,10 @@
 #' @return A list with different components of the cross-validation process:
 #' * `ax` parameter that captures the average shape of the mortality curve in all considered populations.
 #' * `bx` parameter that explains the age effect x with respect to the general trend `kt` in the mortality rates of all considered populations.
-#' * `kt.fitted` obtained values for the tendency behaviour captured by `kt` .
+#' * `kt.fitted` obtained values for the tendency behavior captured by `kt` .
 #' * `kt.future` future values of `kt` for every iteration in the cross-validation.
 #' * `kt.arima`  the arima selected for each `kt` time series.
-#' * `Ii` paramater that captures the differences in the pattern of mortality in any region i with respect to Region 1.
+#' * `Ii` parameter that captures the differences in the pattern of mortality in any region i with respect to Region 1.
 #' * `formula` multi-population mortality formula used to fit the mortality rates.
 #' * `nPop` provided number of populations to fit the periods.
 #' * `qxt.real` real mortality rates.
@@ -42,8 +42,8 @@
 #' * `meas_total` a global measure of forecasting accuracy through the ages, periods and populations of the study.
 #'
 #' @seealso \code{\link{multipopulation_loocv}}, \code{\link{fit_additive.LC.multi}}, \code{\link{fit_multiplicative.LC.multi}},
-#' \code{\link{for_additiveLC.multi}}, \code{\link{for_multiplicative.LC.multi}},
-#' \code{\link{plotfit_LC.multi}}, \code{\link{SSE}}, \code{\link{MAE}}, \code{\link{MAPE}}.
+#' \code{\link{for_additive.LC.multi}}, \code{\link{for_multiplicative.LC.multi}},
+#' \code{\link{plotLC.multi}}, \code{\link{SSE}}, \code{\link{MAE}}, \code{\link{MAPE}}.
 #'
 #' @references
 #' Atance, D., Debon, A., and Navarro, E. (2020).
@@ -58,7 +58,7 @@
 #' Two multi-population mortality models: A comparison of the forecasting accuracy with resampling methods.
 #' in Contributions to Risk Analysis: Risk 2022. Fundacion Mapfre
 #'
-#' Debon, A., Montes, F., & Martiez-Ruiz, F. (2011).
+#' Debon, A., Montes, F., & Martinez-Ruiz, F. (2011).
 #' Statistical methods to compare mortality for a group with non-divergent populations: an application to Spanish regions.
 #' European Actuarial Journal, 1, 291-308.
 #'

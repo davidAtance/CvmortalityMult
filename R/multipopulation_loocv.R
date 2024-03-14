@@ -16,21 +16,21 @@
 #' @param qxt mortality rates used to fit the multi-population mortality models. This rates can be provided in matrix or in data.frame.
 #' @param model choose the multi-population mortality model to fit the mortality rates c("`additive`", "`multiplicative`")
 #' @param periods periods considered in the fitting in a vector way c(minyear:maxyear).
-#' @param ages vector with the ages considered in the fitting. If the mortality rates provide from an abbridged life tables, it is necessary to provide a vector with the ages, see the example.
+#' @param ages vector with the ages considered in the fitting. If the mortality rates provide from an abridged life tables, it is necessary to provide a vector with the ages, see the example.
 #' @param nPop number of population considered for fitting.
 #' @param lxt survivor function considered for every population, not necessary to provide.
-#' @param ktmethod mmethod used to forecast the value of `kt` Arima(p,d,q) or ARIMA(0,1,0); c("`Arimapdq`", "`arima010`").
+#' @param ktmethod method used to forecast the value of `kt` Arima(p,d,q) or ARIMA(0,1,0); c("`Arimapdq`", "`arima010`").
 #' @param kt_include.cte if you want that `kt` include constant in the arima process.
 #' @param measures choose the non-penalized measure of forecasting accuracy that you want to use; c("`SSE`", "`MSE`", "`MAE`", "`MAPE`", "`All`"). Check the function
-#' @param trainset1 vector with the periods for the first trainning set.  This value must be greater than 2 to meet the minimum time series size (Hyndman and Khandakar, 2008).
+#' @param trainset1 vector with the periods for the first training set.  This value must be greater than 2 to meet the minimum time series size (Hyndman and Khandakar, 2008).
 #'
 #' @return A list with different components of the cross-validation process:
 #' * `ax` parameter that captures the average shape of the mortality curve in all considered populations.
 #' * `bx` parameter that explains the age effect x with respect to the general trend `kt` in the mortality rates of all considered populations.
-#' * `kt.fitted` obtained values for the tendency behaviour captured by `kt`.
+#' * `kt.fitted` obtained values for the tendency behavior captured by `kt`.
 #' * `kt.future` future values of `kt` for every iteration in the cross-validation.
 #' * `kt.arima`the arima selected for each `kt` time series.
-#' * `Ii` paramater that captures the differences in the pattern of mortality in any region i with respect to Region 1.
+#' * `Ii` parameter that captures the differences in the pattern of mortality in any region i with respect to Region 1.
 #' * `formula` multi-population mortality formula used to fit the mortality rates.
 #' * `nPop` provided number of populations to fit the periods.
 #' * `qxt.real` real mortality rates.
@@ -43,7 +43,7 @@
 #'
 #' @seealso \code{\link{multipopulation_cv}}, \code{\link{fit_additive.LC.multi}}, \code{\link{fit_multiplicative.LC.multi}},
 #' \code{\link{for_additive.LC.multi}}, \code{\link{for_multiplicative.LC.multi}},
-#' \code{\link{plotfit_LC.multi}}, \code{\link{SSE}}, \code{\link{MAE}}, \code{\link{MAPE}}.
+#' \code{\link{plotLC.multi}}, \code{\link{SSE}}, \code{\link{MAE}}, \code{\link{MAPE}}.
 #'
 #' @references
 #' Atance, D., Debon, A., and Navarro, E. (2020).
@@ -58,7 +58,7 @@
 #' Two multi-population mortality models: A comparison of the forecasting accuracy with resampling methods.
 #' in Contributions to Risk Analysis: Risk 2022. Fundacion Mapfre
 #'
-#' Debon, A., Montes, F., & Martiez-Ruiz, F. (2011).
+#' Debon, A., Montes, F., & Martinez-Ruiz, F. (2011).
 #' Statistical methods to compare mortality for a group with non-divergent populations: an application to Spanish regions.
 #' European Actuarial Journal, 1, 291-308.
 #'

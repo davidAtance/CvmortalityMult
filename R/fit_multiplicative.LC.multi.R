@@ -1,6 +1,6 @@
 #' FUNCTION TO FIT MULTIPLICATIVE MULTI-POPULATION MORTALITY MODEL
 #' @description
-#' R function for fitting multiplicative multi-population mortality model developed by: Russolillo et al (2011).
+#' R function for fitting multiplicative multi-population mortality model developed by: Russolillo et al. (2011).
 #' This model follows the structure of the well-known Lee-Carter model (Lee and Carter, 1992) but including a multiplicative parameter to capture the behavior of each population considered.
 #' This parameter seeks to capture the individual behavior of every population considered.
 #' It should be mentioned that in case that this function is developed for fitting several populations.
@@ -8,9 +8,9 @@
 #'
 #' @param qxt mortality rates used to fit the additive multipopulation mortality model. This rates can be provided in matrix or in data.frame.
 #' @param periods periods considered in the fitting in a vector way c(minyear:maxyear).
-#' @param ages vector with the ages considered in the fitting. If the mortality rates provide from an abbridged life tables, it is necessary to provide a vector with the ages, see the example.
+#' @param ages vector with the ages considered in the fitting. If the mortality rates provide from an abridged life tables, it is required to provide a vector with the ages, see the example.
 #' @param nPop number of population considered for fitting.
-#' @param lxt survivor function considered for every population, not necesarry to provide.
+#' @param lxt survivor function considered for every population, not necessary to provide.
 #'
 #' @return A list with different components of the fitting process:
 #' * `ax` parameter that captures the average shape of the mortality curve in all considered populations.
@@ -40,7 +40,7 @@
 #' Extending the Lee–Carter model: a three-way decomposition.
 #' Scandinavian Actuarial Journal, 2011(2), 96-117.
 #'
-#' @importFrom gnm gnm residSVD
+#' @importFrom gnm gnm residSVD Mult
 #' @importFrom utils install.packages
 #' @importFrom stats coef
 #'
@@ -70,7 +70,7 @@
 #' plotLC.multi(multiplicative_Spainfemales)
 #'
 #' #As we mentioned in the details of the function, if we only provide the data
-#' #from one-population the function fit.multiplicative.LC.multi()
+#' #from one-population the function fit_multiplicative.LC.multi()
 #' #will fit the Lee-Carter model for single populations.
 #' LC_Spainmales <- fit_multiplicative.LC.multi(qxt = SpainNat$qx_male,
 #'                               periods = c(1991:2020),
@@ -81,6 +81,7 @@
 #' @export
 fit_multiplicative.LC.multi <- function(qxt, periods, ages, nPop, lxt = NULL){
   #Check several things before start
+  library(gnm)
 
   if(is.null(qxt) || is.null(periods) || is.null(ages) || is.null(nPop)){
     stop("Arguments qxt, periods, ages, and nPop, need to be provided.")

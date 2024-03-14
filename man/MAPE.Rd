@@ -21,7 +21,7 @@ R function to estimate the mean absolute percentage error (MAPE) for the mortali
 \deqn{\frac{1}{n}\sum_{x} \sum_{t}\left| \frac{\left(qxt1 - qxt2\right) }{qxt2} \right|}
 where qxt1 is the real mortality rates \code{qxt_re}, and qxt2 is the adjusted mortality rates \code{qxt_aju}.
 You only have to provide the real value and the fitted or forecasted value for your mortality rates.
-However, the function is preparated to provide the real value and the fitted or forecasted value of your independent variable.
+However, the function is constructed to provide the real value and the fitted or forecasted value of your independent variable.
 These variables must have the same dimensions to be compared.
 }
 \examples{
@@ -38,6 +38,7 @@ multiplicative_Spainmales <- fit_multiplicative.LC.multi(qxt = SpainRegions$qx_m
 
 #Once, we have the fitted data, we will obtain the SSE for the first population.
 #We need to obtain wxt (weight of the mortality rates or data provided) using a
+library(StMoMo)
 wxt_1pob <- genWeightMat(ages = ages, years = c(1991:2020), clip = 0)
 MAPE(qxt_re = multiplicative_Spainmales$qxt.real$pob1,
      qxt_aju = multiplicative_Spainmales$qxt.fitted$pob1,

@@ -11,11 +11,11 @@ fit_multiplicative.LC.multi(qxt, periods, ages, nPop, lxt = NULL)
 
 \item{periods}{periods considered in the fitting in a vector way c(minyear:maxyear).}
 
-\item{ages}{vector with the ages considered in the fitting. If the mortality rates provide from an abbridged life tables, it is necessary to provide a vector with the ages, see the example.}
+\item{ages}{vector with the ages considered in the fitting. If the mortality rates provide from an abridged life tables, it is required to provide a vector with the ages, see the example.}
 
 \item{nPop}{number of population considered for fitting.}
 
-\item{lxt}{survivor function considered for every population, not necesarry to provide.}
+\item{lxt}{survivor function considered for every population, not necessary to provide.}
 }
 \value{
 A list with different components of the fitting process:
@@ -35,7 +35,7 @@ A list with different components of the fitting process:
 }
 }
 \description{
-R function for fitting multiplicative multi-population mortality model developed by: Russolillo et al (2011).
+R function for fitting multiplicative multi-population mortality model developed by: Russolillo et al. (2011).
 This model follows the structure of the well-known Lee-Carter model (Lee and Carter, 1992) but including a multiplicative parameter to capture the behavior of each population considered.
 This parameter seeks to capture the individual behavior of every population considered.
 It should be mentioned that in case that this function is developed for fitting several populations.
@@ -67,7 +67,7 @@ multiplicative_Spainfemales <- fit_multiplicative.LC.multi(qxt = SpainRegions$qx
 plotLC.multi(multiplicative_Spainfemales)
 
 #As we mentioned in the details of the function, if we only provide the data
-#from one-population the function fit.multiplicative.LC.multi()
+#from one-population the function fit_multiplicative.LC.multi()
 #will fit the Lee-Carter model for single populations.
 LC_Spainmales <- fit_multiplicative.LC.multi(qxt = SpainNat$qx_male,
                               periods = c(1991:2020),

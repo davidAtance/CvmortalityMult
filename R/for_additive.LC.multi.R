@@ -14,10 +14,10 @@
 #' * `ax` parameter that captures the average shape of the mortality curve in all considered populations.
 #' * `bx` parameter that explains the age effect x with respect to the general trend `kt` in the mortality rates of all considered populations.
 #' * `arimakt` the arima selected for the `kt` time series.
-#' * `kt.fitted` obtained values for the tendency behaviour captured by `kt`.
+#' * `kt.fitted` obtained values for the tendency behavior captured by `kt`.
 #' * `kt.fut` projected values of `kt` for the nahead periods ahead.
 #' * `kt.futintervals` arima selected and future values of `kt` with the different intervals, lower and upper, 80\% and 90\%.
-#' * `Ii` paramater that captures the differences in the pattern of mortality in any region i with respect to Region 1.
+#' * `Ii` parameter that captures the differences in the pattern of mortality in any region i with respect to Region 1.
 #' * `formula` additive multi-population mortality formula used to fit the mortality rates.
 #' * `qxt.real` real mortality rates.
 #' * `qxt.fitted` fitted mortality rates using the additive multi-population mortality model.
@@ -27,11 +27,11 @@
 #' * `nPop` provided number of populations to fit the periods.
 #'
 #' @seealso \code{\link{fit_additive.LC.multi}}, \code{\link{fit_multiplicative.LC.multi}},
-#' \code{\link{forecast.multiplicative.LC.multi}}, \code{\link{multipopulation_cv}},
+#' \code{\link{for_multiplicative.LC.multi}}, \code{\link{multipopulation_cv}},
 #'
 #'
 #' @references
-#' Debon, A., Montes, F., & Martiez-Ruiz, F. (2011).
+#' Debon, A., Montes, F., & Martinez-Ruiz, F. (2011).
 #' Statistical methods to compare mortality for a group with non-divergent populations: an application to Spanish regions.
 #' European Actuarial Journal, 1, 291-308.
 #'

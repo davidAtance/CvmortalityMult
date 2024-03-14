@@ -4,7 +4,7 @@
 #' \deqn{\frac{1}{n}\sum_{x} \sum_{t} \left| qx1 - qxt2 \right|}.
 #' where qxt1 is the real mortality rates `qxt_re`, and qxt2 is the adjusted mortality rates `qxt_aju`.
 #' You only have to provide the real value and the fitted or forecasted value for your mortality rates.
-#' However, the function is preparated to provide the real value and the fitted or forecasted value of your independent variable.
+#' However, the function is constructed to provide the real value and the fitted or forecasted value of your independent variable.
 #' These variables must have the same dimensions to be compared.
 #'
 #' @param qxt_re real mortality rates used to check the goodness of fit measure.

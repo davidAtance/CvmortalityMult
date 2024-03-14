@@ -25,7 +25,7 @@ multipopulation_cv(
 
 \item{periods}{periods considered in the fitting in a vector way c(\code{minyear}:\code{maxyear}).}
 
-\item{ages}{vector with the ages considered in the fitting. If the mortality rates provide from an abbridged life tables, it is necessary to provide a vector with the ages, see the example.}
+\item{ages}{vector with the ages considered in the fitting. If the mortality rates provide from an abridged life tables, it is necessary to provide a vector with the ages, see the example.}
 
 \item{nPop}{number of population considered for fitting.}
 
@@ -44,10 +44,10 @@ A list with different components of the cross-validation process:
 \itemize{
 \item \code{ax} parameter that captures the average shape of the mortality curve in all considered populations.
 \item \code{bx} parameter that explains the age effect x with respect to the general trend \code{kt} in the mortality rates of all considered populations.
-\item \code{kt.fitted} obtained values for the tendency behaviour captured by \code{kt} .
+\item \code{kt.fitted} obtained values for the tendency behavior captured by \code{kt} .
 \item \code{kt.future} future values of \code{kt} for every iteration in the cross-validation.
 \item \code{kt.arima}  the arima selected for each \code{kt} time series.
-\item \code{Ii} paramater that captures the differences in the pattern of mortality in any region i with respect to Region 1.
+\item \code{Ii} parameter that captures the differences in the pattern of mortality in any region i with respect to Region 1.
 \item \code{formula} multi-population mortality formula used to fit the mortality rates.
 \item \code{nPop} provided number of populations to fit the periods.
 \item \code{qxt.real} real mortality rates.
@@ -137,7 +137,7 @@ Debon, A., & Atance, D. (2022).
 Two multi-population mortality models: A comparison of the forecasting accuracy with resampling methods.
 in Contributions to Risk Analysis: Risk 2022. Fundacion Mapfre
 
-Debon, A., Montes, F., & Martiez-Ruiz, F. (2011).
+Debon, A., Montes, F., & Martinez-Ruiz, F. (2011).
 Statistical methods to compare mortality for a group with non-divergent populations: an application to Spanish regions.
 European Actuarial Journal, 1, 291-308.
 
@@ -155,6 +155,6 @@ Risks, 11(10), 170.
 }
 \seealso{
 \code{\link{multipopulation_loocv}}, \code{\link{fit_additive.LC.multi}}, \code{\link{fit_multiplicative.LC.multi}},
-\code{\link{for_additiveLC.multi}}, \code{\link{for_multiplicative.LC.multi}},
-\code{\link{plotfit_LC.multi}}, \code{\link{SSE}}, \code{\link{MAE}}, \code{\link{MAPE}}.
+\code{\link{for_additive.LC.multi}}, \code{\link{for_multiplicative.LC.multi}},
+\code{\link{plotLC.multi}}, \code{\link{SSE}}, \code{\link{MAE}}, \code{\link{MAPE}}.
 }

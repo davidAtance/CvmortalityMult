@@ -4,7 +4,7 @@
 #' \deqn{\sum_{x}^{} \sum_{t} \left( qxt1 - qxt2 \right)^{2}}
 #' where qxt1 is the real mortality rates `qxt_re`, and qxt2 is the adjusted mortality rates `qxt_aju`.
 #' You only have to provide the real value and the fitted or forecasted value for your mortality rates.
-#' However, the function is preparated to provide the real value and the fitted or forecasted value of your independent variable.
+#' However, the function is constructed to provide the real value and the fitted or forecasted value of your independent variable.
 #' These variables must have the same dimensions to be compared.
 #'
 #' @param qxt_re real mortality rates used to check the goodness of fit measure.
@@ -40,6 +40,7 @@
 #'
 #' #Once, we have the fitted data, we will obtain the SSE for the first population.
 #' #We need to obtain wxt (weight of the mortality rates or data provided) using a
+#' library(StMoMo)
 #' wxt_1pob <- genWeightMat(ages = ages, years = c(1991:2020), clip = 0)
 #' SSE(qxt_re = multiplicative_Spainmales$qxt.real$pob1,
 #'     qxt_aju = multiplicative_Spainmales$qxt.fitted$pob1,

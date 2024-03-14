@@ -1,6 +1,6 @@
 Package: CvmortalityMult
 Type: Package
-Title: Cross-Validation method for assessing the forecasting ability of multi-population mortality models 
+Title: Cross-Validation Method for Assessing the Forecasting Ability of Multi-Population Mortality Models
 Version: 0.0.1
 Date: 2024-01-24
 Authors@R: c(
@@ -26,6 +26,7 @@ Imports: Rdpack,
         tmap,
         sf, 
         rgdal, 
+        sf,
         devtools
 RdMacros: Rdpack
 Encoding: UTF-8

@@ -30,12 +30,12 @@ A list with different components of the fitting process:
 \item \code{qxt.fitted} fitted mortality rates using the additive  multi-population mortality model.
 \item \code{logit.qxt.fitted} fitted mortality rates in logit way.
 \item \code{Ages} provided ages to fit the data.
-\item \code{Periods} provided periods to fit the peridos.
+\item \code{Periods} provided periods to fit the periods.
 \item \code{nPop} provided number of populations to fit the periods.
 }
 }
 \description{
-R function for fitting additive multi-population mortality model developed by: Debon et al (2011).
+R function for fitting additive multi-population mortality model developed by: Debon et al. (2011).
 This model follows the structure of the well-known Lee-Carter model (Lee and Carter, 1992) but including an additive parameter to capture the behavior of each population considered.
 This parameter seeks to capture the individual behavior of every population considered.
 It should be mentioned that in case that this function is developed for fitting several populations.
@@ -88,5 +88,5 @@ Journal of the American Statistical Association, 87(419), 659–671.
 \seealso{
 \code{\link{fit_multiplicative.LC.multi}}, \code{\link{for_additive.LC.multi}},
 \code{\link{for_multiplicative.LC.multi}}, \code{\link{multipopulation_cv}},
-\code{\link{multipopulation_loocv}}
+\code{\link{multipopulation_loocv}}, \code{\link{plotLC.multi}}
 }

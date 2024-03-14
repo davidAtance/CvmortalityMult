@@ -14,7 +14,7 @@
 #' * `ax` parameter that captures the average shape of the mortality curve in all considered populations.
 #' * `bx` parameter that explains the age effect x with respect to the general trend `kt` in the mortality rates of all considered populations.
 #' * `arimakt` the arima selected for the `kt` time series.
-#' * `kt.fitted` obtained values for the tendency behaviour captured by `kt`.
+#' * `kt.fitted` obtained values for the tendency behavior captured by `kt`.
 #' * `kt.fut` projected values of `kt` for the nahead periods ahead.
 #' * `kt.futintervals` arima selected and future values of `kt` with the different intervals, lower and upper, 80\% and 90\%.
 #' * `Ii` gives an idea of the differences in the pattern of mortality in any region i with respect to Region 1.
@@ -60,7 +60,7 @@
 #'
 #' #Finally, we forecast 10 years ahead the multiplicative multi-population mortality model
 #' fut_multiplicative_Spainmales <- for_multiplicative.LC.multi(
-#'                   fitted.obj = additive_Spainmales,
+#'                   fitted.obj = multiplicative_Spainmales,
 #'                   nahead = 10,
 #'                   ktmethod = "Arimapdq",
 #'                   kt_include.cte = TRUE)

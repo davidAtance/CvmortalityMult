@@ -1,6 +1,6 @@
 #' FUNCTION TO FIT ADDITIVE MULTI-POPULATION MORTALITY MODEL
 #' @description
-#' R function for fitting additive multi-population mortality model developed by: Debon et al (2011).
+#' R function for fitting additive multi-population mortality model developed by: Debon et al. (2011).
 #' This model follows the structure of the well-known Lee-Carter model (Lee and Carter, 1992) but including an additive parameter to capture the behavior of each population considered.
 #' This parameter seeks to capture the individual behavior of every population considered.
 #' It should be mentioned that in case that this function is developed for fitting several populations.
@@ -23,12 +23,12 @@
 #' * `qxt.fitted` fitted mortality rates using the additive  multi-population mortality model.
 #' * `logit.qxt.fitted` fitted mortality rates in logit way.
 #' * `Ages` provided ages to fit the data.
-#' * `Periods` provided periods to fit the peridos.
+#' * `Periods` provided periods to fit the periods.
 #' * `nPop` provided number of populations to fit the periods.
 #'
 #' @seealso \code{\link{fit_multiplicative.LC.multi}}, \code{\link{for_additive.LC.multi}},
 #' \code{\link{for_multiplicative.LC.multi}}, \code{\link{multipopulation_cv}},
-#' \code{\link{multipopulation_loocv}}
+#' \code{\link{multipopulation_loocv}}, \code{\link{plotLC.multi}}
 #'
 #' @references
 #' Debon, A., Montes, F., and Martinez-Ruiz, F. (2011).
@@ -39,7 +39,7 @@
 #' Modeling and forecasting US mortality.
 #' Journal of the American Statistical Association, 87(419), 659–671.
 #'
-#' @importFrom gnm gnm residSVD
+#' @importFrom gnm gnm residSVD Mult
 #' @importFrom utils install.packages
 #' @importFrom stats coef
 #'
@@ -80,6 +80,7 @@
 #' @export
 fit_additive.LC.multi <- function(qxt, periods, ages, nPop, lxt = NULL){
   #Check several things before start
+  library(gnm)
 
   if(is.null(qxt) || is.null(periods) || is.null(ages) || is.null(nPop)){
     stop("Arguments qxt, periods, ages, and nPop, need to be provided.")

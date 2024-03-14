@@ -61,7 +61,7 @@ save(SpainNat, file = "data/SpainNat.RData")
 save(SpainRegions, file = "data/SpainRegions.RData")
 
 usethis::use_data_raw()
-regions <- autonomias
+#regions <- autonomias
 
 save(regions, file = "regions.RData")
 regions <- structure(regions,
@@ -76,6 +76,7 @@ SpainNat
 SpainRegions
 
 save(regions, file = "data/regions.RData")
+
 
 print.myclass(autonomias)
 autonomias

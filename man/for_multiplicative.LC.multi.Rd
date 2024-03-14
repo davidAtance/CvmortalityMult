@@ -26,7 +26,7 @@ A list with different components of the forecasting process:
 \item \code{ax} parameter that captures the average shape of the mortality curve in all considered populations.
 \item \code{bx} parameter that explains the age effect x with respect to the general trend \code{kt} in the mortality rates of all considered populations.
 \item \code{arimakt} the arima selected for the \code{kt} time series.
-\item \code{kt.fitted} obtained values for the tendency behaviour captured by \code{kt}.
+\item \code{kt.fitted} obtained values for the tendency behavior captured by \code{kt}.
 \item \code{kt.fut} projected values of \code{kt} for the nahead periods ahead.
 \item \code{kt.futintervals} arima selected and future values of \code{kt} with the different intervals, lower and upper, 80\\% and 90\\%.
 \item \code{Ii} gives an idea of the differences in the pattern of mortality in any region i with respect to Region 1.
@@ -64,7 +64,7 @@ plotLC.multi(multiplicative_Spainmales)
 
 #Finally, we forecast 10 years ahead the multiplicative multi-population mortality model
 fut_multiplicative_Spainmales <- for_multiplicative.LC.multi(
-                  fitted.obj = additive_Spainmales,
+                  fitted.obj = multiplicative_Spainmales,
                   nahead = 10,
                   ktmethod = "Arimapdq",
                   kt_include.cte = TRUE)

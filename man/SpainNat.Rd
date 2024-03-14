@@ -22,17 +22,18 @@ A data frame with 600 rows and 9 columns with the following information
 SpainNat
 }
 \description{
-Data from the spanish national of Spain from the Spanish National Institute of Statistics (INE) for both genders years 1991-2020 and abridged ages from 0 to 90.
+Data from the Spanish national of Spain from the Spanish National Institute of Statistics (INE) for both genders years 1991-2020 and abridged ages from 0 to 90.
 This dataset contains mortality rates for the total national population of Spain.
 Additionally, the dataset includes the number of people alive (lxt) for each age and period.
 }
 \examples{
 SpainNat
+ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
 LC_Spainmales <- fit_additive.LC.multi(qxt = SpainNat$qx_male,
                                        periods = c(1991:2020),
                                        ages = ages,
                                        nPop = 1)
-plot.fit.LC.multi(LC_Spainmales)
+plotLC.multi(LC_Spainmales)
 
 }
 \references{

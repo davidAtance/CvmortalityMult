@@ -1,6 +1,6 @@
 #' regions
 #'
-#' Data from the spanish region of Spain which are provided to plot an indicator.
+#' Data from the Spanish region of Spain which are provided to plot an indicator.
 #' This dataset contains a plot with the information of Spain regions (geometry and name of every region).
 #'
 #' @name regions
@@ -21,6 +21,7 @@
 #'
 #' @examples
 #' regions
+#' ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
 #' multiplicative_Spainmales <- fit_multiplicative.LC.multi(qxt = SpainRegions$qx_male,
 #'                                                 periods = c(1991:2020),
 #'                                                 ages = c(ages),
@@ -30,5 +31,8 @@
 #' SpainMap(regionvalue = multiplicative_Spainmales$Ii[2:18],
 #'          main = c("Multiplicative for males"),
 #'          name = c("Ii"))
+#'
+#' main <- c("Multiplicative for males")
+#' regionvalue <- multiplicative_Spainmales$Ii[2:18]
 #'
 "regions"

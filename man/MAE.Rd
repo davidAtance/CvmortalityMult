@@ -21,7 +21,7 @@ R function to estimate the mean absolute errors (MAE) for the mortality rates;
 \deqn{\frac{1}{n}\sum_{x} \sum_{t} \left| qx1 - qxt2 \right|}.
 where qxt1 is the real mortality rates \code{qxt_re}, and qxt2 is the adjusted mortality rates \code{qxt_aju}.
 You only have to provide the real value and the fitted or forecasted value for your mortality rates.
-However, the function is preparated to provide the real value and the fitted or forecasted value of your independent variable.
+However, the function is constructed to provide the real value and the fitted or forecasted value of your independent variable.
 These variables must have the same dimensions to be compared.
 }
 \examples{
