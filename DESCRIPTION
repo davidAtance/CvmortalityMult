@@ -25,7 +25,6 @@ Imports: Rdpack,
         roxygen2,
         tmap,
         sf, 
-        rgdal, 
         devtools
 RdMacros: Rdpack
 Encoding: UTF-8

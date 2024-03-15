@@ -7,7 +7,7 @@
 #' This procedure is repeated several times trying to check the forecasting accuracy in different ways enlarging the training set one period-ahead.
 #' With this function, the user can provide its own mortality rates for different populations. The function will split the database chronologically (Bergmeir and Benitez, 2012) based on the trainset1 which consist on the length of the first training set.
 #' We have include the following Figure 2 to understand how the R function works.
-#' {\figure{LOOCV.png}{options: width="100\%" alt="Figure: mai.png"}}
+#' {\figure{LOOCV.jpg}{options: width="100\%" alt="Figure: mai.png"}}
 #' It should be mentioned that this function is developed for testing the the forecasting accuracy of several populations using leave-one-out cross-validation .
 #' However, in case you only consider one population, the function will forecast the Lee-Carter model for one population.
 #' To test the forecasting accuracy of the selected model, the function provides five different measures: SSE, MSE, MAE, MAPE or All. Depending on how you want to check the forecasting accuracy of the model you could select one or other.
@@ -78,7 +78,7 @@
 #' Should Selection of the Optimum Stochastic Mortality Model Be Based on the Original or the Logarithmic Scale of the Mortality Rate?.
 #' Risks, 11(10), 170.
 #'
-#' @importFrom gnm gnm residSVD
+#' @importFrom gnm gnm residSVD Mult
 #' @importFrom forecast Arima auto.arima forecast
 #' @importFrom StMoMo genWeightMat
 #' @importFrom utils install.packages
