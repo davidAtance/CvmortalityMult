@@ -87,10 +87,9 @@
 #' #We present the leave-one-out cross-validation (LOOCV) method for spanish male regions
 #' #The idea is to get the same results as in the short paper published in Risk Congress 2023
 # 'SpainRegions
-#'
 #' ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40,
 #'          45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
-#'
+#' library(gnm)
 #' #Let start with a simple trainset1 = 10 CV method obtaining the SSE forecasting measure of accuracy
 #' loocv_Spainmales_addit <- multipopulation_loocv(qxt = SpainRegions$qx_male,
 #'                                          model = c("additive"),

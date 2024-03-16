@@ -40,7 +40,7 @@
 #' Extending the Lee–Carter model: a three-way decomposition.
 #' Scandinavian Actuarial Journal, 2011(2), 96-117.
 #'
-#' @importFrom gnm gnm residSVD Mult
+#' @import gnm
 #' @importFrom utils install.packages
 #' @importFrom stats coef
 #'
@@ -49,6 +49,7 @@
 #' SpainRegions
 #' ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
 #' #In this case, we fit for males providing the lxt
+#' library(gnm)
 #' multiplicative_Spainmales <- fit_multiplicative.LC.multi(qxt = SpainRegions$qx_male,
 #'                               periods = c(1991:2020),
 #'                               ages = c(ages),
@@ -81,8 +82,6 @@
 #' @export
 fit_multiplicative.LC.multi <- function(qxt, periods, ages, nPop, lxt = NULL){
   #Check several things before start
-  library(gnm)
-
   if(is.null(qxt) || is.null(periods) || is.null(ages) || is.null(nPop)){
     stop("Arguments qxt, periods, ages, and nPop, need to be provided.")
   }

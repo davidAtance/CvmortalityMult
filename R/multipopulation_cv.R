@@ -85,7 +85,7 @@
 #'
 #' ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40,
 #'          45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
-#'
+#' library(gnm)
 #' #Let start with a simple nahead=5 CV method obtaining the SSE forecasting measure of accuracy
 #' cv_Spainmales_addit <- multipopulation_cv(qxt = SpainRegions$qx_male,
 #'                                          model = c("additive"),

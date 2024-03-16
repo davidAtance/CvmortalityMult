@@ -49,6 +49,7 @@
 #'
 #' #Before forecast the future value of the mortality rates for different populations
 #' #we need the object the fitted values of the multiplicative multi-population mortality model.
+#' library(gnm)
 #' multiplicative_Spainmales <- fit_multiplicative.LC.multi(qxt = SpainRegions$qx_male,
 #'                                              periods = c(1991:2020),
 #'                                              ages = c(ages),

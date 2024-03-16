@@ -19,6 +19,7 @@
 #' @examples
 #' ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
 #' #We fit the additive multi-population mortality model for spain males
+#' library(gnm)
 #' additive_Spainmales <- fit_additive.LC.multi(qxt = SpainRegions$qx_male,
 #'                               periods = c(1991:2020),
 #'                               ages = c(ages),
