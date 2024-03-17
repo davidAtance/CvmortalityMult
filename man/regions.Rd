@@ -38,9 +38,6 @@ SpainMap(regionvalue = multiplicative_Spainmales$Ii[2:18],
          main = c("Multiplicative for males"),
          name = c("Ii"))
 
-main <- c("Multiplicative for males")
-regionvalue <- multiplicative_Spainmales$Ii[2:18]
-
 }
 \references{
 Spanish National Institute of Statistics (INE) (2023). Tablas de mortalidad, metodologia.

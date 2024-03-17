@@ -18,15 +18,11 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Depends: 
   R (>= 2.10)
-Imports: Rdpack,
-        StMoMo,
+Imports: StMoMo,
         forecast,
         gnm,
-        roxygen2,
         tmap,
-        sf, 
-        devtools
-RdMacros: Rdpack
+        sf
 Encoding: UTF-8
 Suggests: 
     testthat (>= 3.0.0)

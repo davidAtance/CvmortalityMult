@@ -106,35 +106,6 @@
 #' loocv_Spainmales_addit$meas_pop
 #' loocv_Spainmales_addit$meas_total
 #'
-#' #Equally but using multiplicative population mortality model
-#' loocv_Spainmales_multi <- multipopulation_loocv(qxt = SpainRegions$qx_male,
-#'                                          model = c("multiplicative"),
-#'                                          periods =  c(1991:2020), ages = c(ages),
-#'                                          nPop = 18, lxt = SpainRegions$lx_male,
-#'                                          ktmethod = c("Arimapdq"),
-#'                                          kt_include.cte = TRUE,
-#'                                          measures = c("SSE"),
-#'                                          trainset1 = 10)
-#' loocv_Spainmales_multi$meas_ages
-#' loocv_Spainmales_multi$meas_periodsfut
-#' loocv_Spainmales_multi$meas_pop
-#' loocv_Spainmales_multi$meas_total
-#'
-#' #The cross-validation function works with one-population using the single popualtion LC model.
-#' loocv_Spainmales_LC <- multipopulation_loocv(qxt = SpainNat$qx_male,
-#'                                        model = c("multiplicative"),
-#'                                        periods =  c(1991:2020), ages = c(ages),
-#'                                        nPop = 1, lxt = SpainNat$lx_male,
-#'                                          ktmethod = c("Arimapdq"),
-#'                                          kt_include.cte = TRUE,
-#'                                          measures = c("SSE"),
-#'                                          trainset1 = 10)
-#'
-#' loocv_Spainmales_LC$meas_ages
-#' loocv_Spainmales_LC$meas_periodsfut
-#' loocv_Spainmales_LC$meas_pop
-#' loocv_Spainmales_LC$meas_total
-#'
 #' @export
 multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
                                periods, ages, nPop, lxt=NULL,

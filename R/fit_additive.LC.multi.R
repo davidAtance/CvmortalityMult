@@ -59,18 +59,8 @@
 #' #provided parameters for the fitting.
 #' plotLC.multi(additive_Spainmales)
 #'
-#' #Equal to the previous step but in this case for females and without providing lxt.
-#' additive_Spainfemales <- fit_additive.LC.multi(qxt = SpainRegions$qx_female,
-#'                               periods = c(1991:2020),
-#'                               ages = c(ages),
-#'                               nPop = 18)
-#'
-#' #Once, we have fit the data, it is possible to see the ax, bx, kt, and Ii
-#' #provided parameters for the fitting.
-#' plotLC.multi(additive_Spainfemales)
-#'
 #' #As we mentioned in the details of the function, if we only provide the data
-#' #from one-population the function fit_additive.LC.multi()
+#' #from one-population the function fit_multiplicative.LC.multi()
 #' #will fit the Lee-Carter model for single populations.
 #' LC_Spainmales <- fit_additive.LC.multi(qxt = SpainNat$qx_male,
 #'                               periods = c(1991:2020),

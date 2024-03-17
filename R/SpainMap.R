@@ -38,7 +38,7 @@ SpainMap <- function(regionvalue, main, name){
     stop("The regionvalue is not a vector of length 17.")
   }
 
-  autonomias <- st_sf(regions)
+  autonomias <- st_sf(CvmortalityMult::regions)
   autonomias$Ii <- regionvalue
   names(autonomias)[5] <- name
 

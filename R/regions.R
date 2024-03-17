@@ -33,7 +33,4 @@
 #'          main = c("Multiplicative for males"),
 #'          name = c("Ii"))
 #'
-#' main <- c("Multiplicative for males")
-#' regionvalue <- multiplicative_Spainmales$Ii[2:18]
-#'
 "regions"
