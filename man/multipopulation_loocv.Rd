@@ -73,8 +73,13 @@ To test the forecasting accuracy of the selected model, the function provides fi
 In this case, the measures will be obtained using the mortality rates in the normal scale as recommended by Santolino (2023) against the log scale.
 }
 \examples{
+#The example takes more than 5 seconds because it includes
+#several fitting and forecasting process and hence all
+#the process is included in donotrun
+\dontrun{
 #We present the leave-one-out cross-validation (LOOCV) method for spanish male regions
 #The idea is to get the same results as in the short paper published in Risk Congress 2023
+SpainRegions
 ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40,
          45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
 library(gnm)
@@ -93,7 +98,7 @@ loocv_Spainmales_addit$meas_ages
 loocv_Spainmales_addit$meas_periodsfut
 loocv_Spainmales_addit$meas_pop
 loocv_Spainmales_addit$meas_total
-
+}
 }
 \references{
 Atance, D., Debon, A., and Navarro, E. (2020).

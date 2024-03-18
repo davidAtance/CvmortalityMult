@@ -57,7 +57,7 @@ multiplicative_Spainmales <- fit_multiplicative.LC.multi(qxt = SpainRegions$qx_m
 #provided parameters for the fitting.
 plotLC.multi(multiplicative_Spainmales)
 
-#Equal to the previous step but in this case for females and without providing lxt.
+\dontrun{
 #As we mentioned in the details of the function, if we only provide the data
 #from one-population the function fit_multiplicative.LC.multi()
 #will fit the Lee-Carter model for single populations.
@@ -66,6 +66,7 @@ LC_Spainmales <- fit_multiplicative.LC.multi(qxt = SpainNat$qx_male,
                               ages = ages,
                               nPop = 1)
 plotLC.multi(LC_Spainmales)
+}
 
 }
 \references{

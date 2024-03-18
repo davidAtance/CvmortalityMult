@@ -43,7 +43,7 @@
 #' #Once, we have fit the data, it is possible to see the ax, bx, kt, and Ii
 #' #provided parameters for the fitting.
 #' plotLC.multi(multiplicative_Spainmales)
-#'
+#' \dontrun{
 #' #In case you only provide one population the model will fit
 #' #the single population version of the Lee-Carter model
 #' LC_Spainmales <- fit_additive.LC.multi(qxt = SpainNat$qx_male,
@@ -51,7 +51,7 @@
 #'                               ages = ages,
 #'                               nPop = 1)
 #' plotLC.multi(LC_Spainmales)
-#'
+#' }
 #' @export
 plotLC.multi <- function(fitted.obj){
   pers <- fitted.obj$Periods

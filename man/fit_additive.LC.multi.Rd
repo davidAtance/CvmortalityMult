@@ -56,16 +56,16 @@ additive_Spainmales <- fit_additive.LC.multi(qxt = SpainRegions$qx_male,
 #Once, we have fit the data, it is possible to see the ax, bx, kt, and Ii
 #provided parameters for the fitting.
 plotLC.multi(additive_Spainmales)
-
+\dontrun{
 #As we mentioned in the details of the function, if we only provide the data
-#from one-population the function fit_multiplicative.LC.multi()
+#from one-population the function fit_additive.LC.multi()
 #will fit the Lee-Carter model for single populations.
 LC_Spainmales <- fit_additive.LC.multi(qxt = SpainNat$qx_male,
                               periods = c(1991:2020),
                               ages = ages,
                               nPop = 1)
 plotLC.multi(LC_Spainmales)
-
+}
 }
 \references{
 Debon, A., Montes, F., and Martinez-Ruiz, F. (2011).

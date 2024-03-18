@@ -80,6 +80,11 @@
 #' @importFrom utils install.packages
 #'
 #' @examples
+#'
+#' #The example takes more than 5 seconds because it includes
+#' #several fitting and forecasting process and hence all
+#' #the process is included in donotrun
+#' \dontrun{
 #' #We present a cross-validation method for spanish male regions
 # 'SpainRegions
 #'
@@ -101,7 +106,7 @@
 #' cv_Spainmales_addit$meas_periodsfut
 #' cv_Spainmales_addit$meas_pop
 #' cv_Spainmales_addit$meas_total
-#'
+#' }
 #' @export
 multipopulation_cv <- function(qxt, model = c("additive", "multiplicative"),
                                periods, ages, nPop, lxt=NULL,

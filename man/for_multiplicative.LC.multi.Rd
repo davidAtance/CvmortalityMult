@@ -59,17 +59,26 @@ multiplicative_Spainmales <- fit_multiplicative.LC.multi(qxt = SpainRegions$qx_m
                                              ages = c(ages),
                                              nPop = 18,
                                              lxt = SpainRegions$lx_male)
-#Once, we have fit the data, it is possible to see the ax, bx, kt, and Ii
-#provided parameters for the fitting.
-plotLC.multi(multiplicative_Spainmales)
-
-#Finally, we forecast 10 years ahead the multiplicative multi-population mortality model
+#Once, we have fit the data, it is possible to forecast 10 years ahead
+#in this case for the multiplicative multi-population mortality model
 fut_multiplicative_Spainmales <- for_multiplicative.LC.multi(
                   fitted.obj = multiplicative_Spainmales,
                   nahead = 10,
                   ktmethod = "Arimapdq",
                   kt_include.cte = TRUE)
-
+\dontrun{
+#As we mentioned in the details of the function, if we only provide the data
+#from one-population the function fit_additive.LC.multi()
+#will fit the Lee-Carter model for single populations.
+LC_Spainmales <- fit_multiplicative.LC.multi(qxt = SpainNat$qx_male,
+                              periods = c(1991:2020),
+                              ages = ages,
+                              nPop = 1)
+#To forecast future values of the single population using LC
+fut_LC_Spainmales <- for_multiplicative.LC.multi(fitted.obj = LC_Spainmales,
+                                           nahead = 10, ktmethod = "Arimapdq",
+                                           kt_include.cte = TRUE)
+}
 }
 \references{
 Lee, R.D. & Carter, L.R. (1992).

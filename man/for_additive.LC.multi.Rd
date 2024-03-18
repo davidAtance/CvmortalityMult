@@ -50,7 +50,6 @@ However, in case you only consider one population, the function will forecast th
 #First, we present the data that we are going to use
 SpainRegions
 ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
-
 #Before forecast the future value of the mortality rates for different populations
 #we need the object the fitted values of the additive multi-population mortality model.
 library(gnm)
@@ -59,15 +58,23 @@ additive_Spainmales <- fit_additive.LC.multi(qxt = SpainRegions$qx_male,
                                              ages = c(ages),
                                              nPop = 18,
                                              lxt = SpainRegions$lx_male)
-#Once, we have fit the data, it is possible to see the ax, bx, kt, and Ii
-#provided parameters for the fitting.
-plotLC.multi(additive_Spainmales)
-
-#Finally, we forecast 10 years ahead the additive multi-population mortality model
-
+#Once, we have fit the data, it is possible to forecast 10 years ahead
+#in this case for the additive multi-population mortality model
 fut_additive_Spainmales <- for_additive.LC.multi(fitted.obj = additive_Spainmales, nahead = 10,
                                                       ktmethod = "Arimapdq", kt_include.cte = TRUE)
-
+\dontrun{
+#As we mentioned in the details of the function, if we only provide the data
+#from one-population the function fit_additive.LC.multi()
+#will fit the Lee-Carter model for single populations.
+LC_Spainmales <- fit_additive.LC.multi(qxt = SpainNat$qx_male,
+                              periods = c(1991:2020),
+                              ages = ages,
+                              nPop = 1)
+#To forecast future values of the single population using LC
+fut_LC_Spainmales <- for_additive.LC.multi(fitted.obj = LC_Spainmales,
+                                           nahead = 10, ktmethod = "Arimapdq",
+                                           kt_include.cte = TRUE)
+}
 }
 \references{
 Debon, A., Montes, F., & Martinez-Ruiz, F. (2011).
