@@ -22,7 +22,7 @@
 #' @examples
 #' #The example takes more than 5 seconds because it includes
 #' #several fitting and forecasting process and hence all
-#' #the process is included in donotrun
+#' #the process is included in dontrun
 #' \dontrun{
 #' In this case, we show the region dataset applying it to a multipopulation model.
 #' #First, we present the dataset

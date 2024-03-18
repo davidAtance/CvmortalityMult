@@ -44,7 +44,7 @@ However, in case you only consider one population, the function will fit the one
 \examples{
 #The example takes more than 5 seconds because it includes
 #several fitting and forecasting process and hence all
-#the process is included in donotrun
+#the process is included in dontrun
 \dontrun{
 #The data that we are going to use:
 SpainRegions

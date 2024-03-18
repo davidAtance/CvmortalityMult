@@ -25,6 +25,13 @@ However, the function is constructed to provide the real value and the fitted or
 These variables must have the same dimensions to be compared.
 }
 \examples{
+#The example takes more than 5 seconds because it includes
+#several fitting and forecasting process and hence all
+#the process is included in dontrun
+\dontrun{
+#To show how the function works, we need to provide fitted or forecasted data and the real data.
+#In this case, we employ the following data of the library:
+#First, we present the dataset
 #To show how the function works, we need to provide fitted or forecasted data and the real data.
 #In this case, we employ the following data of the library:
 SpainRegions
@@ -44,7 +51,7 @@ wxt_1pob <- genWeightMat(ages = ages, years = c(1991:2020), clip = 0)
 SSE(qxt_re = multiplicative_Spainmales$qxt.real$pob1,
     qxt_aju = multiplicative_Spainmales$qxt.fitted$pob1,
     wxt = wxt_1pob)
-
+}
 }
 \references{
 Atance, D., Debón, A., & Navarro, E. (2020).

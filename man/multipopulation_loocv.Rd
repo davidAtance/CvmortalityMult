@@ -75,7 +75,7 @@ In this case, the measures will be obtained using the mortality rates in the nor
 \examples{
 #The example takes more than 5 seconds because it includes
 #several fitting and forecasting process and hence all
-#the process is included in donotrun
+#the process is included in dontrun
 \dontrun{
 #We present the leave-one-out cross-validation (LOOCV) method for spanish male regions
 #The idea is to get the same results as in the short paper published in Risk Congress 2023

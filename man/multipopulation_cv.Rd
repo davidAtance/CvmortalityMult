@@ -76,7 +76,7 @@ In this case, the measures will be obtained using the mortality rates in the nor
 
 #The example takes more than 5 seconds because it includes
 #several fitting and forecasting process and hence all
-#the process is included in donotrun
+#the process is included in dontrun
 \dontrun{
 #We present a cross-validation method for spanish male regions
 
