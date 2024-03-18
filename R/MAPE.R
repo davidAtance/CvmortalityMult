@@ -27,6 +27,10 @@
 #' @importFrom StMoMo genWeightMat
 #'
 #' @examples
+#' ##The example takes more than 5 seconds because it includes
+#' #several fitting and forecasting process and hence all
+#' #the process is included in donotrun
+#' \dontrun{
 #' #To show how the function works, we need to provide fitted or forecasted data and the real data.
 #' #In this case, we employ the following data of the library:
 #' SpainRegions
@@ -46,7 +50,7 @@
 #' MAPE(qxt_re = multiplicative_Spainmales$qxt.real$pob1,
 #'      qxt_aju = multiplicative_Spainmales$qxt.fitted$pob1,
 #'      wxt = wxt_1pob)
-#'
+#' }
 #' @export
 MAPE <- function(qxt_re, qxt_aju, wxt){
   ind <- (wxt > 0)

@@ -20,17 +20,14 @@ a map from the regions of Spain colored with the variable provided by the user.
 This data contains information to plot the percentiles plot in Spanish regions. Therefore, the users only have to provide a specific variable to show in regions of Spain.
 }
 \examples{
-ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
-#We fit the additive multi-population mortality model for spain males
-library(gnm)
-additive_Spainmales <- fit_additive.LC.multi(qxt = SpainRegions$qx_male,
-                              periods = c(1991:2020),
-                              ages = c(ages),
-                              nPop = 18,
-                              lxt = SpainRegions$lx_male)
 name <- c("Ii")
 main <- c("Multiplicative for males")
-regionvalue <- additive_Spainmales$Ii[2:18]
+regionvalue <- c(0.131867619, -0.063994652,  0.088094096,
+                 0.019685552,  0.064671498,   0.012212161,
+                -0.088864474, -0.146079884, -0.017703536,
+                 0.050376721,  0.052476852, -0.022871202,
+                -0.093952332,  0.049266816, -0.101224890,
+                 0.001481333, -0.078523511)
 
 SpainMap(regionvalue, main, name)
 

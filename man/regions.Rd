@@ -25,19 +25,27 @@ Data from the Spanish region of Spain which are provided to plot an indicator.
 This dataset contains a plot with the information of Spain regions (geometry and name of every region).
 }
 \examples{
+#The example takes more than 5 seconds because it includes
+#several fitting and forecasting process and hence all
+#the process is included in donotrun
+\dontrun{
+In this case, we show the region dataset applying it to a multipopulation model.
+#First, we present the dataset
 regions
 ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
 library(gnm)
+#Then, we fit the multiplicative model
 multiplicative_Spainmales <- fit_multiplicative.LC.multi(qxt = SpainRegions$qx_male,
                                                 periods = c(1991:2020),
                                                 ages = c(ages),
                                                 nPop = 18,
                                                 lxt = SpainRegions$lx_male)
 
+#To show the values of the population indicator in the Spanish map.
 SpainMap(regionvalue = multiplicative_Spainmales$Ii[2:18],
          main = c("Multiplicative for males"),
          name = c("Ii"))
-
+}
 }
 \references{
 Spanish National Institute of Statistics (INE) (2023). Tablas de mortalidad, metodologia.

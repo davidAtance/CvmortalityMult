@@ -27,7 +27,14 @@ This dataset contains mortality rates (qxt) from 18 different regions of Spain.
 Additionally, the dataset includes the number of people alive (lxt) for each age and period.
 }
 \examples{
+#The example takes more than 5 seconds because it includes
+#several fitting and forecasting process and hence all
+#the process is included in donotrun
+\dontrun{
+In this case, we show the region dataset applying it to a multipopulation model.
+#First, we present the dataset
 SpainRegions
+#An example to how the additive multi-population model fits the data
 ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
 library(gnm)
 multiplicative_Spainmales <- fit_multiplicative.LC.multi(qxt = SpainRegions$qx_male,
@@ -35,7 +42,7 @@ multiplicative_Spainmales <- fit_multiplicative.LC.multi(qxt = SpainRegions$qx_m
                                                 ages = c(ages),
                                                 nPop = 18,
                                                 lxt = SpainRegions$lx_male)
-
+}
 }
 \references{
 Spanish National Institute of Statistics (INE) (2023). Tablas de mortalidad, metodologia.

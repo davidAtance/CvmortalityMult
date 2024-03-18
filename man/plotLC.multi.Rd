@@ -18,6 +18,10 @@ It should be mentioned that in case that this function is developed for fitting 
 However, in case you only consider one population, the function will fit the one-population Lee-Carter model (Lee and Carter, 1992).
 }
 \examples{
+#The example takes more than 5 seconds because it includes
+#several fitting and forecasting process and hence all
+#the process is included in donotrun
+\dontrun{
 SpainRegions
 ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
 #In this case, we fit for males providing the lxt
@@ -31,7 +35,7 @@ multiplicative_Spainmales <- fit_multiplicative.LC.multi(qxt = SpainRegions$qx_m
 #Once, we have fit the data, it is possible to see the ax, bx, kt, and Ii
 #provided parameters for the fitting.
 plotLC.multi(multiplicative_Spainmales)
-\dontrun{
+
 #In case you only provide one population the model will fit
 #the single population version of the Lee-Carter model
 LC_Spainmales <- fit_additive.LC.multi(qxt = SpainNat$qx_male,

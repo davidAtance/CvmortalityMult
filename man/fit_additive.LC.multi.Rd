@@ -42,6 +42,10 @@ It should be mentioned that in case that this function is developed for fitting 
 However, in case you only consider one population, the function will fit the one-population Lee-Carter model.
 }
 \examples{
+#The example takes more than 5 seconds because it includes
+#several fitting and forecasting process and hence all
+#the process is included in donotrun
+\dontrun{
 #The data that we are going to use:
 SpainRegions
 library(gnm)
@@ -52,11 +56,10 @@ additive_Spainmales <- fit_additive.LC.multi(qxt = SpainRegions$qx_male,
                               ages = c(ages),
                               nPop = 18,
                               lxt = SpainRegions$lx_male)
-
 #Once, we have fit the data, it is possible to see the ax, bx, kt, and Ii
 #provided parameters for the fitting.
 plotLC.multi(additive_Spainmales)
-\dontrun{
+
 #As we mentioned in the details of the function, if we only provide the data
 #from one-population the function fit_additive.LC.multi()
 #will fit the Lee-Carter model for single populations.
