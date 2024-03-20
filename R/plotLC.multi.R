@@ -32,8 +32,8 @@
 #' @examples
 #' #The example takes more than 5 seconds because it includes
 #' #several fitting and forecasting process and hence all
-#' #the process is included in dontrun
-#' \dontrun{
+#' #the process is included in donttest
+#' \donttest{
 #' SpainRegions
 #' ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
 #' #In this case, we fit for males providing the lxt
@@ -71,6 +71,8 @@ plotLC.multi <- function(fitted.obj){
   kt_main <- expression(k[t])
   Ii_main <- expression(I[i])
 
+  oldpar <- par(no.readonly = TRUE)
+
   if(pops != 1){
     par(mfrow=c(1,4))
     plot(ages, ax, ylab="", xlab="x = age", main =ax_main,
@@ -91,5 +93,5 @@ plotLC.multi <- function(fitted.obj){
          type="l", lwd=2)
   }
 
-
+  on.exit(par(oldpar))
 }

@@ -20,8 +20,8 @@ However, in case you only consider one population, the function will fit the one
 \examples{
 #The example takes more than 5 seconds because it includes
 #several fitting and forecasting process and hence all
-#the process is included in dontrun
-\dontrun{
+#the process is included in donttest
+\donttest{
 SpainRegions
 ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
 #In this case, we fit for males providing the lxt

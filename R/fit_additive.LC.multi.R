@@ -46,8 +46,8 @@
 #' @examples
 #' #The example takes more than 5 seconds because it includes
 #' #several fitting and forecasting process and hence all
-#' #the process is included in dontrun
-#' \dontrun{
+#' #the process is included in donttest
+#' \donttest{
 #' #The data that we are going to use:
 #' SpainRegions
 #' library(gnm)
@@ -75,12 +75,12 @@
 fit_additive.LC.multi <- function(qxt, periods, ages, nPop, lxt = NULL){
   #Check several things before start
   if(is.null(qxt) || is.null(periods) || is.null(ages) || is.null(nPop)){
-    stop("Arguments qxt, periods, ages, and nPop, need to be provided.")
+    warning("Arguments qxt, periods, ages, and nPop, need to be provided.")
   }
 
   #2. Check that periods and ages are two vectors
   if (!is.vector(periods) || !is.vector(ages)) {
-    stop("Period or Ages are not a vector, need to be provided.")
+    warning("Period or Ages are not a vector, need to be provided.")
   }
 
   nperiods <- length(periods)
@@ -88,7 +88,7 @@ fit_additive.LC.multi <- function(qxt, periods, ages, nPop, lxt = NULL){
 
   #3. Check if lxt is provided
   if(is.null(lxt)){
-    cat("Argument lxt will be obtained as the number of individuals at age
+    message("Argument lxt will be obtained as the number of individuals at age
     x and period t, starting with l0=100,000")
   }
 
@@ -99,24 +99,24 @@ fit_additive.LC.multi <- function(qxt, periods, ages, nPop, lxt = NULL){
   #Starting with the values of qxt
   #1. Check if it is a list of matrix
   if(is.list(qxt)){
-    cat("Your qxt and lxt data are in list of matrix form.\n")
+    message("Your qxt and lxt data are in list of matrix form.\n")
 
     #In the case is a list of matrix check that all matrix have the same length
     for(i in 2:length(qxt)){
       dim.actual <- dim(qxt[[i]])
       if(!identical(dim(qxt[[1]]), dim.actual)){
-        stop(paste("population", i, "has a different dim regarding the rest of the chosen populations"))
+        stop(warning("population ", i, " has a different dim regarding the rest of the chosen populations."))
       }
     }
     #Check the size of the qxt is equal to number of ages, periods and populations provided
     nper.age.pop <- nperiods*nages*nPop
     if(length(qxt[[i]])*length(qxt) != nper.age.pop){
-      stop("Number of qxt is different from the period, ages and countries provided")
+      stop(warning("Number of qxt is different from the period, ages and countries provided."))
     }
 
     #Check the size of list(qxt) is the same the npop
     if(length(qxt) != nPop){
-      stop("Number of n Pop is different regarding the length of the matrix qxt")
+      stop(warning("Number of n Pop is different regarding the length of the matrix qxt."))
     }
 
     #Now, we transform the matrix to data.frame to fit the mortality data
@@ -127,7 +127,7 @@ fit_additive.LC.multi <- function(qxt, periods, ages, nPop, lxt = NULL){
       sec.per <- c()
       for(j in min(periods):max(periods)){
         sec.per <- c(sec.per, rep(j, nages))}
-      cat("Confirm the periods correspond to columns and ages to rows.\n")
+      message("Confirm the periods correspond to columns and ages to rows.\n")
       #Check how the matrix is formed (by ages/columns or by period/columns)
 
       #Estimate lx for every population, age and period
@@ -165,14 +165,14 @@ fit_additive.LC.multi <- function(qxt, periods, ages, nPop, lxt = NULL){
     #Check the size of the qxt is equal to number of ages, periods and populations provided
     nper.age.pop <- nperiods*nages*nPop
     if(length(qxt) != nper.age.pop){
-      stop("Number of qxt vector is different from the period, ages and countries provided")
+      stop(warning("Number of qxt vector is different from the period, ages and countries provided."))
     }
-    cat("Your qxt and lxt data are in vector form.\n")
-    cat("So, please ensure that qxt are provided by age, period and population, as follows:\n")
-    cat("age0-period0-pob1, age1-period0-pob1, ..., age.n-period0-pob1\n")
-    cat("age0-period1-pob1, age1-period1-pob1, ..., age.n-period1-pob1\n")
-    cat("...\n")
-    cat("age0-period0-pob2, age1-period0-pob2, ..., age.n-period0-pob2\n")
+    message("Your qxt and lxt data are in vector form.\n")
+    message("So, please ensure that qxt are provided by age, period and population, as follows:\n")
+    message("age0-period0-pob1, age1-period0-pob1, ..., age.n-period0-pob1\n")
+    message("age0-period1-pob1, age1-period1-pob1, ..., age.n-period1-pob1\n")
+    message("...\n")
+    message("age0-period0-pob2, age1-period0-pob2, ..., age.n-period0-pob2\n")
 
     df_qxtdata <- data.frame(matrix(NA, nrow = 0, ncol = 5))
     for (i in 1:nPop) {
@@ -204,7 +204,7 @@ fit_additive.LC.multi <- function(qxt, periods, ages, nPop, lxt = NULL){
       df_qxtdata <- rbind(df_qxtdata, df_actual)
     }
 
-  } else{ print("qxt has to be provided as vector or list of matrix")}
+  } else{ message("qxt has to be provided as vector or list of matrix.")}
 
   #Give the correct name to the columns in the data.frame
   colnames(df_qxtdata) <- c("pop", "period", "age", "qxt", "lx")
@@ -247,7 +247,7 @@ fit_additive.LC.multi <- function(qxt, periods, ages, nPop, lxt = NULL){
     bx.geo3 <- as.numeric(c(1,coef(lee.geo3)[(nages+nperiods+2):(nages+nperiods+nages)]))
     Ii.geo3 <- as.numeric(c(0,coef(lee.geo3)[(nages+nperiods+nages+1):length(coef(lee.geo3))]))
   } else {
-    cat("You only provide one country. Thus, we fit LC one-single model population.")
+    message("You only provide one country. Thus, we fit LC one-single model population.")
     emptymodel <- gnm(qxt ~ -1 + factor(age), weights = df_qxtdata$lx,
                       family='quasibinomial', data=df_qxtdata)
     biplotStart <- residSVD(emptymodel,

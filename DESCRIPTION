@@ -1,14 +1,21 @@
 Package: CvmortalityMult
 Type: Package
-Title: Cross-Validation Method for Assessing the Forecasting Ability of Multi-Population Mortality Models
+Title: Cross-Validation for Multi-Population Mortality Models
 Version: 0.0.1
-Date: 2024-03-15
+Date: 2024-03-20
 Authors@R: c(
   person("David", "Atance", role = c("aut", "cre"),
          email = "david.atance@uah.es", comment =c(ORCID = "0000-0001-5860-0584")),
   person("Ana", "Debón", role = c("aut"),
          email = "andeau@eio.upv.es", comment =c(ORCID = "0000-0002-5116-289X")))
-Description: Implementation of cross-validation method for testing the forecasting accuracy of several multi-population mortality models. The family of multi-population includes several multi-population mortality models proposed through the actuarial and demography literature. The package includes functions for fitting and forecast the mortality rates of several populations. Additionally, we include functions for testing the forecasting accuracy of different multi-population models. 
+Description: Implementation of cross-validation method for testing the forecasting accuracy of several multi-population mortality models. The family of multi-population includes several multi-population mortality models proposed through the actuarial and demography literature. The package includes functions for fitting and forecast the mortality rates of several populations. Additionally, we include functions for testing the forecasting accuracy of different multi-population models.
+  References.
+  Atance, D., Debon, A., and Navarro, E. (2020) <doi:10.3390/math8091550>.
+  Bergmeir, C. & Benitez, J.M. (2012) <doi:10.1016/j.ins.2011.12.028>
+  Debon, A., Montes, F., & Martinez-Ruiz, F. (2011) <doi:10.1007/s13385-011-0043-z>
+  Lee, R.D. & Carter, L.R. (1992) <doi:10.1080/01621459.1992.10475265>
+  Russolillo, M., Giordano, G., & Haberman, S. (2011) <doi:10.1080/03461231003611933>
+  Santolino, M. (2023). <doi:10.3390/risks11100170>.
 License: MIT + file LICENSE
 URL: https://github.com/davidAtance/CvmortalityMult
 BugReports: https://github.com/davidAtance/CvmortalityMult/issues
@@ -17,7 +24,7 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Depends: 
-  R (>= 2.10)
+  R (>= 3.50)
 Imports: StMoMo,
         forecast,
         gnm,

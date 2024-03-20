@@ -76,8 +76,8 @@ In this case, the measures will be obtained using the mortality rates in the nor
 
 #The example takes more than 5 seconds because it includes
 #several fitting and forecasting process and hence all
-#the process is included in dontrun
-\dontrun{
+#the process is included in donttest
+\donttest{
 #We present a cross-validation method for spanish male regions
 
 ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40,

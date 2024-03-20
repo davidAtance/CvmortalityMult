@@ -29,8 +29,8 @@
 #' @examples
 #' ##The example takes more than 5 seconds because it includes
 #' #several fitting and forecasting process and hence all
-#' #the process is included in dontrun
-#' \dontrun{
+#' #the process is included in donttest
+#' \donttest{
 #' #To show how the function works, we need to provide fitted or forecasted data and the real data.
 #' #In this case, we employ the following data of the library:
 #' SpainRegions

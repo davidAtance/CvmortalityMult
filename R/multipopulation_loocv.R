@@ -86,8 +86,8 @@
 #' @examples
 #' #The example takes more than 5 seconds because it includes
 #' #several fitting and forecasting process and hence all
-#' #the process is included in dontrun
-#' \dontrun{
+#' #the process is included in donttest
+#' \donttest{
 #' #We present the leave-one-out cross-validation (LOOCV) method for spanish male regions
 #' #The idea is to get the same results as in the short paper published in Risk Congress 2023
 #' SpainRegions
@@ -120,19 +120,19 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
   #Check several things before start
   if(is.null(qxt) || is.null(periods) || is.null(ages) ||
      is.null(nPop) || is.null(model) || is.null(trainset1)){
-    stop("Arguments qxt, periods, ages, nPop, model, nahead, and trainset1 need to be provided.")
+    stop(warning("Arguments qxt, periods, ages, nPop, model, nahead, and trainset1 need to be provided."))
   }
 
   #2. Check that periods and ages are two vectors
   if (!is.vector(periods) || !is.vector(ages)) {
-    stop("Period or Ages are not a vector, need to be provided.")
+    stop(warning("Period or Ages are not a vector, need to be provided."))
   }
 
   if(!is.numeric(trainset1)){
-    stop("nahead must be numeric variable")
+    stop(warning("nahead must be numeric variable."))
   }
   if(trainset1 < 3){
-    stop("nahead must be a numeric variable and higher than 2.")
+    stop(warning("nahead must be a numeric variable and higher than 2."))
   }
 
   #Construct the inv.logit -- function
@@ -144,8 +144,8 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
 
   #3. Check if lxt is provided
   if(is.null(lxt)){
-    cat("Argument lxt will be obtained as the number of individuals at age
-    x and period t, starting with l0=100,000")
+    message("Argument lxt will be obtained as the number of individuals at age
+    x and period t, starting with l0=100,000.")
   }
 
   #3. Check the structure of qxt
@@ -153,24 +153,24 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
   #Starting with the values of qxt
   #1. Check if it is a list of matrix
   if(is.list(qxt)){
-    cat("Your qxt and lxt data are in list of matrix form.\n")
+    message("Your qxt and lxt data are in list of matrix form.\n")
 
     #In the case is a list of matrix check that all matrix have the same length
     for(i in 2:length(qxt)){
       dim.actual <- dim(qxt[[i]])
       if(!identical(dim(qxt[[1]]), dim.actual)){
-        stop(paste("population", i, "has a different dim regarding the rest of the chosen populations"))
+        stop(warning("population ", i, " has a different dim regarding the rest of the chosen populations."))
       }
     }
     #Check the size of the qxt is equal to number of ages, periods and populations provided
     nper.age.pop <- nperiods*nages*nPop
     if(length(qxt[[i]])*length(qxt) != nper.age.pop){
-      stop("Number of qxt is different from the period, ages and countries provided")
+      stop(warning("Number of qxt is different from the period, ages and countries provided."))
     }
 
     #Check the size of list(qxt) is the same the npop
     if(length(qxt) != nPop){
-      stop("Number of n Pop is different regarding the length of the matrix qxt")
+      stop(warning("Number of n Pop is different regarding the length of the matrix qxt."))
     }
 
     #Now, we transform the matrix to data.frame to fit the mortality data
@@ -181,7 +181,7 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
       sec.per <- c()
       for(j in min(periods):max(periods)){
         sec.per <- c(sec.per, rep(j, nages))}
-      cat("Confirm the periods correspond to columns and ages to rows.\n")
+      message("Confirm the periods correspond to columns and ages to rows.\n")
       #Check how the matrix is formed (by ages/columns or by period/columns)
 
       #Estimate lx for every population, age and period
@@ -219,14 +219,14 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
     #Check the size of the qxt is equal to number of ages, periods and populations provided
     nper.age.pop <- nperiods*nages*nPop
     if(length(qxt) != nper.age.pop){
-      stop("Number of qxt vector is different from the period, ages and countries provided")
+      stop(warning("Number of qxt vector is different from the period, ages and countries provided."))
     }
-    cat("Your qxt and lxt data are in vector form.\n")
-    cat("So, please ensure that qxt are provided by age, period and population, as follows:\n")
-    cat("age0-period0-pob1, age1-period0-pob1, ..., age.n-period0-pob1\n")
-    cat("age0-period1-pob1, age1-period1-pob1, ..., age.n-period1-pob1\n")
-    cat("...\n")
-    cat("age0-period0-pob2, age1-period0-pob2, ..., age.n-period0-pob2\n")
+    message("Your qxt and lxt data are in vector form.\n")
+    message("So, please ensure that qxt are provided by age, period and population, as follows:\n")
+    message("age0-period0-pob1, age1-period0-pob1, ..., age.n-period0-pob1\n")
+    message("age0-period1-pob1, age1-period1-pob1, ..., age.n-period1-pob1\n")
+    message("...\n")
+    message("age0-period0-pob2, age1-period0-pob2, ..., age.n-period0-pob2\n")
 
     df_qxtdata <- data.frame(matrix(NA, nrow = 0, ncol = 5))
     for (i in 1:nPop) {
@@ -258,17 +258,17 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
       df_qxtdata <- rbind(df_qxtdata, df_actual)
     }
 
-  } else{ print("qxt has to be provided as vector or list of matrix")}
+  } else{ message("qxt has to be provided as vector or list of matrix.")}
 
   #Give the correct name to the columns in the data.frame
   colnames(df_qxtdata) <- c("pop", "period", "age", "qxt", "lx")
 
   if(trainset1 > length(periods)){
-    stop("number of periods in the first training set is higher than the total number of periods")
+    stop(warning("number of periods in the first training set is higher than the total number of periods."))
   }
 
   if(trainset1 < 3){
-    stop("number of periods in the first training set must be higher than 2")
+    stop(warning("number of periods in the first training set must be higher than 2."))
   }
 
   #Also, I am going to transform qxt into a matrix to provide as result

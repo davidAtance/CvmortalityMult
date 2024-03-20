@@ -45,9 +45,9 @@
 #' @examples
 #' #The example takes more than 5 seconds because it includes
 #' #several fitting and forecasting process and hence all
-#' #the process is included in dontrun
+#' #the process is included in donttest
 #'
-#' \dontrun{
+#' \donttest{
 #' #First, we present the data that we are going to use
 #' SpainRegions
 #' ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
@@ -89,16 +89,16 @@ for_multiplicative.LC.multi <- function(fitted.obj, nahead,
   if(!identical(names(fitted.obj), c("ax", "bx", "kt", "Ii", "formula", "data.used",
                                      "qxt.real", "qxt.fitted", "logit.qxt.fitted",
                                      "Ages", "Periods","nPop"))){
-    stop("The fitted.obj does not have the structure of R-library")
+    stop(warning("The fitted.obj does not have the structure of R-library."))
   }
   if(!is.list(fitted.obj)){
-    stop("The fitted.obj is not a list. Use 'fit_mutiplicative.LC.multi' function first")
+    stop(warning("The fitted.obj is not a list. Use 'fit_mutiplicative.LC.multi' function first."))
   }
 
   if (!is.numeric(nahead)) {
-    stop("nahead has to be a numeric variable")
+    stop(warning("nahead has to be a numeric variable."))
     if (nahead <= 0) {
-      stop("nahead has to be higher than 0")
+      stop(warning("nahead has to be higher than 0."))
     }
   }
   #Construct the inv.logit -- function
