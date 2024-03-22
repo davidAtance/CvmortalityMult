@@ -380,18 +380,18 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
   if(measures == "SSE"){
     #We estimate SSE in different options
     meas_prevpops <- matrix(NA, nrow = (length(periods)-trainset1), ncol=nPop, dimnames = list(c((periods[1] + trainset1):max(df_qxtdata$period)), c(1:nPop)))
-    meas_pops <- matrix(NA, nrow = 1, ncol=nPop, dimnames = list("sse", c(1:nPop)))
+    meas_pops <- matrix(NA, nrow = 1, ncol=nPop, dimnames = list("SSE", c(1:nPop)))
 
     meas_prevtotal <- matrix(NA, nrow = (length(periods)-trainset1), ncol=nPop, dimnames = list(c((periods[1] + trainset1):max(df_qxtdata$period)), c(1:nPop)))
-    meas_prevtot <- matrix(NA, nrow = (length(periods)-trainset1), ncol = 1, dimnames = list(c((periods[1] + trainset1):max(df_qxtdata$period)), "sse"))
-    meas_total <- matrix(NA, nrow = 1, ncol = 1, dimnames = list("sse", "all ages and periods"))
+    meas_prevtot <- matrix(NA, nrow = (length(periods)-trainset1), ncol = 1, dimnames = list(c((periods[1] + trainset1):max(df_qxtdata$period)), "SSE"))
+    meas_total <- matrix(NA, nrow = 1, ncol = 1, dimnames = list("SSE", "all ages and periods"))
 
     meas_prevages <- matrix(NA, nrow = (length(periods)-trainset1), ncol = nages, dimnames = list(c((periods[1] + trainset1):max(df_qxtdata$period)), ages))
-    meas_prevag <- matrix(NA, nrow = nPop, ncol = 1, dimnames = list(c(1:nPop), "sse"))
-    meas_ages <- matrix(NA, nrow = 1, ncol = nages, dimnames = list("sse", ages))
+    meas_prevag <- matrix(NA, nrow = nPop, ncol = 1, dimnames = list(c(1:nPop), "SSE"))
+    meas_ages <- matrix(NA, nrow = 1, ncol = nages, dimnames = list("SSE", ages))
 
     meas_prevperiods <- matrix(NA, nrow = nPop, ncol = (nperiods-(trainset1)), dimnames = list(c(1:nPop), c((periods[1] + trainset1):max(df_qxtdata$period))))
-    meas_periods <- matrix(NA, nrow = 1, ncol = (nperiods-(trainset1)), dimnames = list("sse", c((periods[1] + trainset1):max(df_qxtdata$period))))
+    meas_periods <- matrix(NA, nrow = 1, ncol = (nperiods-(trainset1)), dimnames = list("SSE", c((periods[1] + trainset1):max(df_qxtdata$period))))
 
     wxt <- genWeightMat(ages = ages, years = c((periods[1] + trainset1):max(df_qxtdata$period)), clip = 0)
 
@@ -444,18 +444,18 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
   }else if(measures == "MSE"){
     #We estimate MSE in different options
     meas_prevpops <- matrix(NA, nrow = (length(periods)-trainset1), ncol=nPop, dimnames = list(c((periods[1] + trainset1):max(df_qxtdata$period)), c(1:nPop)))
-    meas_pops <- matrix(NA, nrow = 1, ncol=nPop, dimnames = list("mse", c(1:nPop)))
+    meas_pops <- matrix(NA, nrow = 1, ncol=nPop, dimnames = list("MSE", c(1:nPop)))
 
     meas_prevtotal <- matrix(NA, nrow = (length(periods)-trainset1), ncol=nPop, dimnames = list(c((periods[1] + trainset1):max(df_qxtdata$period)), c(1:nPop)))
-    meas_prevtot <- matrix(NA, nrow = (length(periods)-trainset1), ncol = 1, dimnames = list(c((periods[1] + trainset1):max(df_qxtdata$period)), "mse"))
-    meas_total <- matrix(NA, nrow = 1, ncol = 1, dimnames = list("mse", "all ages and periods"))
+    meas_prevtot <- matrix(NA, nrow = (length(periods)-trainset1), ncol = 1, dimnames = list(c((periods[1] + trainset1):max(df_qxtdata$period)), "MSE"))
+    meas_total <- matrix(NA, nrow = 1, ncol = 1, dimnames = list("MSE", "all ages and periods"))
 
     meas_prevages <- matrix(NA, nrow = (length(periods)-trainset1), ncol = nages, dimnames = list(c((periods[1] + trainset1):max(df_qxtdata$period)), ages))
-    meas_prevag <- matrix(NA, nrow = nPop, ncol = 1, dimnames = list(c(1:nPop), "mse"))
-    meas_ages <- matrix(NA, nrow = 1, ncol = nages, dimnames = list("mse", ages))
+    meas_prevag <- matrix(NA, nrow = nPop, ncol = 1, dimnames = list(c(1:nPop), "MSE"))
+    meas_ages <- matrix(NA, nrow = 1, ncol = nages, dimnames = list("MSE", ages))
 
     meas_prevperiods <- matrix(NA, nrow = nPop, ncol = (nperiods-(trainset1)), dimnames = list(c(1:nPop), c((periods[1] + trainset1):max(df_qxtdata$period))))
-    meas_periods <- matrix(NA, nrow = 1, ncol = (nperiods-(trainset1)), dimnames = list("mse", c((periods[1] + trainset1):max(df_qxtdata$period))))
+    meas_periods <- matrix(NA, nrow = 1, ncol = (nperiods-(trainset1)), dimnames = list("MSE", c((periods[1] + trainset1):max(df_qxtdata$period))))
 
     wxt <- genWeightMat(ages = ages, years = c((periods[1] + trainset1):max(df_qxtdata$period)), clip = 0)
     for(i in 1:nPop){
@@ -507,18 +507,18 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
   }else if(measures == "MAE"){
     #We estimate MAE in different options
     meas_prevpops <- matrix(NA, nrow = (length(periods)-trainset1), ncol=nPop, dimnames = list(c((periods[1] + trainset1):max(df_qxtdata$period)), c(1:nPop)))
-    meas_pops <- matrix(NA, nrow = 1, ncol=nPop, dimnames = list("mae", c(1:nPop)))
+    meas_pops <- matrix(NA, nrow = 1, ncol=nPop, dimnames = list("MAE", c(1:nPop)))
 
     meas_prevtotal <- matrix(NA, nrow = (length(periods)-trainset1), ncol=nPop, dimnames = list(c((periods[1] + trainset1):max(df_qxtdata$period)), c(1:nPop)))
-    meas_prevtot <- matrix(NA, nrow = (length(periods)-trainset1), ncol = 1, dimnames = list(c((periods[1] + trainset1):max(df_qxtdata$period)), "mae"))
-    meas_total <- matrix(NA, nrow = 1, ncol = 1, dimnames = list("mae", "all ages and periods"))
+    meas_prevtot <- matrix(NA, nrow = (length(periods)-trainset1), ncol = 1, dimnames = list(c((periods[1] + trainset1):max(df_qxtdata$period)), "MAE"))
+    meas_total <- matrix(NA, nrow = 1, ncol = 1, dimnames = list("MAE", "all ages and periods"))
 
     meas_prevages <- matrix(NA, nrow = (length(periods)-trainset1), ncol = nages, dimnames = list(c((periods[1] + trainset1):max(df_qxtdata$period)), ages))
-    meas_prevag <- matrix(NA, nrow = nPop, ncol = 1, dimnames = list(c(1:nPop), "mae"))
-    meas_ages <- matrix(NA, nrow = 1, ncol = nages, dimnames = list("mae", ages))
+    meas_prevag <- matrix(NA, nrow = nPop, ncol = 1, dimnames = list(c(1:nPop), "MAE"))
+    meas_ages <- matrix(NA, nrow = 1, ncol = nages, dimnames = list("MAE", ages))
 
     meas_prevperiods <- matrix(NA, nrow = nPop, ncol = (nperiods-(trainset1)), dimnames = list(c(1:nPop), c((periods[1] + trainset1):max(df_qxtdata$period))))
-    meas_periods <- matrix(NA, nrow = 1, ncol = (nperiods-(trainset1)), dimnames = list("mae", c((periods[1] + trainset1):max(df_qxtdata$period))))
+    meas_periods <- matrix(NA, nrow = 1, ncol = (nperiods-(trainset1)), dimnames = list("MAE", c((periods[1] + trainset1):max(df_qxtdata$period))))
 
     wxt <- genWeightMat(ages = ages, years = c((periods[1] + trainset1):max(df_qxtdata$period)), clip = 0)
 
@@ -570,18 +570,18 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
   }else if(measures == "MAPE"){
     #We estimate MAPE in different options
     meas_prevpops <- matrix(NA, nrow = (length(periods)-trainset1), ncol=nPop, dimnames = list(c((periods[1] + trainset1):max(df_qxtdata$period)), c(1:nPop)))
-    meas_pops <- matrix(NA, nrow = 1, ncol=nPop, dimnames = list("mape", c(1:nPop)))
+    meas_pops <- matrix(NA, nrow = 1, ncol=nPop, dimnames = list("MAPE", c(1:nPop)))
 
     meas_prevtotal <- matrix(NA, nrow = (length(periods)-trainset1), ncol=nPop, dimnames = list(c((periods[1] + trainset1):max(df_qxtdata$period)), c(1:nPop)))
-    meas_prevtot <- matrix(NA, nrow = (length(periods)-trainset1), ncol = 1, dimnames = list(c((periods[1] + trainset1):max(df_qxtdata$period)), "mape"))
-    meas_total <- matrix(NA, nrow = 1, ncol = 1, dimnames = list("mape", "all ages and periods"))
+    meas_prevtot <- matrix(NA, nrow = (length(periods)-trainset1), ncol = 1, dimnames = list(c((periods[1] + trainset1):max(df_qxtdata$period)), "MAPE"))
+    meas_total <- matrix(NA, nrow = 1, ncol = 1, dimnames = list("MAPE", "all ages and periods"))
 
     meas_prevages <- matrix(NA, nrow = (length(periods)-trainset1), ncol = nages, dimnames = list(c((periods[1] + trainset1):max(df_qxtdata$period)), ages))
-    meas_prevag <- matrix(NA, nrow = nPop, ncol = 1, dimnames = list(c(1:nPop), "mape"))
-    meas_ages <- matrix(NA, nrow = 1, ncol = nages, dimnames = list("mape", ages))
+    meas_prevag <- matrix(NA, nrow = nPop, ncol = 1, dimnames = list(c(1:nPop), "MAPE"))
+    meas_ages <- matrix(NA, nrow = 1, ncol = nages, dimnames = list("MAPE", ages))
 
     meas_prevperiods <- matrix(NA, nrow = nPop, ncol = (nperiods-(trainset1)), dimnames = list(c(1:nPop), c((periods[1] + trainset1):max(df_qxtdata$period))))
-    meas_periods <- matrix(NA, nrow = 1, ncol = (nperiods-(trainset1)), dimnames = list("mape", c((periods[1] + trainset1):max(df_qxtdata$period))))
+    meas_periods <- matrix(NA, nrow = 1, ncol = (nperiods-(trainset1)), dimnames = list("MAPE", c((periods[1] + trainset1):max(df_qxtdata$period))))
 
     wxt <- genWeightMat(ages = ages, years = c((periods[1] + trainset1):max(df_qxtdata$period)), clip = 0)
     for(i in 1:nPop){
@@ -611,6 +611,7 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
           prev <- replace(prev, prev == "-Inf", 0)
           prev <- replace(prev, prev == "NA", 0)
           prev <- replace(prev, prev == "NaN", 0)
+          meas_prevag[i,] <- sum(prev)
         }
         meas_prevages[pe,j] <- sum(meas_prevag)/length(meas_prevag)
       }
@@ -803,7 +804,7 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
       meas_periods[3,j] <- sum(meas_prevperiods3[,j])/(nages*nPop)
       meas_periods[4,j] <- sum(meas_prevperiods4[,j])/(nages*nPop)
     }
-  }else(stop("measures must be equal to SSE, MSE, MAE, MAPE or All"))
+  }else(stop(warning("measures must be equal to SSE, MSE, MAE, MAPE or All.")))
 
   return <- list(ax = ax,
                  bx = bx,

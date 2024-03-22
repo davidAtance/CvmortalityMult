@@ -371,18 +371,18 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative"),
   if(measures == "SSE"){
     #We estimate SSE in different options
     meas_prevpops <- matrix(NA, nrow = length(test1), ncol=nPop, dimnames = list(c(1:length(test1)), c(1:nPop)))
-    meas_pops <- matrix(NA, nrow = 1, ncol=nPop, dimnames = list("sse", c(1:nPop)))
+    meas_pops <- matrix(NA, nrow = 1, ncol=nPop, dimnames = list("SSE", c(1:nPop)))
 
     meas_prevtotal <- matrix(NA, nrow = length(test1), ncol=nPop, dimnames = list(c(1:length(test1)), c(1:nPop)))
-    meas_prevtot <- matrix(NA, nrow = length(test1), ncol = 1, dimnames = list(c(1:length(test1)), "mse"))
-    meas_total <- matrix(NA, nrow = 1, ncol = 1, dimnames = list("sse", "all ages and periods"))
+    meas_prevtot <- matrix(NA, nrow = length(test1), ncol = 1, dimnames = list(c(1:length(test1)), "SSE"))
+    meas_total <- matrix(NA, nrow = 1, ncol = 1, dimnames = list("SSE", "all ages and periods"))
 
     meas_prevages <- matrix(NA, nrow = length(test1), ncol = nages, dimnames = list(c(1:length(test1)), ages))
-    meas_prevag <- matrix(NA, nrow = nPop, ncol = 1, dimnames = list(c(1:nPop), "sse"))
-    meas_ages <- matrix(NA, nrow = 1, ncol = nages, dimnames = list("sse", ages))
+    meas_prevag <- matrix(NA, nrow = nPop, ncol = 1, dimnames = list(c(1:nPop), "SSE"))
+    meas_ages <- matrix(NA, nrow = 1, ncol = nages, dimnames = list("SSE", ages))
 
     meas_prevperiods <- matrix(NA, nrow = nPop, ncol = length(test1), dimnames = list(c(1:nPop), c(1:length(test1))))
-    meas_periods <- matrix(NA, nrow = 1, ncol = length(test1), dimnames = list("sse", c(1:length(test1))))
+    meas_periods <- matrix(NA, nrow = 1, ncol = length(test1), dimnames = list("SSE", c(1:length(test1))))
 
     wxt <- genWeightMat(ages = ages, years = c((periods[1] + 3 + nahead):max(df_qxtdata$period)), clip = 0)
     for(i in 1:nPop){
@@ -475,18 +475,18 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative"),
   }else if(measures == "MSE"){
     #We estimate MSE in different options
     meas_prevpops <- matrix(NA, nrow = length(test1), ncol=nPop, dimnames = list(c(1:length(test1)), c(1:nPop)))
-    meas_pops <- matrix(NA, nrow = 1, ncol=nPop, dimnames = list("mse", c(1:nPop)))
+    meas_pops <- matrix(NA, nrow = 1, ncol=nPop, dimnames = list("MSE", c(1:nPop)))
 
     meas_prevtotal <- matrix(NA, nrow = length(test1), ncol=nPop, dimnames = list(c(1:length(test1)), c(1:nPop)))
-    meas_prevtot <- matrix(NA, nrow = length(test1), ncol = 1, dimnames = list(c(1:length(test1)), "mse"))
-    meas_total <- matrix(NA, nrow = 1, ncol = 1, dimnames = list("mse", "all ages and periods"))
+    meas_prevtot <- matrix(NA, nrow = length(test1), ncol = 1, dimnames = list(c(1:length(test1)), "MSE"))
+    meas_total <- matrix(NA, nrow = 1, ncol = 1, dimnames = list("MSE", "all ages and periods"))
 
     meas_prevages <- matrix(NA, nrow = length(test1), ncol = nages, dimnames = list(c(1:length(test1)), ages))
-    meas_prevag <- matrix(NA, nrow = nPop, ncol = 1, dimnames = list(c(1:nPop), "mse"))
-    meas_ages <- matrix(NA, nrow = 1, ncol = nages, dimnames = list("mse", ages))
+    meas_prevag <- matrix(NA, nrow = nPop, ncol = 1, dimnames = list(c(1:nPop), "MSE"))
+    meas_ages <- matrix(NA, nrow = 1, ncol = nages, dimnames = list("MSE", ages))
 
     meas_prevperiods <- matrix(NA, nrow = nPop, ncol = length(test1), dimnames = list(c(1:nPop), c(1:length(test1))))
-    meas_periods <- matrix(NA, nrow = 1, ncol = length(test1), dimnames = list("mse", c(1:length(test1))))
+    meas_periods <- matrix(NA, nrow = 1, ncol = length(test1), dimnames = list("MSE", c(1:length(test1))))
 
     wxt <- genWeightMat(ages = ages, years = c((periods[1] + 3 + nahead):max(df_qxtdata$period)), clip = 0)
     for(i in 1:nPop){
@@ -546,7 +546,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative"),
             meas_prevag[i,] <- sum(prev)
           }
         }
-        meas_prevages[pe,j] <- sum(meas_prevag)/(test1[j]*nPop)
+        meas_prevages[pe,j] <- sum(meas_prevag)/(test1[pe]*nPop)
       }
       meas_ages[,j] <- mean(meas_prevages[,j])
     }
@@ -577,18 +577,18 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative"),
   }else if(measures == "MAE"){
     #We estimate MAE in different options
     meas_prevpops <- matrix(NA, nrow = length(test1), ncol=nPop, dimnames = list(c(1:length(test1)), c(1:nPop)))
-    meas_pops <- matrix(NA, nrow = 1, ncol=nPop, dimnames = list("mae", c(1:nPop)))
+    meas_pops <- matrix(NA, nrow = 1, ncol=nPop, dimnames = list("MAE", c(1:nPop)))
 
     meas_prevtotal <- matrix(NA, nrow = length(test1), ncol=nPop, dimnames = list(c(1:length(test1)), c(1:nPop)))
-    meas_prevtot <- matrix(NA, nrow = length(test1), ncol = 1, dimnames = list(c(1:length(test1)), "mae"))
-    meas_total <- matrix(NA, nrow = 1, ncol = 1, dimnames = list("mae", "all ages and periods"))
+    meas_prevtot <- matrix(NA, nrow = length(test1), ncol = 1, dimnames = list(c(1:length(test1)), "MAE"))
+    meas_total <- matrix(NA, nrow = 1, ncol = 1, dimnames = list("MAE", "all ages and periods"))
 
     meas_prevages <- matrix(NA, nrow = length(test1), ncol = nages, dimnames = list(c(1:length(test1)), ages))
-    meas_prevag <- matrix(NA, nrow = nPop, ncol = 1, dimnames = list(c(1:nPop), "mae"))
-    meas_ages <- matrix(NA, nrow = 1, ncol = nages, dimnames = list("mae", ages))
+    meas_prevag <- matrix(NA, nrow = nPop, ncol = 1, dimnames = list(c(1:nPop), "MAE"))
+    meas_ages <- matrix(NA, nrow = 1, ncol = nages, dimnames = list("MAE", ages))
 
     meas_prevperiods <- matrix(NA, nrow = nPop, ncol = length(test1), dimnames = list(c(1:nPop), c(1:length(test1))))
-    meas_periods <- matrix(NA, nrow = 1, ncol = length(test1), dimnames = list("mae", c(1:length(test1))))
+    meas_periods <- matrix(NA, nrow = 1, ncol = length(test1), dimnames = list("MAE", c(1:length(test1))))
 
     wxt <- genWeightMat(ages = ages, years = c((periods[1] + 3 + nahead):max(df_qxtdata$period)), clip = 0)
 
@@ -648,7 +648,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative"),
             meas_prevag[i,] <- sum(prev)
           }
         }
-        meas_prevages[pe,j] <- sum(meas_prevag)/(test1[j]*nPop)
+        meas_prevages[pe,j] <- sum(meas_prevag)/(test1[pe]*nPop)
       }
       meas_ages[,j] <- mean(meas_prevages[,j])
     }
@@ -680,18 +680,18 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative"),
   }else if(measures == "MAPE"){
     #We estimate MAPE in different options
     meas_prevpops <- matrix(NA, nrow = length(test1), ncol=nPop, dimnames = list(c(1:length(test1)), c(1:nPop)))
-    meas_pops <- matrix(NA, nrow = 1, ncol=nPop, dimnames = list("sse", c(1:nPop)))
+    meas_pops <- matrix(NA, nrow = 1, ncol=nPop, dimnames = list("MAPE", c(1:nPop)))
 
     meas_prevtotal <- matrix(NA, nrow = length(test1), ncol=nPop, dimnames = list(c(1:length(test1)), c(1:nPop)))
-    meas_prevtot <- matrix(NA, nrow = length(test1), ncol = 1, dimnames = list(c(1:length(test1)), "mse"))
-    meas_total <- matrix(NA, nrow = 1, ncol = 1, dimnames = list("sse", "all ages and periods"))
+    meas_prevtot <- matrix(NA, nrow = length(test1), ncol = 1, dimnames = list(c(1:length(test1)), " MAPE"))
+    meas_total <- matrix(NA, nrow = 1, ncol = 1, dimnames = list("MAPE", "all ages and periods"))
 
     meas_prevages <- matrix(NA, nrow = length(test1), ncol = nages, dimnames = list(c(1:length(test1)), ages))
-    meas_prevag <- matrix(NA, nrow = nPop, ncol = 1, dimnames = list(c(1:nPop), "sse"))
-    meas_ages <- matrix(NA, nrow = 1, ncol = nages, dimnames = list("sse", ages))
+    meas_prevag <- matrix(NA, nrow = nPop, ncol = 1, dimnames = list(c(1:nPop), "mape"))
+    meas_ages <- matrix(NA, nrow = 1, ncol = nages, dimnames = list("MAPE", ages))
 
     meas_prevperiods <- matrix(NA, nrow = nPop, ncol = length(test1), dimnames = list(c(1:nPop), c(1:length(test1))))
-    meas_periods <- matrix(NA, nrow = 1, ncol = length(test1), dimnames = list("sse", c(1:length(test1))))
+    meas_periods <- matrix(NA, nrow = 1, ncol = length(test1), dimnames = list("MAPE", c(1:length(test1))))
 
     wxt <- genWeightMat(ages = ages, years = c((periods[1] + 3 + nahead):max(df_qxtdata$period)), clip = 0)
     for(i in 1:nPop){
@@ -751,7 +751,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative"),
             meas_prevag[i,] <- sum(prev)
           }
         }
-        meas_prevages[pe,j] <- sum(meas_prevag)/(test1[j]*nPop)
+        meas_prevages[pe,j] <- sum(meas_prevag)/(test1[pe]*nPop)
       }
       meas_ages[,j] <- mean(meas_prevages[,j])
     }
@@ -988,9 +988,9 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative"),
           }
         }
         meas_prevages1[pe,j] <- sum(meas_prevag[,1])
-        meas_prevages2[pe,j] <- sum(meas_prevag[,2])/(test1[j]*nPop)
-        meas_prevages3[pe,j] <- sum(meas_prevag[,3])/(test1[j]*nPop)
-        meas_prevages4[pe,j] <- sum(meas_prevag[,4])/(test1[j]*nPop)
+        meas_prevages2[pe,j] <- sum(meas_prevag[,2])/(test1[pe]*nPop)
+        meas_prevages3[pe,j] <- sum(meas_prevag[,3])/(test1[pe]*nPop)
+        meas_prevages4[pe,j] <- sum(meas_prevag[,4])/(test1[pe]*nPop)
       }
       meas_ages[1,j] <- mean(meas_prevages1[,j])
       meas_ages[2,j] <- mean(meas_prevages2[,j])
@@ -1064,11 +1064,12 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative"),
         }
       }
       meas_periods[1,j] <- sum(meas_prevperiods1[,j])
-      meas_periods[1,j] <- sum(meas_prevperiods2[,j])/(nages*nPop*test1[j])
-      meas_periods[1,j] <- sum(meas_prevperiods3[,j])/(nages*nPop*test1[j])
-      meas_periods[1,j] <- sum(meas_prevperiods4[,j])/(nages*nPop*test1[j])
+      meas_periods[2,j] <- sum(meas_prevperiods2[,j])/(nages*nPop*test1[j])
+      meas_periods[3,j] <- sum(meas_prevperiods3[,j])/(nages*nPop*test1[j])
+      meas_periods[4,j] <- sum(meas_prevperiods4[,j])/(nages*nPop*test1[j])
     }
-  }else(stop("measures must be equal to SSE, MSE, MAE, MAPE or All"))
+  }
+  else(stop(warning("measures must be equal to SSE, MSE, MAE, MAPE or All.")))
 
   return <- list(ax = ax,
                  bx = bx,

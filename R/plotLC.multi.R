@@ -71,9 +71,11 @@ plotLC.multi <- function(fitted.obj){
   kt_main <- expression(k[t])
   Ii_main <- expression(I[i])
 
-  oldpar <- par(no.readonly = TRUE)
 
   if(pops != 1){
+    oldpar <- par(no.readonly = TRUE)
+    on.exit(par(oldpar))
+
     par(mfrow=c(1,4))
     plot(ages, ax, ylab="", xlab="x = age", main =ax_main,
          type="l", lwd=2)
@@ -83,7 +85,11 @@ plotLC.multi <- function(fitted.obj){
          type="l", lwd=2)
     plot(c(1:fitted.obj$nPop), Ii, ylab="", xlab="i = population", main = Ii_main,
          type="l", lwd=2)
+
   } else if(pops == 1){
+    oldpar <- par(no.readonly = TRUE)
+    on.exit(par(oldpar))
+
     par(mfrow=c(1,3))
     plot(ages, ax, ylab="", xlab="x = age", main =ax_main,
          type="l", lwd=2)
@@ -91,7 +97,6 @@ plotLC.multi <- function(fitted.obj){
          type="l", lwd=2)
     plot(pers, kt, ylab="", xlab="t = period", main =kt_main,
          type="l", lwd=2)
-  }
+    }
 
-  on.exit(par(oldpar))
 }
