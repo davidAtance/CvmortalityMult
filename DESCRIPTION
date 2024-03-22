@@ -15,7 +15,7 @@ Description: Implementation of cross-validation method for testing the forecasti
   Debon, A., Montes, F., & Martinez-Ruiz, F. (2011) <doi:10.1007/s13385-011-0043-z>.
   Lee, R.D. & Carter, L.R. (1992) <doi:10.1080/01621459.1992.10475265>.
   Russolillo, M., Giordano, G., & Haberman, S. (2011) <doi:10.1080/03461231003611933>.
-  Santolino, M. (2023). <doi:10.3390/risks11100170>.
+  Santolino, M. (2023) <doi:10.3390/risks11100170>.
 License: MIT + file LICENSE
 URL: https://github.com/davidAtance/CvmortalityMult
 BugReports: https://github.com/davidAtance/CvmortalityMult/issues
