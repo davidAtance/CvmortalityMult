@@ -14,5 +14,7 @@ or, to install the latest package version from github:
 devtools::install_github("davidAtance/CvmortalityMult")
 library(CvmortalityMult)
 ```
+Cran repository can be found in:
+https://cran.r-project.org/web/packages/CvmortalityMult/index.html
 If you are interested in the package feel free to email david.atance@uah.es or track development at http://github.com/davidAtance/CvmortalityMult
 
