@@ -1,4 +1,4 @@
-#' SUM of SQUARED ERRORS (SSE)
+#' Sum of Squared Errors (SSE)
 #' @description
 #' R function to estimate the sum of squared errors for the mortality rates:
 #' \deqn{\sum_{x}^{} \sum_{t} \left( qxt1 - qxt2 \right)^{2}}
@@ -37,7 +37,9 @@
 #' #To show how the function works, we need to provide fitted or forecasted data and the real data.
 #' #In this case, we employ the following data of the library:
 #' SpainRegions
+#'
 #' ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
+#'
 #' #In this case, we fit for males providing the lxt
 #' library(gnm)
 #' multiplicative_Spainmales <- fit_multiplicative.LC.multi(qxt = SpainRegions$qx_male,
@@ -45,6 +47,8 @@
 #'                               ages = c(ages),
 #'                               nPop = 18,
 #'                               lxt = SpainRegions$lx_male)
+#'
+#' multiplicative_Spainmales
 #'
 #' #Once, we have the fitted data, we will obtain the SSE for the first population.
 #' #We need to obtain wxt (weight of the mortality rates or data provided) using a
@@ -57,11 +61,16 @@
 #' @export
 SSE <- function(qxt_re, qxt_aju, wxt){
   ind <- (wxt > 0)
-  res <- array(NA, dim = dim(wxt))
+  res <- array(NA_real_, dim = dim(wxt))
   res[ind] <- (qxt_re[ind] - qxt_aju[ind])^2
   res[ind] <- replace(res[ind], res[ind] == "Inf", 0)
   res[ind] <- replace(res[ind], res[ind] == "-Inf", 0)
   res[ind] <- replace(res[ind], res[ind] == "NA", 0)
   res[ind] <- replace(res[ind], res[ind] == "NaN", 0)
-  sum(res)
+  result <- sum(res)
+
+  return <- list(Measure = result,
+                 Method = "SSE")
+  class(return) <- "MoGF"
+  return
 }

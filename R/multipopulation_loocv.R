@@ -1,5 +1,5 @@
-#' FUNCTION TO APPLY LEAVE-ONE-OUT CROSS-VALIDATION TECHNIQUE FOR TESTING THE FORECASTING ACCURACY
-#' OF MULTI-POPULATION MORTALITY MODELS
+#' Function to apply Leave-One-Out Cross-Validation (LOOCV) technique for testing the forecasting accuracy
+#' of multi-population mortality models
 #' @description
 #' R function for testing the accuracy out-of-sample of different multi-population mortality models, Additive (Debon et al., 2011) and Multiplicative (Russolillo et al., 2011).
 #' We provide a R function that employ the leave-one-out cross-validation technique for data panel-time series (Atance et al. 2020) to test the forecasting accuracy of one-multipopulation mortality model.
@@ -14,17 +14,17 @@
 #' In this case, the measures will be obtained using the mortality rates in the normal scale as recommended by Santolino (2023) against the log scale.
 #'
 #' @param qxt mortality rates used to fit the multi-population mortality models. This rates can be provided in matrix or in data.frame.
-#' @param model choose the multi-population mortality model to fit the mortality rates c("`additive`", "`multiplicative`")
+#' @param model multi-population mortality model chosen to fit the mortality rates c("`additive`", "`multiplicative`"). In case you do not provide any value, the function will apply the "`additive`" option.
 #' @param periods periods considered in the fitting in a vector way c(minyear:maxyear).
 #' @param ages vector with the ages considered in the fitting. If the mortality rates provide from an abridged life tables, it is necessary to provide a vector with the ages, see the example.
 #' @param nPop number of population considered for fitting.
 #' @param lxt survivor function considered for every population, not necessary to provide.
 #' @param ktmethod method used to forecast the value of `kt` Arima(p,d,q) or ARIMA(0,1,0); c("`Arimapdq`", "`arima010`").
 #' @param kt_include.cte if you want that `kt` include constant in the arima process.
-#' @param measures choose the non-penalized measure of forecasting accuracy that you want to use; c("`SSE`", "`MSE`", "`MAE`", "`MAPE`", "`All`"). Check the function
+#' @param measures choose the non-penalized measure of forecasting accuracy that you want to use; c("`SSE`", "`MSE`", "`MAE`", "`MAPE`", "`All`"). Check the function. In case you do not provide any value, the function will apply the "`SSE`" as measure of forecasting accuracy.
 #' @param trainset1 vector with the periods for the first training set.  This value must be greater than 2 to meet the minimum time series size (Hyndman and Khandakar, 2008).
 #'
-#' @return A list with different components of the cross-validation process:
+#' @return A list with class \code{"MultiCv"} including different components of the cross-validation process:
 #' * `ax` parameter that captures the average shape of the mortality curve in all considered populations.
 #' * `bx` parameter that explains the age effect x with respect to the general trend `kt` in the mortality rates of all considered populations.
 #' * `kt.fitted` obtained values for the tendency behavior captured by `kt`.
@@ -41,9 +41,10 @@
 #' * `meas_pop` measure of forecasting accuracy through the populations considered in the study.
 #' * `meas_total` a global measure of forecasting accuracy through the ages, periods and populations of the study.
 #'
-#' @seealso \code{\link{multipopulation_cv}}, \code{\link{fit_additive.LC.multi}}, \code{\link{fit_multiplicative.LC.multi}},
-#' \code{\link{for_additive.LC.multi}}, \code{\link{for_multiplicative.LC.multi}},
-#' \code{\link{plotLC.multi}}, \code{\link{SSE}}, \code{\link{MAE}}, \code{\link{MAPE}}.
+#' @seealso \code{\link{multipopulation_cv}},
+#' \code{\link{fitLCmulti}}, \code{\link{forecast.fitLCmulti}},
+#' \code{\link{plot.fitLCmulti}}, \code{\link{plot.forLCmulti}},
+#' \code{\link{SSE}}, \code{\link{MAE}}, \code{\link{MSE}}, \code{\link{MAPE}}.
 #'
 #' @references
 #' Atance, D., Debon, A., and Navarro, E. (2020).
@@ -94,6 +95,7 @@
 #' ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40,
 #'          45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
 #' library(gnm)
+#' library(forecast)
 #' #Let start with a simple trainset1 = 10 CV method obtaining the SSE forecasting measure of accuracy
 #' loocv_Spainmales_addit <- multipopulation_loocv(qxt = SpainRegions$qx_male,
 #'                                          model = c("additive"),
@@ -103,6 +105,7 @@
 #'                                          kt_include.cte = TRUE,
 #'                                          measures = c("SSE"),
 #'                                          trainset1 = 10)
+#' loocv_Spainmales_addit
 #'
 #' #Once, we have run the function we can check the result in different ways:
 #' loocv_Spainmales_addit$meas_ages
@@ -118,26 +121,29 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
                                measures = c("SSE", "MSE", "MAE", "MAPE", "All"),
                                trainset1){
   #Check several things before start
-  if(is.null(qxt) || is.null(periods) || is.null(ages) ||
-     is.null(nPop) || is.null(model) || is.null(trainset1)){
-    stop(warning("Arguments qxt, periods, ages, nPop, model, nahead, and trainset1 need to be provided."))
+  if(is.null(qxt) || is.null(model) || is.null(periods) || is.null(ages) ||
+     is.null(nPop) || is.null(model) || is.null(nahead) || is.null(measures) ){
+    stop("Arguments qxt, model, periods, ages, nPop, and model, need to be provided.")
   }
 
   #2. Check that periods and ages are two vectors
   if (!is.vector(periods) || !is.vector(ages)) {
-    stop(warning("Period or Ages are not a vector, need to be provided."))
+    stop("Period or Ages are not a vector, need to be provided.")
   }
 
   if(!is.numeric(trainset1)){
-    stop(warning("nahead must be numeric variable."))
+    stop("nahead must be numeric variable.")
   }
   if(trainset1 < 3){
-    stop(warning("nahead must be a numeric variable and higher than 2."))
+    stop("nahead must be a numeric variable and higher than 2.")
   }
 
-  #Construct the inv.logit -- function
-  inv.logit <- function(x){exp(x)/(1+exp(x))}
-  logit<-function(x){log(x/(1-x))}
+  valid_measures <- c("SSE", "MSE", "MAE", "MAPE", "All")
+  measures <- match.arg(measures, valid_measures)
+
+  #We will use plogis() for inverse logit
+  #plogis
+  #and qlogis for logit
 
   nperiods <- length(periods)
   nages <- length(ages)
@@ -159,18 +165,18 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
     for(i in 2:length(qxt)){
       dim.actual <- dim(qxt[[i]])
       if(!identical(dim(qxt[[1]]), dim.actual)){
-        stop(warning("population ", i, " has a different dim regarding the rest of the chosen populations."))
+        stop("population ", i, " has a different dim regarding the rest of the chosen populations.")
       }
     }
     #Check the size of the qxt is equal to number of ages, periods and populations provided
     nper.age.pop <- nperiods*nages*nPop
     if(length(qxt[[i]])*length(qxt) != nper.age.pop){
-      stop(warning("Number of qxt is different from the period, ages and countries provided."))
+      stop("Number of qxt is different from the period, ages and countries provided.")
     }
 
     #Check the size of list(qxt) is the same the npop
     if(length(qxt) != nPop){
-      stop(warning("Number of n Pop is different regarding the length of the matrix qxt."))
+      stop("Number of n Pop is different regarding the length of the matrix qxt.")
     }
 
     #Now, we transform the matrix to data.frame to fit the mortality data
@@ -219,7 +225,7 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
     #Check the size of the qxt is equal to number of ages, periods and populations provided
     nper.age.pop <- nperiods*nages*nPop
     if(length(qxt) != nper.age.pop){
-      stop(warning("Number of qxt vector is different from the period, ages and countries provided."))
+      stop("Number of qxt vector is different from the period, ages and countries provided.")
     }
     message("Your qxt and lxt data are in vector form.\n")
     message("So, please ensure that qxt are provided by age, period and population, as follows:\n")
@@ -264,11 +270,11 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
   colnames(df_qxtdata) <- c("pop", "period", "age", "qxt", "lx")
 
   if(trainset1 > length(periods)){
-    stop(warning("number of periods in the first training set is higher than the total number of periods."))
+    stop("number of periods in the first training set is higher than the total number of periods.")
   }
 
   if(trainset1 < 3){
-    stop(warning("number of periods in the first training set must be higher than 2."))
+    stop("number of periods in the first training set must be higher than 2.")
   }
 
   #Also, I am going to transform qxt into a matrix to provide as result
@@ -324,24 +330,26 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
     df_qxtdata2 <- df_qxtdata[df_qxtdata$period < periods2,]
 
     if(model == "additive"){
-      fitted.obj <- fit_additive.LC.multi(qxt = df_qxtdata2$qxt,
-                                          periods = c(min(periods):(periods2-1)),
-                                          ages = ages,
-                                          nPop = nPop, lxt = df_qxtdata2$lxt)
-      forecast.obj <- for_additive.LC.multi(fitted.obj,
-                                                 nahead = test1[reps],
-                                                 ktmethod = ktmethod,
-                                                 kt_include.cte = kt_include.cte)
+      object <- fitLCmulti(model = "additive",
+                           qxt = df_qxtdata2$qxt,
+                           periods = c(min(periods):(periods2-1)),
+                           ages = ages,
+                           nPop = nPop, lxt = df_qxtdata2$lxt)
+      forecast.obj <- forecast.fitLCmulti(object,
+                                          nahead = test1[reps],
+                                          ktmethod = ktmethod,
+                                          kt_include.cte = kt_include.cte)
 
     } else if(model == "multiplicative"){
-      fitted.obj <- fit_multiplicative.LC.multi(qxt = df_qxtdata2$qxt,
-                                                periods = c(min(periods):(periods2-1)),
-                                                ages = ages,
-                                                nPop = nPop, lxt = df_qxtdata2$lxt)
-      forecast.obj <- for_multiplicative.LC.multi(fitted.obj,
-                                                 nahead = test1[reps],
-                                                 ktmethod = ktmethod,
-                                                 kt_include.cte = kt_include.cte)
+      object <- fitLCmulti(model = "multiplicative",
+                           qxt = df_qxtdata2$qxt,
+                           periods = c(min(periods):(periods2-1)),
+                           ages = ages,
+                           nPop = nPop, lxt = df_qxtdata2$lxt)
+      forecast.obj <- forecast.fitLCmulti(object,
+                                          nahead = test1[reps],
+                                          ktmethod = ktmethod,
+                                          kt_include.cte = kt_include.cte)
 
 
     }
@@ -359,13 +367,13 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
         qxt.forecast[[i]][,npos:npos2] <- forecast.obj$qxt.future[[i]]
       }}
 
-    fitting.data[[paste0("loop-", reps, " from ", periods[1], " to ", periods2-1)]] <- fitted.obj
+    fitting.data[[paste0("loop-", reps, " from ", periods[1], " to ", periods2-1)]] <- object
     forecasting.data[[paste0("loop-", reps, " from ", periods[1], " to ", periods2-1)]] <- forecast.obj
 
-    ax[[paste0("loop-", reps, " from ", periods[1], " to ", periods2-1)]] <- fitted.obj$ax
-    bx[[paste0("loop-", reps, " from ", periods[1], " to ", periods2-1)]] <- fitted.obj$bx
-    kt[[paste0("loop-", reps, " from ", periods[1], " to ", periods2-1)]] <- fitted.obj$kt
-    Ii[[paste0("loop-", reps, " from ", periods[1], " to ", periods2-1)]] <- fitted.obj$Ii
+    ax[[paste0("loop-", reps, " from ", periods[1], " to ", periods2-1)]] <- object$ax
+    bx[[paste0("loop-", reps, " from ", periods[1], " to ", periods2-1)]] <- object$bx
+    kt[[paste0("loop-", reps, " from ", periods[1], " to ", periods2-1)]] <- object$kt
+    Ii[[paste0("loop-", reps, " from ", periods[1], " to ", periods2-1)]] <- object$Ii
 
     kt.fut[[paste0("loop-", reps, " for ", periods2)]] <- forecast.obj$kt.fut
     kt.arima[[paste0("loop-", reps, " for ", periods2)]] <- forecast.obj$arimakt
@@ -374,7 +382,7 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
 
   #We estimate the logit for the forecast qxt
   for(i in 1:nPop){
-    logit.qxt.forecast[[i]] <- logit(qxt.forecast[[i]])
+    logit.qxt.forecast[[i]] <- qlogis(qxt.forecast[[i]])
   }
 
   if(measures == "SSE"){
@@ -397,9 +405,10 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
 
     for(i in 1:nPop){
       for(j in 1:(length(periods)-trainset1)){
-        meas_prevpops[j,i] <- SSE(qxt_re = mat_qxt[[i]][,(trainset1+j)],
-                                  qxt_aju= qxt.forecast[[i]][,j],
-                                  wxt = genWeightMat(ages = ages, years = 1, clip = 0))
+        meas_prevpops[j,i] <- MeasureAcurracy(measure = "SSE",
+                                              qxt_re = mat_qxt[[i]][,(trainset1+j)],
+                                              qxt_aju= qxt.forecast[[i]][,j],
+                                              wxt = genWeightMat(ages = ages, years = 1, clip = 0))$value
 
         prev <- (mat_qxt[[i]][,(trainset1+j)] - qxt.forecast[[i]][,j])^2
         prev <- replace(prev, prev == "Inf", 0)
@@ -460,9 +469,10 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
     wxt <- genWeightMat(ages = ages, years = c((periods[1] + trainset1):max(df_qxtdata$period)), clip = 0)
     for(i in 1:nPop){
       for(j in 1:(length(periods)-trainset1)){
-        meas_prevpops[j,i] <- MSE(qxt_re = mat_qxt[[i]][,(trainset1+j)],
-                                  qxt_aju= qxt.forecast[[i]][,j],
-                                  wxt = genWeightMat(ages = ages, years = 1, clip = 0))
+        meas_prevpops[j,i] <- MeasureAcurracy(measure = "MSE",
+                                              qxt_re = mat_qxt[[i]][,(trainset1+j)],
+                                              qxt_aju= qxt.forecast[[i]][,j],
+                                              wxt = genWeightMat(ages = ages, years = 1, clip = 0))$value
 
         prev <- (mat_qxt[[i]][,(trainset1+j)] - qxt.forecast[[i]][,j])^2
         prev <- replace(prev, prev == "Inf", 0)
@@ -524,9 +534,10 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
 
     for(i in 1:nPop){
       for(j in 1:(length(periods)-trainset1)){
-        meas_prevpops[j,i] <- MAE(qxt_re = mat_qxt[[i]][,(trainset1+j)],
-                                  qxt_aju= qxt.forecast[[i]][,j],
-                                  wxt = genWeightMat(ages = ages, years = 1, clip = 0))
+        meas_prevpops[j,i] <- MeasureAcurracy(measure = "MAE",
+                                              qxt_re = mat_qxt[[i]][,(trainset1+j)],
+                                              qxt_aju= qxt.forecast[[i]][,j],
+                                              wxt = genWeightMat(ages = ages, years = 1, clip = 0))$value
         prev <- abs(mat_qxt[[i]][,(trainset1+j)] - qxt.forecast[[i]][,j])
         prev <- replace(prev, prev == "Inf", 0)
         prev <- replace(prev, prev == "-Inf", 0)
@@ -586,9 +597,10 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
     wxt <- genWeightMat(ages = ages, years = c((periods[1] + trainset1):max(df_qxtdata$period)), clip = 0)
     for(i in 1:nPop){
       for(j in 1:(length(periods)-trainset1)){
-        meas_prevpops[j,i] <- MAPE(qxt_re = mat_qxt[[i]][,(trainset1+j)],
-                                   qxt_aju= qxt.forecast[[i]][,j],
-                                   wxt = genWeightMat(ages = ages, years = 1, clip = 0))
+        meas_prevpops[j,i] <- MeasureAcurracy(measure = "MAPE",
+                                              qxt_re = mat_qxt[[i]][,(trainset1+j)],
+                                              qxt_aju= qxt.forecast[[i]][,j],
+                                              wxt = genWeightMat(ages = ages, years = 1, clip = 0))$value
         prev <- abs((mat_qxt[[i]][,(trainset1+j)] - qxt.forecast[[i]][,j])/mat_qxt[[i]][,(trainset1+j)])
         prev <- replace(prev, prev == "Inf", 0)
         prev <- replace(prev, prev == "-Inf", 0)
@@ -663,18 +675,20 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
     wxt <- genWeightMat(ages = ages, years = c((periods[1] + trainset1):max(df_qxtdata$period)), clip = 0)
     for(i in 1:nPop){
       for(j in 1:(length(periods)-trainset1)){
-        meas_prevpops1[j,i] <- SSE(qxt_re = mat_qxt[[i]][,(trainset1+j)],
-                                   qxt_aju = qxt.forecast[[i]][,j],
-                                   wxt = genWeightMat(ages = ages, years = 1, clip = 0))
-        meas_prevpops2[j,i] <- MSE(qxt_re = mat_qxt[[i]][,(trainset1+j)],
-                                   qxt_aju = qxt.forecast[[i]][,j],
-                                   wxt = genWeightMat(ages = ages, years = 1, clip = 0))
-        meas_prevpops3[j,i] <- MAE(qxt_re = mat_qxt[[i]][,(trainset1+j)],
-                                   qxt_aju = qxt.forecast[[i]][,j],
-                                   wxt = genWeightMat(ages = ages, years = 1, clip = 0))
-        meas_prevpops4[j,i] <- MAPE(qxt_re = mat_qxt[[i]][,(trainset1+j)],
-                                    qxt_aju = qxt.forecast[[i]][,j],
-                                    wxt = genWeightMat(ages = ages, years = 1, clip = 0))
+        meas_prevpops1[j,i] <- MeasureAcurracy(measure = "SSE",
+                                               qxt_re = mat_qxt[[i]][,(trainset1+j)],
+                                               qxt_aju = qxt.forecast[[i]][,j],
+                                               wxt = genWeightMat(ages = ages, years = 1, clip = 0))$value
+        meas_prevpops2[j,i] <- MeasureAcurracy(measure = "MSE",
+                                               qxt_re = mat_qxt[[i]][,(trainset1+j)],
+                                               qxt_aju = qxt.forecast[[i]][,j],
+                                               wxt = genWeightMat(ages = ages, years = 1, clip = 0))$value
+        meas_prevpops3[j,i] <- MeasureAcurracy(measure = "MAE", qxt_re = mat_qxt[[i]][,(trainset1+j)],
+                                               qxt_aju = qxt.forecast[[i]][,j],
+                                               wxt = genWeightMat(ages = ages, years = 1, clip = 0))$value
+        meas_prevpops4[j,i] <- MeasureAcurracy(measure = "MAPE", qxt_re = mat_qxt[[i]][,(trainset1+j)],
+                                               qxt_aju = qxt.forecast[[i]][,j],
+                                               wxt = genWeightMat(ages = ages, years = 1, clip = 0))$value
         #SSE
         prev1 <- (mat_qxt[[i]][,(trainset1+j)] - qxt.forecast[[i]][,j])^2
         prev1 <- replace(prev1, prev1 == "Inf", 0)
@@ -804,7 +818,7 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
       meas_periods[3,j] <- sum(meas_prevperiods3[,j])/(nages*nPop)
       meas_periods[4,j] <- sum(meas_prevperiods4[,j])/(nages*nPop)
     }
-  }else(stop(warning("measures must be equal to SSE, MSE, MAE, MAPE or All.")))
+  }else(stop("measures must be equal to SSE, MSE, MAE, MAPE or All."))
 
   return <- list(ax = ax,
                  bx = bx,
@@ -812,14 +826,20 @@ multipopulation_loocv <- function(qxt, model = c("additive", "multiplicative"),
                  kt.future = kt.fut,
                  kt.arima = kt.arima,
                  Ii = Ii,
-                 formula = fitted.obj$formula,
+                 formula = object$formula,
+                 model = object$model,
                  nPop = nPop,
+                 Ages = ages,
+                 Periods = periods,
                  qxt.real = mat_qxt,
                  qxt.forecast = qxt.forecast,
                  logit.qxt.forecast = logit.qxt.forecast,
                  meas_ages = meas_ages,
                  meas_periodsfut = meas_periods,
                  meas_pop = meas_pops,
-                 meas_total = meas_total)
+                 meas_total = meas_total,
+                 CV_method = "LOOCV")
+  class(return) <- "MultiCv"
+  return
 
 }

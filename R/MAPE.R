@@ -1,4 +1,4 @@
-#' MEAN ABSOLUTE PERCENTAGE ERROR (MAPE)
+#' Mean Absolute Percentage Error (MAPE)
 #' @description
 #' R function to estimate the mean absolute percentage error (MAPE) for the mortality rates:
 #' \deqn{\frac{1}{n}\sum_{x} \sum_{t}\left| \frac{\left(qxt1 - qxt2\right) }{qxt2} \right|}
@@ -34,8 +34,10 @@
 #' #To show how the function works, we need to provide fitted or forecasted data and the real data.
 #' #In this case, we employ the following data of the library:
 #' SpainRegions
+#'
 #' library(gnm)
 #' ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
+#'
 #' #In this case, we fit for males providing the lxt
 #' multiplicative_Spainmales <- fit_multiplicative.LC.multi(qxt = SpainRegions$qx_male,
 #'                               periods = c(1991:2020),
@@ -43,8 +45,11 @@
 #'                               nPop = 18,
 #'                               lxt = SpainRegions$lx_male)
 #'
+#' multiplicative_Spainmales
+#'
 #' #Once, we have the fitted data, we will obtain the SSE for the first population.
 #' #We need to obtain wxt (weight of the mortality rates or data provided) using a
+#'
 #' library(StMoMo)
 #' wxt_1pob <- genWeightMat(ages = ages, years = c(1991:2020), clip = 0)
 #' MAPE(qxt_re = multiplicative_Spainmales$qxt.real$pob1,
@@ -54,12 +59,16 @@
 #' @export
 MAPE <- function(qxt_re, qxt_aju, wxt){
   ind <- (wxt > 0)
-  res <- array(NA, dim = dim(wxt))
+  res <- array(NA_real_, dim = dim(wxt))
   res[ind] <- abs((qxt_re[ind] - qxt_aju[ind])/qxt_re[ind])
   res[ind] <- replace(res[ind], res[ind] == "Inf", 0)
   res[ind] <- replace(res[ind], res[ind] == "-Inf", 0)
   res[ind] <- replace(res[ind], res[ind] == "NA", 0)
   res[ind] <- replace(res[ind], res[ind] == "NaN", 0)
   n <- length(qxt_re)
-  sum(res)/n
+  result <- sum(res)/n
+  return <- list(Measure = result,
+                 Method = "MAPE")
+  class(return) <- "MoGF"
+  return
 }

@@ -5,7 +5,7 @@
 \alias{SpainNat}
 \title{Spain National Mortality data}
 \format{
-A data frame with 600 rows and 9 columns with the following information
+A data frame with 600 rows and 9 columns with class \code{"CVmortalityData"} including the following information
 \itemize{
 \item \code{ccaa} a vector containing all the regions of Spain. Indeed, the column takes the following information: Spain.
 \item \code{years} a vector containing the periods of the dataset from 1991 to 2020.
@@ -41,6 +41,8 @@ LC_Spainmales <- fit_additive.LC.multi(qxt = SpainNat$qx_male,
                                        periods = c(1991:2020),
                                        ages = ages,
                                        nPop = 1)
+
+LC_Spainmales
 }
 }
 \references{

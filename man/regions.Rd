@@ -5,7 +5,7 @@
 \alias{regions}
 \title{regions}
 \format{
-A data frame with 600 rows and 9 columns with the following information
+A data frame with 600 rows and 9 columns with class \code{"SpainRegionsData"} including the following information
 \itemize{
 \item \code{Codigo} a vector containing the code of every region of Spain.
 \item \code{Texto} a vector containing the name of every region of Spain.
@@ -31,15 +31,20 @@ This dataset contains a plot with the information of Spain regions (geometry and
 \donttest{
 #In this case, we show the region dataset applying it to a multipopulation model.
 #First, we present the dataset
+
 regions
+
 ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
-library(gnm)
+
 #Then, we fit the multiplicative model
+library(gnm)
 multiplicative_Spainmales <- fit_multiplicative.LC.multi(qxt = SpainRegions$qx_male,
                                                 periods = c(1991:2020),
                                                 ages = c(ages),
                                                 nPop = 18,
                                                 lxt = SpainRegions$lx_male)
+
+multiplicative_Spainmales
 
 #To show the values of the population indicator in the Spanish map.
 SpainMap(regionvalue = multiplicative_Spainmales$Ii[2:18],

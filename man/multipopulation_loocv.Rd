@@ -2,8 +2,8 @@
 % Please edit documentation in R/multipopulation_loocv.R
 \name{multipopulation_loocv}
 \alias{multipopulation_loocv}
-\title{FUNCTION TO APPLY LEAVE-ONE-OUT CROSS-VALIDATION TECHNIQUE FOR TESTING THE FORECASTING ACCURACY
-OF MULTI-POPULATION MORTALITY MODELS}
+\title{Function to apply Leave-One-Out Cross-Validation (LOOCV) technique for testing the forecasting accuracy
+of multi-population mortality models}
 \usage{
 multipopulation_loocv(
   qxt,
@@ -21,7 +21,7 @@ multipopulation_loocv(
 \arguments{
 \item{qxt}{mortality rates used to fit the multi-population mortality models. This rates can be provided in matrix or in data.frame.}
 
-\item{model}{choose the multi-population mortality model to fit the mortality rates c("\code{additive}", "\code{multiplicative}")}
+\item{model}{multi-population mortality model chosen to fit the mortality rates c("\code{additive}", "\code{multiplicative}"). In case you do not provide any value, the function will apply the "\code{additive}" option.}
 
 \item{periods}{periods considered in the fitting in a vector way c(minyear:maxyear).}
 
@@ -35,12 +35,12 @@ multipopulation_loocv(
 
 \item{kt_include.cte}{if you want that \code{kt} include constant in the arima process.}
 
-\item{measures}{choose the non-penalized measure of forecasting accuracy that you want to use; c("\code{SSE}", "\code{MSE}", "\code{MAE}", "\code{MAPE}", "\code{All}"). Check the function}
+\item{measures}{choose the non-penalized measure of forecasting accuracy that you want to use; c("\code{SSE}", "\code{MSE}", "\code{MAE}", "\code{MAPE}", "\code{All}"). Check the function. In case you do not provide any value, the function will apply the "\code{SSE}" as measure of forecasting accuracy.}
 
 \item{trainset1}{vector with the periods for the first training set.  This value must be greater than 2 to meet the minimum time series size (Hyndman and Khandakar, 2008).}
 }
 \value{
-A list with different components of the cross-validation process:
+A list with class \code{"MultiCv"} including different components of the cross-validation process:
 \itemize{
 \item \code{ax} parameter that captures the average shape of the mortality curve in all considered populations.
 \item \code{bx} parameter that explains the age effect x with respect to the general trend \code{kt} in the mortality rates of all considered populations.
@@ -83,6 +83,7 @@ SpainRegions
 ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40,
          45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
 library(gnm)
+library(forecast)
 #Let start with a simple trainset1 = 10 CV method obtaining the SSE forecasting measure of accuracy
 loocv_Spainmales_addit <- multipopulation_loocv(qxt = SpainRegions$qx_male,
                                          model = c("additive"),
@@ -92,6 +93,7 @@ loocv_Spainmales_addit <- multipopulation_loocv(qxt = SpainRegions$qx_male,
                                          kt_include.cte = TRUE,
                                          measures = c("SSE"),
                                          trainset1 = 10)
+loocv_Spainmales_addit
 
 #Once, we have run the function we can check the result in different ways:
 loocv_Spainmales_addit$meas_ages
@@ -134,7 +136,8 @@ Should Selection of the Optimum Stochastic Mortality Model Be Based on the Origi
 Risks, 11(10), 170.
 }
 \seealso{
-\code{\link{multipopulation_cv}}, \code{\link{fit_additive.LC.multi}}, \code{\link{fit_multiplicative.LC.multi}},
-\code{\link{for_additive.LC.multi}}, \code{\link{for_multiplicative.LC.multi}},
-\code{\link{plotLC.multi}}, \code{\link{SSE}}, \code{\link{MAE}}, \code{\link{MAPE}}.
+\code{\link{multipopulation_cv}},
+\code{\link{fitLCmulti}}, \code{\link{forecast.fitLCmulti}},
+\code{\link{plot.fitLCmulti}}, \code{\link{plot.forLCmulti}},
+\code{\link{SSE}}, \code{\link{MAE}}, \code{\link{MSE}}, \code{\link{MAPE}}.
 }

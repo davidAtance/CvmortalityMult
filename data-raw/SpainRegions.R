@@ -22,12 +22,12 @@ Spain_Regions <- structure(list(ccaa = Spain_Regions$ccaa,
                                 qx_female = Spain_Regions$mujqx,
                                 lx_male = Spain_Regions$homriesgo,
                                 lx_female = Spain_Regions$mujriesgo,
-                                series = c('male and female'),
+                                series = c('males and females'),
                                 label = c('Spain regions')),
-                           class = "myclass")
-print.myclass <- function(x) {
+                           class = "CVmortalityData")
+print.CVmortalityData <- function(x) {
   cat("Mortality Data\n")
-  cat("Spain Regions for males and females\n")
+  cat(x$label, "including", x$series ,"\n")
   cat("Years", c(min(x$years),":", max(x$years)),"\n")
   cat("Abridged Ages", c(min(x$ages),":", max(x$ages)), "\n")
 }
@@ -42,15 +42,10 @@ Spain_Nat <- structure(list(ccaa = Spain_Nat$ccaa,
                             qx_female = Spain_Nat$mujqx,
                             lx_male = Spain_Nat$homriesgo,
                             lx_female = Spain_Nat$mujriesgo,
-                            series = c('male and female'),
-                            label = c('Spain National population')),
-                       class = "myclass1")
-print.myclass1 <- function(x) {
-  cat("Mortality Data\n")
-  cat("Spain National population for males and females\n")
-  cat("Years", c(min(x$years),":", max(x$years)),"\n")
-  cat("Abridged Ages", c(min(x$ages),":", max(x$ages)), "\n")
-}
+                            series = c('males and females'),
+                            label = c('Spain Total population')),
+                       class = "CVmortalityData")
+
 
 
 SpainNat <- Spain_Nat
@@ -65,10 +60,10 @@ usethis::use_data_raw()
 
 save(regions, file = "regions.RData")
 regions <- structure(regions,
-                     class = "myclass2")
+                     class = "SpainRegionsData")
 
-print.myclass2 <- function(x) {
-  cat("Spain Regions\n")
+print.SpainRegionsData <- function(x) {
+  cat("Spain Regions data\n")
   cat("geometry to contruct maps")
 }
 regions
@@ -82,6 +77,6 @@ print.myclass(autonomias)
 autonomias
 usethis::use_data(regions, overwrite = TRUE)
 
-usethis::use_data(SpainRegions, SpainNat, overwrite = TRUE)
+usethis::use_data(SpainRegions, SpainNat, regions, overwrite = TRUE)
 library(devtools)
 use_data(SpainRegions, SpainNat, overwrite = TRUE)

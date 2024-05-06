@@ -1,15 +1,15 @@
-#' FUNCTION TO PLOT MULTI-POPULATION MORTALITY MODEL
+#' Function to plot the parameters of the multi-population mortality models
 #' @description
 #' R function to plot the parameters for the Additive (Debon et al., 2011) and Multiplicative (Russolillo et al., 2011) Multi-Population mortality model.
 #' It should be mentioned that in case that this function is developed for fitting several populations.
 #' However, in case you only consider one population, the function will fit the one-population Lee-Carter model (Lee and Carter, 1992).
 #'
-#' @param fitted.obj object developed using function `fit.additive.LC.multi()` and `fit.multiplicative.LC.multi()`.
+#' @param fitted.obj object developed using function `fitLCmulti()` which are objects of the `fitLCmulti` class.
 #'
 #' @return plot the different parameters for the multi-population mortality models `ax`, `bx`, `kt` and `Ii`. This function is valid for both approaches Additive and Multiplicative multi-population mortality models.
 #'
-#' @seealso \code{\link{fit_additive.LC.multi}}, \code{\link{fit_multiplicative.LC.multi}},
-#' \code{\link{for_additive.LC.multi}}, \code{\link{for_multiplicative.LC.multi}},
+#' @seealso \code{\link{fitLCmulti}}, \code{\link{forecast.fitLCmulti}},
+#' \code{\link{plot.forLCmult}},
 #' \code{\link{multipopulation_cv}}, \code{\link{multipopulation_loocv}}
 #'
 #' @references
@@ -34,30 +34,63 @@
 #' #several fitting and forecasting process and hence all
 #' #the process is included in donttest
 #' \donttest{
+#' #First, we present the data that we are going to use
 #' SpainRegions
 #' ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
-#' #In this case, we fit for males providing the lxt
+#'
 #' library(gnm)
-#' multiplicative_Spainmales <- fit_multiplicative.LC.multi(qxt = SpainRegions$qx_male,
+#' library(forecast)
+#' #ADDITIVE MULTI-POPULATION MORTALITY MODEL
+#' #In the case, the user wants to fit the additive multi-population mortality model
+#' additive_Spainmales <- fitLCmulti(model = "additive",
+#'                               qxt = SpainRegions$qx_male,
 #'                               periods = c(1991:2020),
 #'                               ages = c(ages),
 #'                               nPop = 18,
 #'                               lxt = SpainRegions$lx_male)
 #'
+#' additive_Spainmales
+#'
+#' #If the user does not provide the model inside the function fitLCmult()
+#' #the multi-population mortality model applied will be additive one.
+#'
 #' #Once, we have fit the data, it is possible to see the ax, bx, kt, and Ii
 #' #provided parameters for the fitting.
-#' plotLC.multi(multiplicative_Spainmales)
+#' plot(additive_Spainmales)
 #'
-#' #In case you only provide one population the model will fit
-#' #the single population version of the Lee-Carter model
-#' LC_Spainmales <- fit_additive.LC.multi(qxt = SpainNat$qx_male,
+#' #MULTIPLICATIVE MULTI-POPULATION MORTALITY MODEL
+#' #In the case, the user wants to fit the multiplicative multi-population mortality model
+#' multiplicative_Spainmales <- fitLCmulti(model = "multiplicative",
+#'                               qxt = SpainRegions$qx_male,
+#'                               periods = c(1991:2020),
+#'                               ages = c(ages),
+#'                               nPop = 18,
+#'                               lxt = SpainRegions$lx_male)
+#'
+#' multiplicative_Spainmales
+#'
+#' #Once, we have fit the data, it is possible to see the ax, bx, kt, and It
+#' #provided parameters for the fitting.
+#' plot(multiplicative_Spainmales)
+#'
+#' #LEE-CARTER FOR SINGLE-POPULATION
+#' #As we mentioned in the details of the function, if we only provide the data
+#' #from one-population the function fit_additive.LC.multi()
+#' #will fit the Lee-Carter model for single populations.
+#' LC_Spainmales <- fitLCmulti(qxt = SpainNat$qx_male,
 #'                               periods = c(1991:2020),
 #'                               ages = ages,
 #'                               nPop = 1)
-#' plotLC.multi(LC_Spainmales)
+#'
+#' LC_Spainmales
+#'
+#' #Once, we have fit the data, it is possible to see the ax, bx, and kt
+#' #parameters provided for the single version of the LC.
+#' plot(LC_Spainmales)
+#'
 #' }
 #' @export
-plotLC.multi <- function(fitted.obj){
+plot.fitLCmulti <- function(fitted.obj){
   pers <- fitted.obj$Periods
   ages <- fitted.obj$Ages
   pops <- fitted.obj$nPop

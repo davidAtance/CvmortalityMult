@@ -5,7 +5,7 @@
 \alias{SpainRegions}
 \title{Spain Regions Mortality data}
 \format{
-A data frame with 10800 rows and 9 columns with the following information
+A data frame with 10800 rows and 9 columns with class \code{"CVmortalityData"} including the following information
 \itemize{
 \item \code{ccaa} a vector containing all the regions of Spain. Indeed, the column takes the following information: Spain, Andalucia, Aragon, Asturias, Baleares, Canarias, Cantabria, Castillayla Mancha, CastillayLeon, Cataluna, ComunidadValenciana, Extremadura, Galicia, Madrid, Murcia, Navarra, PaisVasco, and LaRioja.
 \item \code{years} a vector containing the periods of the dataset from 1991 to 2020.
@@ -34,14 +34,18 @@ Additionally, the dataset includes the number of people alive (lxt) for each age
 #In this case, we show the region dataset applying it to a multipopulation model.
 #First, we present the dataset
 SpainRegions
+
 #An example to how the additive multi-population model fits the data
 ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
+
 library(gnm)
 multiplicative_Spainmales <- fit_multiplicative.LC.multi(qxt = SpainRegions$qx_male,
                                                 periods = c(1991:2020),
                                                 ages = c(ages),
                                                 nPop = 18,
                                                 lxt = SpainRegions$lx_male)
+
+multiplicative_Spainmales
 }
 }
 \references{

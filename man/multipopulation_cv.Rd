@@ -2,8 +2,8 @@
 % Please edit documentation in R/multipopulation_cv.R
 \name{multipopulation_cv}
 \alias{multipopulation_cv}
-\title{FUNCTION TO APPLY CROSS-VALIDATION TECHNIQUES FOR TESTING THE FORECASTING ACCURACY
-OF MULTI-POPULATION MORTALITY MODELS}
+\title{Function to apply cross-validation techniques for testing the forecasting accuracy
+of multi-population mortality models}
 \usage{
 multipopulation_cv(
   qxt,
@@ -21,7 +21,7 @@ multipopulation_cv(
 \arguments{
 \item{qxt}{mortality rates used to fit the multi-population mortality models. This rates can be provided in matrix or in data.frame.}
 
-\item{model}{choose the multi-population mortality model to fit the mortality rates c("\code{additive}", "\code{multiplicative}")}
+\item{model}{multi-population mortality model chosen to fit the mortality rates c("\code{additive}", "\code{multiplicative}"). In case you do not provide any value, the function will apply the "\code{additive}" option.}
 
 \item{periods}{periods considered in the fitting in a vector way c(\code{minyear}:\code{maxyear}).}
 
@@ -37,10 +37,10 @@ multipopulation_cv(
 
 \item{kt_include.cte}{if you want that \code{kt} include constant in the arima process.}
 
-\item{measures}{choose the non-penalized measure of forecasting accuracy that you want to use; c("\code{SSE}", "\code{MSE}", "\code{MAE}", "\code{MAPE}", "\code{All}"). Check the function}
+\item{measures}{choose the non-penalized measure of forecasting accuracy that you want to use; c("\code{SSE}", "\code{MSE}", "\code{MAE}", "\code{MAPE}", "\code{All}"). Check the function. In case you do not provide any value, the function will apply the "\code{SSE}" as measure of forecasting accuracy.}
 }
 \value{
-A list with different components of the cross-validation process:
+An object of the class \code{"MultiCv"} including a \code{list()} with different components of the cross-validation process:
 \itemize{
 \item \code{ax} parameter that captures the average shape of the mortality curve in all considered populations.
 \item \code{bx} parameter that explains the age effect x with respect to the general trend \code{kt} in the mortality rates of all considered populations.
@@ -49,6 +49,7 @@ A list with different components of the cross-validation process:
 \item \code{kt.arima}  the arima selected for each \code{kt} time series.
 \item \code{Ii} parameter that captures the differences in the pattern of mortality in any region i with respect to Region 1.
 \item \code{formula} multi-population mortality formula used to fit the mortality rates.
+\item \code{model} provided the model selected in every case.
 \item \code{nPop} provided number of populations to fit the periods.
 \item \code{qxt.real} real mortality rates.
 \item \code{qxt.future} future mortality rates estimated with the multi-population mortality model.
@@ -83,6 +84,7 @@ In this case, the measures will be obtained using the mortality rates in the nor
 ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40,
          45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
 library(gnm)
+library(forecast)
 #Let start with a simple nahead=5 CV method obtaining the SSE forecasting measure of accuracy
 cv_Spainmales_addit <- multipopulation_cv(qxt = SpainRegions$qx_male,
                                          model = c("additive"),
@@ -92,6 +94,7 @@ cv_Spainmales_addit <- multipopulation_cv(qxt = SpainRegions$qx_male,
                                          ktmethod = c("Arimapdq"),
                                          kt_include.cte = TRUE,
                                          measures = c("SSE"))
+cv_Spainmales_addit
 
 #Once, we have run the function we can check the result in different ways:
 cv_Spainmales_addit$meas_ages
@@ -130,7 +133,8 @@ Should Selection of the Optimum Stochastic Mortality Model Be Based on the Origi
 Risks, 11(10), 170.
 }
 \seealso{
-\code{\link{multipopulation_loocv}}, \code{\link{fit_additive.LC.multi}}, \code{\link{fit_multiplicative.LC.multi}},
-\code{\link{for_additive.LC.multi}}, \code{\link{for_multiplicative.LC.multi}},
-\code{\link{plotLC.multi}}, \code{\link{SSE}}, \code{\link{MAE}}, \code{\link{MAPE}}.
+\code{\link{multipopulation_loocv}},
+\code{\link{fitLCmulti}}, \code{\link{forecast.fitLCmulti}},
+\code{\link{plot.fitLCmulti}}, \code{\link{plot.forLCmulti}},
+\code{\link{SSE}}, \code{\link{MAE}}, \code{\link{MSE}}, \code{\link{MAPE}}.
 }
