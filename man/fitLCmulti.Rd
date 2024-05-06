@@ -97,7 +97,7 @@ plot(multiplicative_Spainmales)
 
 #LEE-CARTER FOR SINGLE-POPULATION
 #As we mentioned in the details of the function, if we only provide the data
-#from one-population the function fit_additive.LC.multi()
+#from one-population the function fitLCmulti()
 #will fit the Lee-Carter model for single populations.
 LC_Spainmales <- fitLCmulti(qxt = SpainNat$qx_male,
                               periods = c(1991:2020),

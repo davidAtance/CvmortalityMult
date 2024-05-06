@@ -103,7 +103,7 @@
 MeasureAccuracy <- function(measure = c("SSE", "MSE", "MAE", "MAPE", "All"),
                 qxt_re, qxt_aju, wxt){
   valid_measures <- c("SSE", "MSE", "MAE", "MAPE", "All")
-  measures <- match.arg(measures, valid_measures)
+  measures <- match.arg(measure, valid_measures)
 
   if(measure == "SSE"){
     ind <- (wxt > 0)
@@ -190,10 +190,13 @@ MeasureAccuracy <- function(measure = c("SSE", "MSE", "MAE", "MAPE", "All"),
   return
 }
 #' @export
-print.MoA <- function(x,...) {
+print.MoA <- function(x, ...) {
   if(!is.null(x)){
-    if(class(x) != "MoA")
-      stop("The object does not have the 'MoA' structure of R CvmortalityMult package.")
+    if(!"MoA" %in% class(x))
+      stop("The 'x' does not have the 'MoA' structure of R CvmortalityMult package.")
+  }
+  if(!is.list(x)){
+    stop("The 'x' is not a list. Use 'MoA' function first.")
   }
 
   cat("Measure of Accuracy employed:", x$measure,"\n")

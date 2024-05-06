@@ -29,7 +29,8 @@ Imports: StMoMo,
         forecast,
         gnm,
         tmap,
-        sf
+        sf, 
+        graphics
 Encoding: UTF-8
 Suggests: 
     testthat (>= 3.0.0)

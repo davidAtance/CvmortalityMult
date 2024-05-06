@@ -8,7 +8,8 @@
   object,
   nahead,
   ktmethod = c("Arimapdq", "arima010"),
-  kt_include.cte = TRUE
+  kt_include.cte = TRUE,
+  ...
 )
 }
 \arguments{
@@ -19,6 +20,8 @@
 \item{ktmethod}{method used to forecast the value of \code{kt} Arima(p,d,q) or ARIMA(0,1,0); c("\code{Arimapdq}", "\code{arima010}").}
 
 \item{kt_include.cte}{if you want that \code{kt} include constant in the arima process.}
+
+\item{...}{other arguments for \code{\link{iarima}}.}
 }
 \value{
 A list with class \code{"forLCmulti"} including different components of the forecasting process:
@@ -119,7 +122,7 @@ plot(fut_multi_Spainmales)
 
 #LEE-CARTER FOR SINGLE-POPULATION
 #As we mentioned in the details of the function, if we only provide the data
-#from one-population the function fit_additive.LC.multi()
+#from one-population the function fitLCmulti()
 #will fit the Lee-Carter model for single populations.
 LC_Spainmales <- fitLCmulti(qxt = SpainNat$qx_male,
                               periods = c(1991:2020),
@@ -160,6 +163,7 @@ Extending the Lee–Carter model: a three-way decomposition.
 Scandinavian Actuarial Journal, 2011(2), 96-117.
 }
 \seealso{
-\code{\link{fitLCmulti}}, \code{\link{forLCmulti}},
+\code{\link{fitLCmulti}},
+\code{\link{plot.fitLCmulti}}, \code{\link{plot.forLCmulti}},
 \code{\link{multipopulation_cv}}, \code{\link{multipopulation_loocv}}
 }

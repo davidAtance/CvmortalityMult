@@ -48,6 +48,7 @@
 #' @import gnm
 #' @importFrom utils install.packages
 #' @importFrom stats coef
+#' @importFrom stats plogis qlogis
 #'
 #' @examples
 #' #The example takes more than 5 seconds because it includes
@@ -95,7 +96,7 @@
 #'
 #' #LEE-CARTER FOR SINGLE-POPULATION
 #' #As we mentioned in the details of the function, if we only provide the data
-#' #from one-population the function fit_additive.LC.multi()
+#' #from one-population the function fitLCmulti()
 #' #will fit the Lee-Carter model for single populations.
 #' LC_Spainmales <- fitLCmulti(qxt = SpainNat$qx_male,
 #'                               periods = c(1991:2020),
@@ -411,10 +412,13 @@ fitLCmulti <- function(model = c("additive", "multiplicative"),
 
 }
 #' @export
-print.fitLCmulti <- function(x,...) {
+print.fitLCmulti <- function(x, ...) {
   if(!is.null(x)){
-    if(class(x) != "fitLCmulti")
-      stop("The object does not have the 'fitLCmulti' structure of R CvmortalityMult package.")
+    if(!"fitLCmulti" %in% class(x))
+      stop("The 'x' does not have the 'fitLCmulti' structure of R CvmortalityMult package.")
+  }
+  if(!is.list(x)){
+    stop("The 'x' is not a list. Use 'fitLCmulti' function first.")
   }
 
   if(x$nPop != 1){

@@ -37,10 +37,10 @@ SpainNat
 #An example to how the additive multi-population model fits the data
 ages <- c(0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90)
 library(gnm)
-LC_Spainmales <- fit_additive.LC.multi(qxt = SpainNat$qx_male,
-                                       periods = c(1991:2020),
-                                       ages = ages,
-                                       nPop = 1)
+LC_Spainmales <- fitLCmulti(qxt = SpainNat$qx_male,
+                            periods = c(1991:2020),
+                            ages = ages,
+                            nPop = 1)
 
 LC_Spainmales
 }

@@ -4,10 +4,12 @@
 \alias{plot.fitLCmulti}
 \title{Function to plot the parameters of the multi-population mortality models}
 \usage{
-\method{plot}{fitLCmulti}(fitted.obj)
+\method{plot}{fitLCmulti}(x, ...)
 }
 \arguments{
-\item{fitted.obj}{object developed using function \code{fitLCmulti()} which are objects of the \code{fitLCmulti} class.}
+\item{x}{\code{x} developed using function \code{fitLCmulti()} which are objects of the \code{fitLCmulti} class.}
+
+\item{...}{additional arguments to show in the plot appearance.}
 }
 \value{
 plot the different parameters for the multi-population mortality models \code{ax}, \code{bx}, \code{kt} and \code{Ii}. This function is valid for both approaches Additive and Multiplicative multi-population mortality models.
@@ -63,7 +65,7 @@ plot(multiplicative_Spainmales)
 
 #LEE-CARTER FOR SINGLE-POPULATION
 #As we mentioned in the details of the function, if we only provide the data
-#from one-population the function fit_additive.LC.multi()
+#from one-population the function fitLCmulti()
 #will fit the Lee-Carter model for single populations.
 LC_Spainmales <- fitLCmulti(qxt = SpainNat$qx_male,
                               periods = c(1991:2020),
@@ -94,6 +96,6 @@ Scandinavian Actuarial Journal, 2011(2), 96-117.
 }
 \seealso{
 \code{\link{fitLCmulti}}, \code{\link{forecast.fitLCmulti}},
-\code{\link{plot.forLCmult}},
+\code{\link{plot.forLCmulti}},
 \code{\link{multipopulation_cv}}, \code{\link{multipopulation_loocv}}
 }

@@ -4,12 +4,13 @@
 #' It should be mentioned that in case that this function is developed for fitting several populations.
 #' However, in case you only consider one population, the function will fit the one-population Lee-Carter model (Lee and Carter, 1992).
 #'
-#' @param fitted.obj object developed using function `fitLCmulti()` which are objects of the `fitLCmulti` class.
+#' @param x `x` developed using function `fitLCmulti()` which are objects of the `fitLCmulti` class.
+#' @param ... additional arguments to show in the plot appearance.
 #'
 #' @return plot the different parameters for the multi-population mortality models `ax`, `bx`, `kt` and `Ii`. This function is valid for both approaches Additive and Multiplicative multi-population mortality models.
 #'
 #' @seealso \code{\link{fitLCmulti}}, \code{\link{forecast.fitLCmulti}},
-#' \code{\link{plot.forLCmult}},
+#' \code{\link{plot.forLCmulti}},
 #' \code{\link{multipopulation_cv}}, \code{\link{multipopulation_loocv}}
 #'
 #' @references
@@ -28,6 +29,7 @@
 #'
 #' @importFrom graphics par
 #' @importFrom utils install.packages
+#' @importFrom stats plogis qlogis
 #'
 #' @examples
 #' #The example takes more than 5 seconds because it includes
@@ -75,7 +77,7 @@
 #'
 #' #LEE-CARTER FOR SINGLE-POPULATION
 #' #As we mentioned in the details of the function, if we only provide the data
-#' #from one-population the function fit_additive.LC.multi()
+#' #from one-population the function fitLCmulti()
 #' #will fit the Lee-Carter model for single populations.
 #' LC_Spainmales <- fitLCmulti(qxt = SpainNat$qx_male,
 #'                               periods = c(1991:2020),
@@ -90,14 +92,22 @@
 #'
 #' }
 #' @export
-plot.fitLCmulti <- function(fitted.obj){
-  pers <- fitted.obj$Periods
-  ages <- fitted.obj$Ages
-  pops <- fitted.obj$nPop
-  ax <- fitted.obj$ax
-  bx <- fitted.obj$bx
-  kt <- fitted.obj$kt
-  Ii <- fitted.obj$Ii
+plot.fitLCmulti <- function(x, ...){
+  if(!is.null(x)){
+    if(!"fitLCmulti" %in% class(x))
+      stop("The 'x' does not have the 'fitLCmulti' structure of R CvmortalityMult package.")
+  }
+  if(!is.list(x)){
+    stop("The 'x' is not a list. Use 'fitLCmulti' function first.")
+  }
+
+  pers <- x$Periods
+  ages <- x$Ages
+  pops <- x$nPop
+  ax <- x$ax
+  bx <- x$bx
+  kt <- x$kt
+  Ii <- x$Ii
 
   ax_main <- expression(a[x])
   bx_main <- expression(b[x])
@@ -116,7 +126,7 @@ plot.fitLCmulti <- function(fitted.obj){
          type="l", lwd=2)
     plot(pers, kt, ylab="", xlab="t = period", main =kt_main,
          type="l", lwd=2)
-    plot(c(1:fitted.obj$nPop), Ii, ylab="", xlab="i = population", main = Ii_main,
+    plot(c(1:x$nPop), Ii, ylab="", xlab="i = population", main = Ii_main,
          type="l", lwd=2)
 
   } else if(pops == 1){

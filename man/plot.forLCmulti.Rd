@@ -4,16 +4,18 @@
 \alias{plot.forLCmulti}
 \title{Function to plot the parameters of the multi-population mortality models}
 \usage{
-\method{plot}{forLCmulti}(x)
+\method{plot}{forLCmulti}(x, ...)
 }
 \arguments{
-\item{fitted.obj}{object developed using function \code{forecast.fitLCmulti()} which are objects of the \code{fortLCmulti} class.}
+\item{x}{\code{x} developed using function \code{forecast.fitLCmulti()} which are objects of the \code{fortLCmulti} class.}
+
+\item{...}{additional arguments to show in the plot appearance.}
 }
 \value{
 plot the trend parameter kt fitted for the in-sample periods and its forecast results for the multi-population mortality models. Similarly, the behavior of the logit mortality rate for the mean in-sample age and the out-of-sample forecast will be shown for all the populations considered.
 }
 \description{
-Function to plot different results of the forecasting process of multi-population mortality models, the additive (Debon et al., 2011) and the multiplicative (Russolillo et al., 2011), obtained using the \code{forecast.fitLCmulti} function which are objects of the \code{forecastLCmulti} class.
+Function to plot different results of the forecasting process of multi-population mortality models, the additive (Debon et al., 2011) and the multiplicative (Russolillo et al., 2011), obtained using the \code{forecast.fitLCmulti} function which are xs of the \code{forecastLCmulti} class.
 In fact, the function will show the trend parameter kt fitted for the in-sample periods and its forecast results. Similarly, the behavior of the logit mortality rate for the mean in-sample age and the out-of-sample forecast will be shown for all the populations considered.
 It should be mentioned that this function is developed for fitting several populations.
 However, in case you only consider one population, the function will show the single population version of the Lee-Carter model, the classical one.
@@ -88,7 +90,7 @@ plot(fut_multi_Spainmales)
 
 #LEE-CARTER FOR SINGLE-POPULATION
 #As we mentioned in the details of the function, if we only provide the data
-#from one-population the function fit_additive.LC.multi()
+#from one-population the function fitLCmulti()
 #will fit the Lee-Carter model for single populations.
 LC_Spainmales <- fitLCmulti(qxt = SpainNat$qx_male,
                               periods = c(1991:2020),
@@ -130,6 +132,6 @@ Scandinavian Actuarial Journal, 2011(2), 96-117.
 }
 \seealso{
 \code{\link{fitLCmulti}}, \code{\link{forecast.fitLCmulti}},
-\code{\link{plot.fitLCmult}},
+\code{\link{plot.fitLCmulti}},
 \code{\link{multipopulation_cv}}, \code{\link{multipopulation_loocv}}
 }

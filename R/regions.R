@@ -33,11 +33,12 @@
 #'
 #' #Then, we fit the multiplicative model
 #' library(gnm)
-#' multiplicative_Spainmales <- fit_multiplicative.LC.multi(qxt = SpainRegions$qx_male,
-#'                                                 periods = c(1991:2020),
-#'                                                 ages = c(ages),
-#'                                                 nPop = 18,
-#'                                                 lxt = SpainRegions$lx_male)
+#' multiplicative_Spainmales <- fitLCmulti(model = "multiplicative",
+#'                                         qxt = SpainRegions$qx_male,
+#'                                         periods = c(1991:2020),
+#'                                         ages = c(ages),
+#'                                         nPop = 18,
+#'                                         lxt = SpainRegions$lx_male)
 #'
 #' multiplicative_Spainmales
 #'

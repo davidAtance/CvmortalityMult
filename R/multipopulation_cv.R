@@ -45,7 +45,7 @@
 #' @seealso \code{\link{multipopulation_loocv}},
 #' \code{\link{fitLCmulti}}, \code{\link{forecast.fitLCmulti}},
 #' \code{\link{plot.fitLCmulti}}, \code{\link{plot.forLCmulti}},
-#' \code{\link{SSE}}, \code{\link{MAE}}, \code{\link{MSE}}, \code{\link{MAPE}}.
+#' \code{\link{MeasureAccuracy}}.
 #'
 #' @references
 #' Atance, D., Debon, A., and Navarro, E. (2020).
@@ -80,6 +80,8 @@
 #' @importFrom forecast Arima auto.arima forecast
 #' @importFrom StMoMo genWeightMat
 #' @importFrom utils install.packages
+#' @importFrom stats plogis qlogis
+#' @importFrom stats plogis qlogis
 #'
 #' @examples
 #'
@@ -504,7 +506,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative"),
       for(j in 1:(length(test1))){
         if(j == 1){
           npos <- 1
-          meas_prevpops[j,i] <- MeasureAcurracy(measure = "MSE",
+          meas_prevpops[j,i] <- MeasureAccuracy(measure = "MSE",
                                                 qxt_re = mat_qxt[[i]][,(3+nahead+1):(3+nahead+test1[1])],
                                                 qxt_aju = qxt.forecast[[i]][,(1:nahead[1])],
                                                 wxt = genWeightMat(ages = ages, years = c(1:test1[1]), clip = 0))$value
@@ -517,7 +519,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative"),
         } else {
           npos <- sum(test1[1:(j-1)]) + 1
           npos2 <- sum(test1[1:(j)])
-          meas_prevpops[j,i] <- MeasureAcurracy(measure = "MSE",
+          meas_prevpops[j,i] <- MeasureAccuracy(measure = "MSE",
                                                 qxt_re = mat_qxt[[i]][,(3+nahead+npos):(3+nahead+npos2)],
                                                 qxt_aju = qxt.forecast[[i]][,(npos:npos2)],
                                                 wxt = genWeightMat(ages = ages, years = c(1:test1[j]), clip = 0))$value
@@ -609,7 +611,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative"),
       for(j in 1:(length(test1))){
         if(j == 1){
           npos <- 1
-          meas_prevpops[j,i] <- MeasureAcurracy(measure = "MAE",
+          meas_prevpops[j,i] <- MeasureAccuracy(measure = "MAE",
                                                 qxt_re = mat_qxt[[i]][,(3+nahead+1):(3+nahead+test1[1])],
                                                 qxt_aju = qxt.forecast[[i]][,(1:nahead[1])],
                                                 wxt = genWeightMat(ages = ages, years = c(1:test1[1]), clip = 0))$value
@@ -622,7 +624,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative"),
         } else {
           npos <- sum(test1[1:(j-1)]) + 1
           npos2 <- sum(test1[1:(j)])
-          meas_prevpops[j,i] <- MeasureAcurracy(measure = "MAE",
+          meas_prevpops[j,i] <- MeasureAccuracy(measure = "MAE",
                                                 qxt_re = mat_qxt[[i]][,(3+nahead+npos):(3+nahead+npos2)],
                                                 qxt_aju = qxt.forecast[[i]][,(npos:npos2)],
                                                 wxt = genWeightMat(ages = ages, years = c(1:test1[j]), clip = 0))$value
@@ -713,7 +715,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative"),
       for(j in 1:(length(test1))){
         if(j == 1){
           npos <- 1
-          meas_prevpops[j,i] <- MeasureAcurracy(measure = "MAPE",
+          meas_prevpops[j,i] <- MeasureAccuracy(measure = "MAPE",
                                                 qxt_re = mat_qxt[[i]][,(3+nahead+1):(3+nahead+test1[1])],
                                                 qxt_aju = qxt.forecast[[i]][,(1:nahead[1])],
                                                 wxt = genWeightMat(ages = ages, years = c(1:test1[1]), clip = 0))$value
@@ -726,7 +728,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative"),
         } else {
           npos <- sum(test1[1:(j-1)]) + 1
           npos2 <- sum(test1[1:(j)])
-          meas_prevpops[j,i] <- MeasureAcurracy(measure = "MAPE",
+          meas_prevpops[j,i] <- MeasureAccuracy(measure = "MAPE",
                                                 qxt_re = mat_qxt[[i]][,(3+nahead+npos):(3+nahead+npos2)],
                                                 qxt_aju = qxt.forecast[[i]][,(npos:npos2)],
                                                 wxt = genWeightMat(ages = ages, years = c(1:test1[j]), clip = 0))$value
@@ -832,16 +834,16 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative"),
       for(j in 1:(length(test1))){
         if(j == 1){
           npos <- 1
-          meas_prevpops1[j,i] <- MeasureAcurracy(measure = "SSE", qxt_re = mat_qxt[[i]][,(3+nahead+1):(3+nahead+test1[1])],
+          meas_prevpops1[j,i] <- MeasureAccuracy(measure = "SSE", qxt_re = mat_qxt[[i]][,(3+nahead+1):(3+nahead+test1[1])],
                                                  qxt_aju = qxt.forecast[[i]][,(1:nahead[1])],
                                                  wxt = genWeightMat(ages = ages, years = c(1:test1[1]), clip = 0))$value
-          meas_prevpops2[j,i] <- MeasureAcurracy(measure = "MSE", qxt_re = mat_qxt[[i]][,(3+nahead+1):(3+nahead+test1[1])],
+          meas_prevpops2[j,i] <- MeasureAccuracy(measure = "MSE", qxt_re = mat_qxt[[i]][,(3+nahead+1):(3+nahead+test1[1])],
                                                  qxt_aju = qxt.forecast[[i]][,(1:nahead[1])],
                                                  wxt = genWeightMat(ages = ages, years = c(1:test1[1]), clip = 0))$value
-          meas_prevpops3[j,i] <- MeasureAcurracy(measure = "MAE", qxt_re = mat_qxt[[i]][,(3+nahead+1):(3+nahead+test1[1])],
+          meas_prevpops3[j,i] <- MeasureAccuracy(measure = "MAE", qxt_re = mat_qxt[[i]][,(3+nahead+1):(3+nahead+test1[1])],
                                                  qxt_aju = qxt.forecast[[i]][,(1:nahead[1])],
                                                  wxt = genWeightMat(ages = ages, years = c(1:test1[1]), clip = 0))$value
-          meas_prevpops4[j,i] <- MeasureAcurracy(measure = "MAPE", qxt_re = mat_qxt[[i]][,(3+nahead+1):(3+nahead+test1[1])],
+          meas_prevpops4[j,i] <- MeasureAccuracy(measure = "MAPE", qxt_re = mat_qxt[[i]][,(3+nahead+1):(3+nahead+test1[1])],
                                                  qxt_aju = qxt.forecast[[i]][,(1:nahead[1])],
                                                  wxt = genWeightMat(ages = ages, years = c(1:test1[1]), clip = 0))$value
          #SSE
@@ -875,16 +877,16 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative"),
         } else {
           npos <- sum(test1[1:(j-1)]) + 1
           npos2 <- sum(test1[1:(j)])
-          meas_prevpops1[j,i] <- MeasureAcurracy(measure = "SSE", qxt_re = mat_qxt[[i]][,(3+nahead+npos):(3+nahead+npos2)],
+          meas_prevpops1[j,i] <- MeasureAccuracy(measure = "SSE", qxt_re = mat_qxt[[i]][,(3+nahead+npos):(3+nahead+npos2)],
                                                  qxt_aju = qxt.forecast[[i]][,(npos:npos2)],
                                                  wxt = genWeightMat(ages = ages, years = c(1:test1[j]), clip = 0))$value
-          meas_prevpops2[j,i] <- MeasureAcurracy(measure = "MSE", qxt_re = mat_qxt[[i]][,(3+nahead+npos):(3+nahead+npos2)],
+          meas_prevpops2[j,i] <- MeasureAccuracy(measure = "MSE", qxt_re = mat_qxt[[i]][,(3+nahead+npos):(3+nahead+npos2)],
                                                  qxt_aju = qxt.forecast[[i]][,(npos:npos2)],
                                                  wxt = genWeightMat(ages = ages, years = c(1:test1[j]), clip = 0))$value
-          meas_prevpops3[j,i] <- MeasureAcurracy(measure = "MAE", qxt_re = mat_qxt[[i]][,(3+nahead+npos):(3+nahead+npos2)],
+          meas_prevpops3[j,i] <- MeasureAccuracy(measure = "MAE", qxt_re = mat_qxt[[i]][,(3+nahead+npos):(3+nahead+npos2)],
                                                  qxt_aju = qxt.forecast[[i]][,(npos:npos2)],
                                                  wxt = genWeightMat(ages = ages, years = c(1:test1[j]), clip = 0))$value
-          meas_prevpops4[j,i] <- MeasureAcurracy(measure = "MAPE", qxt_re = mat_qxt[[i]][,(3+nahead+npos):(3+nahead+npos2)],
+          meas_prevpops4[j,i] <- MeasureAccuracy(measure = "MAPE", qxt_re = mat_qxt[[i]][,(3+nahead+npos):(3+nahead+npos2)],
                                                  qxt_aju = qxt.forecast[[i]][,(npos:npos2)],
                                                  wxt = genWeightMat(ages = ages, years = c(1:test1[j]), clip = 0))$value
           #SSE
@@ -1112,10 +1114,13 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative"),
 
 }
 #' @export
-print.MultiCv <- function(x,...) {
+print.MultiCv <- function(x, ...) {
   if(!is.null(x)){
-    if(class(x) != "MultiCv")
-      stop("The object does not have the 'MultiCv' structure of R CvmortalityMult package.")
+    if(!"MultiCv" %in% class(x))
+      stop("The 'x' does not have the 'MultiCv' structure of R CvmortalityMult package.")
+  }
+  if(!is.list(x)){
+    stop("The 'x' is not a list. Use 'MultiCv' function first.")
   }
 
   if(x$nPop != 1){

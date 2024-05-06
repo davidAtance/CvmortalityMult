@@ -139,5 +139,5 @@ Risks, 11(10), 170.
 \code{\link{multipopulation_cv}},
 \code{\link{fitLCmulti}}, \code{\link{forecast.fitLCmulti}},
 \code{\link{plot.fitLCmulti}}, \code{\link{plot.forLCmulti}},
-\code{\link{SSE}}, \code{\link{MAE}}, \code{\link{MSE}}, \code{\link{MAPE}}.
+\code{\link{MeasureAccuracy}}.
 }

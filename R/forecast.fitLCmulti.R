@@ -9,6 +9,7 @@
 #' @param nahead number of periods ahead to forecast.
 #' @param ktmethod method used to forecast the value of `kt` Arima(p,d,q) or ARIMA(0,1,0); c("`Arimapdq`", "`arima010`").
 #' @param kt_include.cte if you want that `kt` include constant in the arima process.
+#' @param ... other arguments for \code{\link{iarima}}.
 #'
 #' @return A list with class \code{"forLCmulti"} including different components of the forecasting process:
 #' * `ax` parameter that captures the average shape of the mortality curve in all considered populations.
@@ -29,9 +30,9 @@
 #' * `logit.qxt.future` future mortality rates in logit way estimated with the additive multi-population mortality model.
 #' * `nPop` provided number of populations to fit the periods.
 #'
-#' @seealso \code{\link{fitLCmulti}}, \code{\link{forLCmulti}},
+#' @seealso \code{\link{fitLCmulti}},
+#' \code{\link{plot.fitLCmulti}}, \code{\link{plot.forLCmulti}},
 #' \code{\link{multipopulation_cv}}, \code{\link{multipopulation_loocv}}
-#'
 #'
 #' @references
 #' Debon, A., Montes, F., & Martinez-Ruiz, F. (2011).
@@ -48,6 +49,7 @@
 #'
 #' @importFrom forecast Arima auto.arima forecast
 #' @importFrom utils install.packages
+#' @importFrom stats plogis qlogis
 #'
 #' @examples
 #' #The example takes more than 5 seconds because it includes
@@ -119,7 +121,7 @@
 #'
 #' #LEE-CARTER FOR SINGLE-POPULATION
 #' #As we mentioned in the details of the function, if we only provide the data
-#' #from one-population the function fit_additive.LC.multi()
+#' #from one-population the function fitLCmulti()
 #' #will fit the Lee-Carter model for single populations.
 #' LC_Spainmales <- fitLCmulti(qxt = SpainNat$qx_male,
 #'                               periods = c(1991:2020),
@@ -148,12 +150,12 @@
 #' @export
 forecast.fitLCmulti <- function(object, nahead,
                                 ktmethod = c("Arimapdq", "arima010"),
-                                kt_include.cte = TRUE){
+                                kt_include.cte = TRUE, ...){
 
   #First check the structure of object is equal to the previous object created using our function
   if(!is.null(object)){
-    if(class(object) != "fitLCmulti")
-    stop("The object does not have the 'fitLCmulti' structure of R CvmortalityMult package.")
+    if(!"fitLCmulti" %in% class(object))
+      stop("The object does not have the 'fitLCmulti' structure of R CvmortalityMult package.")
   }
   if(!is.list(object)){
     stop("The object is not a list. Use 'fitLCmulti' function first.")
@@ -249,10 +251,13 @@ forecast.fitLCmulti <- function(object, nahead,
 
 }
 #' @export
-print.forLCmulti <- function(x,...) {
+print.forLCmulti <- function(x, ...) {
   if(!is.null(x)){
-    if(class(x) != "forLCmulti")
-      stop("The object does not have the 'forLCmulti' structure of R CvmortalityMult package.")
+    if(!"forLCmulti" %in% class(x))
+      stop("The 'x' does not have the 'forLCmulti' structure of R CvmortalityMult package.")
+  }
+  if(!is.list(x)){
+    stop("The 'x' is not a list. Use 'forecast.fitLCmulti' function first.")
   }
 
   if(x$nPop != 1){
