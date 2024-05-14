@@ -182,6 +182,6 @@ plot.forLCmulti<- function(x, ...){
     text1 <- paste0("Forecasting the single-population version of the Lee-Carter model")
   }
 
-  mtext(text1, line = -1.25, outer = TRUE, cex = 1.25, col = "red")
+  mtext(text1, line = -1.25, outer = TRUE, cex = 1.5, col = "black")
 
 }

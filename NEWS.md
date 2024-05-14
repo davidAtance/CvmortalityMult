@@ -6,3 +6,6 @@
 
 ## 2024-04-30
 -Modify classes of the functions and facilitate to users
+
+## 2024-05-14
+-Modify plot results
