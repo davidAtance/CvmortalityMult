@@ -51,6 +51,8 @@ Spain_Nat <- structure(list(ccaa = Spain_Nat$ccaa,
 SpainNat <- Spain_Nat
 SpainNat
 SpainRegions
+save(Spain_Nat, file = "data/SpainNat.RData")
+save(Spain_Regions, file = "data/SpainRegions.RData")
 
 save(SpainNat, file = "data/SpainNat.RData")
 save(SpainRegions, file = "data/SpainRegions.RData")
@@ -71,6 +73,7 @@ SpainNat
 SpainRegions
 
 save(regions, file = "data/regions.RData")
+save(regions, file = "data/regions.RData")
 
 
 print.myclass(autonomias)
@@ -79,4 +82,11 @@ usethis::use_data(regions, overwrite = TRUE)
 
 usethis::use_data(SpainRegions, SpainNat, regions, overwrite = TRUE)
 library(devtools)
-use_data(SpainRegions, SpainNat, overwrite = TRUE)
+use_data(SpainNat, SpainNat, overwrite = TRUE)
+SpainRegions
+SpainNat
+
+load('data/SpainNat.RData')
+
+SpainNat
+SpainRegions
