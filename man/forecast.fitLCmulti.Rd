@@ -21,7 +21,7 @@
 
 \item{kt_include.cte}{if you want that \code{kt} include constant in the arima process.}
 
-\item{...}{other arguments for \code{\link{iarima}}.}
+\item{...}{other arguments for \code{\link[StMoMo:iarima]{iarima}}.}
 }
 \value{
 A list with class \code{"forLCmulti"} including different components of the forecasting process:
@@ -165,5 +165,6 @@ Scandinavian Actuarial Journal, 2011(2), 96-117.
 \seealso{
 \code{\link{fitLCmulti}},
 \code{\link{plot.fitLCmulti}}, \code{\link{plot.forLCmulti}},
-\code{\link{multipopulation_cv}}, \code{\link{multipopulation_loocv}}
+\code{\link{multipopulation_cv}}, \code{\link{multipopulation_loocv}},
+\link[StMoMo:iarima]{iarima}
 }

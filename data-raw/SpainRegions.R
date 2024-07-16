@@ -51,8 +51,6 @@ Spain_Nat <- structure(list(ccaa = Spain_Nat$ccaa,
 SpainNat <- Spain_Nat
 SpainNat
 SpainRegions
-save(Spain_Nat, file = "data/SpainNat.RData")
-save(Spain_Regions, file = "data/SpainRegions.RData")
 
 save(SpainNat, file = "data/SpainNat.RData")
 save(SpainRegions, file = "data/SpainRegions.RData")

@@ -41,7 +41,6 @@
 #' \donttest{
 #' #To show how the function works, we need to provide fitted or forecasted data and the real data.
 #' #In this case, we employ the following data of the library:
-#'
 #' SpainRegions
 #'
 #' library(gnm)

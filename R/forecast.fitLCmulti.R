@@ -9,7 +9,7 @@
 #' @param nahead number of periods ahead to forecast.
 #' @param ktmethod method used to forecast the value of `kt` Arima(p,d,q) or ARIMA(0,1,0); c("`Arimapdq`", "`arima010`").
 #' @param kt_include.cte if you want that `kt` include constant in the arima process.
-#' @param ... other arguments for \code{\link{iarima}}.
+#' @param ... other arguments for \code{\link[StMoMo:iarima]{iarima}}.
 #'
 #' @return A list with class \code{"forLCmulti"} including different components of the forecasting process:
 #' * `ax` parameter that captures the average shape of the mortality curve in all considered populations.
@@ -32,7 +32,8 @@
 #'
 #' @seealso \code{\link{fitLCmulti}},
 #' \code{\link{plot.fitLCmulti}}, \code{\link{plot.forLCmulti}},
-#' \code{\link{multipopulation_cv}}, \code{\link{multipopulation_loocv}}
+#' \code{\link{multipopulation_cv}}, \code{\link{multipopulation_loocv}},
+#' \link[StMoMo:iarima]{iarima}
 #'
 #' @references
 #' Debon, A., Montes, F., & Martinez-Ruiz, F. (2011).
