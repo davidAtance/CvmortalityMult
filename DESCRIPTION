@@ -27,7 +27,7 @@ Depends:
   R (>= 3.50)
 Imports: StMoMo,
         forecast,
-        gnm,
+        gnm (== 1.1-2),
         tmap,
         sf, 
         graphics
