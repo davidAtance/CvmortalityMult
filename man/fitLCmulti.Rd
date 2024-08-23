@@ -89,6 +89,7 @@ multiplicative_Spainmales <- fitLCmulti(model = "multiplicative",
                               nPop = 18,
                               lxt = SpainRegions$lx_male)
 
+
 multiplicative_Spainmales
 
 #Once, we have fit the data, it is possible to see the ax, bx, kt, and It

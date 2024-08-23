@@ -1,6 +1,0 @@
-#!/bin/bash
-
-# Instalar la versión específica de 'gnm' si no está ya instalada
-Rscript -e "if (!requireNamespace('gnm', quietly = TRUE) || packageVersion('gnm') != '1.1-2') {
-    remotes::install_version('gnm', version = '1.1-2')
-}"

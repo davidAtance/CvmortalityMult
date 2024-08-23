@@ -88,6 +88,7 @@
 #'                               nPop = 18,
 #'                               lxt = SpainRegions$lx_male)
 #'
+#'
 #' multiplicative_Spainmales
 #'
 #' #Once, we have fit the data, it is possible to see the ax, bx, kt, and It
@@ -257,8 +258,6 @@ fitLCmulti <- function(model = c("additive", "multiplicative"),
   #Also, I am going to transform qxt into a matrix to provide as result
   mat_qxt <- list()
   for(i in 1:nPop){
-    nperiods
-    nages
     qxt1 <- df_qxtdata[df_qxtdata$pop == (i-1),]$qxt
 
     mat_qxt[[paste0("pob", i)]] <- matrix(qxt1, nrow = nages, ncol = nperiods,
@@ -272,11 +271,13 @@ fitLCmulti <- function(model = c("additive", "multiplicative"),
   if(nPop != 1){
     #Additive multi-population mortality model
     if(model == "additive"){
-      emptymodel <- gnm(qxt ~ -1 + factor(age), weights=df_qxtdata$lx,
-                      family= 'quasibinomial', data=df_qxtdata)
-      biplotStart <- residSVD(emptymodel,
-                            factor(df_qxtdata$age),
-                            factor(df_qxtdata$period),1)
+
+      emptymodel <- gnm(qxt ~ -1 + as.factor(age), weights=df_qxtdata$lx,
+                        family= 'quasibinomial', data=df_qxtdata)
+
+      biplotStart <- residSVD2(emptymodel,
+                              factor(df_qxtdata$age),
+                              factor(df_qxtdata$period),1)
 
       #We need to ensure that strating values are equal to b[1]=1 and k[1]=0
       aini <- coef(emptymodel)+biplotStart[1]*biplotStart[(nages+1)]*biplotStart[1:nages]/biplotStart[1]
@@ -284,7 +285,7 @@ fitLCmulti <- function(model = c("additive", "multiplicative"),
       kini <- biplotStart[1]*biplotStart[(nages+1):(nages+nperiods)]-biplotStart[1]*biplotStart[(nages+1)]
 
       ###################
-      #modelo aditivo
+      #Adittive model
       lee.geo3 <- gnm(qxt ~ -1 + factor(age) + Mult(factor(period),factor(age)) + factor(pop),
                     weights = df_qxtdata$lx, family = 'quasibinomial',
                     constrain=c((nages+1), (nages+nperiods+1)), constrainTo=c(0,1),
@@ -299,7 +300,7 @@ fitLCmulti <- function(model = c("additive", "multiplicative"),
     } else if(model == "multiplicative") {
       emptymodel <- gnm(qxt ~ -1 + factor(age), weights=df_qxtdata$lx,
                         family= 'quasibinomial', data=df_qxtdata)
-      biplotStart <- residSVD(emptymodel,
+      biplotStart <- residSVD2(emptymodel,
                               factor(df_qxtdata$age),
                               factor(df_qxtdata$period),1)
 
@@ -310,7 +311,7 @@ fitLCmulti <- function(model = c("additive", "multiplicative"),
       Iini <- as.numeric(rep(0, nPop))
 
       ###################
-      #multiplicative model
+      #Multiplicative model
       lee.geo3 <- gnm(qxt ~ -1 + factor(age) + Mult(factor(period), factor(age), factor(pop)),
                       weights = df_qxtdata$lx, family = 'quasibinomial',
                       constrain=c((nages+1), (nages+nperiods+1), (nages+nperiods+nages+1)),

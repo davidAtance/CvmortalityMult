@@ -43,3 +43,9 @@
 #' LC_Spainmales
 #' }
 "SpainNat"
+print.CVmortalityData <- function(x) {
+  cat("Mortality Data\n")
+  cat(x$label, "including", x$series ,"\n")
+  cat("Years", c(min(x$years),":", max(x$years)),"\n")
+  cat("Abridged Ages", c(min(x$ages),":", max(x$ages)), "\n")
+}

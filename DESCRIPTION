@@ -1,8 +1,8 @@
 Package: CvmortalityMult
 Type: Package
 Title: Cross-Validation for Multi-Population Mortality Models
-Version: 1.0.3
-Date: 2024-07-15
+Version: 1.0.5
+Date: 2024-08-23
 Authors@R: c(
   person("David", "Atance", role = c("aut", "cre"),
          email = "david.atance@uah.es", comment =c(ORCID = "0000-0001-5860-0584")),
@@ -27,7 +27,7 @@ Depends:
   R (>= 3.50)
 Imports: StMoMo,
         forecast,
-        gnm (== 1.1-2),
+        gnm (>= 1.1-2),
         tmap,
         sf, 
         graphics
