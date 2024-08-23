@@ -1,7 +1,7 @@
 Package: CvmortalityMult
 Type: Package
 Title: Cross-Validation for Multi-Population Mortality Models
-Version: 1.0.5
+Version: 1.0.6
 Date: 2024-08-23
 Authors@R: c(
   person("David", "Atance", role = c("aut", "cre"),
