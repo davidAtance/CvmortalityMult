@@ -327,7 +327,7 @@ fitLCmulti <- function(model = c("additive", "multiplicative"),
     message("You only provide one country. Thus, we fit LC one-single model population.")
     emptymodel <- gnm(qxt ~ -1 + factor(age), weights = df_qxtdata$lx,
                       family='quasibinomial', data=df_qxtdata)
-    biplotStart <- residSVD(emptymodel,
+    biplotStart <- residSVD2(emptymodel,
                             factor(df_qxtdata$age), factor(df_qxtdata$period),1)
     aini <- coef(emptymodel)+biplotStart[1]*biplotStart[(nages+1)]*biplotStart[1:nages]/biplotStart[1]
     bini <- biplotStart[1:nages]/biplotStart[1]
