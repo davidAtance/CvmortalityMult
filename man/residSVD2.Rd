@@ -7,7 +7,7 @@
 residSVD2(model, fac1, fac2, d = 1)
 }
 \arguments{
-\item{model}{object with \link[gnm]{na.action}, \link[gnm]{residuals}, and \link[gnm]{weights} methods, e.g. objects inheriting from class \code{"gnm"}.}
+\item{model}{object with \link[stats]{na.action}, \link[stats]{residuals}, and \link[stats]{weights} methods, e.g. objects inheriting from class \code{"gnm"}.}
 
 \item{fac1}{first factor.}
 

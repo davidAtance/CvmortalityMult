@@ -10,7 +10,7 @@
 #' in models to be fitted using \link[gnm]{gnm}. In this case, we modified the function
 #' in order to obtain good starting values for the multi-population mortality models.
 #'
-#' @param model object with \link[gnm]{na.action}, \link[gnm]{residuals}, and \link[gnm]{weights} methods, e.g. objects inheriting from class \code{"gnm"}.
+#' @param model object with \link[stats]{na.action}, \link[stats]{residuals}, and \link[stats]{weights} methods, e.g. objects inheriting from class \code{"gnm"}.
 #' @param fac1 first factor.
 #' @param fac2 second factor.
 #' @param d integer, the number of multiplicative terms to use in the approximation.

@@ -48,7 +48,8 @@
 #' multiplicative_Spainmales
 #' }
 "SpainRegions"
-print.SpainRegionsData <- function(x) {
+#' @export
+print.SpainRegionsData <- function(x, ...) {
   cat("Spain Regions data\n")
   cat("geometry to contruct maps")
 }
