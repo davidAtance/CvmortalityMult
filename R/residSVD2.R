@@ -6,11 +6,11 @@
 #' structure determined by two specified factors follows the SVD function by Turner et al. (2023).
 #' For \code{glm} and \code{gnm} models from the \code{gnm} R-packages,
 #' the matrix entries are weighted working residuals.  The primary use of \code{residSVD} is to
-#' generate good starting values for the parameters in \code{\link{Mult}} terms
-#' in models to be fitted using \code{\link{gnm}}. In this case, we modified the function
+#' generate good starting values for the parameters in \link[gnm]{Mult} terms
+#' in models to be fitted using \link[gnm]{gnm}. In this case, we modified the function
 #' in order to obtain good starting values for the multi-population mortality models.
 #'
-#' @param model object with \code{\link{na.action}}, \code{\link{residuals}}, and \code{\link{weights}} methods, e.g. objects inheriting from class \code{"gnm"}.
+#' @param model object with \link[gnm]{na.action}, \link[gnm]{residuals}, and \link[gnm]{weights} methods, e.g. objects inheriting from class \code{"gnm"}.
 #' @param fac1 first factor.
 #' @param fac2 second factor.
 #' @param d integer, the number of multiplicative terms to use in the approximation.
