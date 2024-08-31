@@ -41,7 +41,7 @@
 #'                                         lxt = SpainRegions$lx_male)
 #'
 #' multiplicative_Spainmales
-#'
+#' library(sf)
 #' #To show the values of the population indicator in the Spanish map.
 #' SpainMap(regionvalue = multiplicative_Spainmales$Ii[2:18],
 #'          main = c("Multiplicative for males"),

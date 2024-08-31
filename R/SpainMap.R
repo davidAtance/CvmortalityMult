@@ -14,7 +14,7 @@
 #' @importFrom tmap tm_shape tm_polygons tm_layout tm_borders
 #' @importFrom stats quantile
 #' @importFrom utils install.packages
-#' @importFrom sf st_sf
+#' @importFrom sf st_sf st_crs st_transform
 #'
 #' @examples
 #' name <- c("Ii")
@@ -25,6 +25,7 @@
 #'                  0.050376721,  0.052476852, -0.022871202,
 #'                 -0.093952332,  0.049266816, -0.101224890,
 #'                  0.001481333, -0.078523511)
+#' library(sf)
 #'
 #' SpainMap(regionvalue, main, name)
 #'
@@ -38,15 +39,30 @@ SpainMap <- function(regionvalue, main, name){
   autonomias <- st_sf(CvmortalityMult::regions)
   autonomias$Ii <- regionvalue
   names(autonomias)[5] <- name
+  sf::st_crs(autonomias) <- 32630
+  autonomias <- st_transform(autonomias, crs = 32630)
+
+  #if (is.na(st_crs(autonomias))) {
+  #  st_crs(autonomias) <- 32630
+  #} else {
+  #  # Si ya tiene un CRS asignado, y no es el correcto, cambiar a 32630
+  #  if (st_crs(autonomias)$epsg != 32630) {
+  #    autonomias <- st_transform(autonomias, crs = 32630)
+  #  }
+  #}
 
   tm_shape(autonomias) +
     tm_polygons(col=name, palette = c("#FF0000", "#FF9D00", "#FFD800", "#FFFFAF"),
-                breaks=quantile(autonomias[[5]]), border.col = "black",
-                title = name) +
+                  breaks=quantile(autonomias[[5]]), border.col = "black",
+                  title = name) +
     tm_layout(main,
-              legend.title.fontfamily = "serif",
-              legend.title.size = 1.3,
-              legend.text.size = 0.9) +
-    tm_borders(lwd = 2)
+                legend.title.fontfamily = "serif",
+                legend.title.size = 1.3,
+                legend.text.size = 0.6,
+                legend.width = 0.4) +
+    tm_shape(autonomias) +
+    tm_borders(lwd = 1)
+
+
 
 }

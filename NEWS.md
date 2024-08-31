@@ -15,3 +15,6 @@
 
 ## 2024-08-23
 -Include the last version of the gnm package in to the fitting process of the multi-population mortality models.
+
+## 2024-08-31
+-Eliminate the warning messages in the SpainMap function.
