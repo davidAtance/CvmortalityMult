@@ -8,7 +8,7 @@
 #'
 #' @format A data frame with 10800 rows and 9 columns with class \code{"CVmortalityData"} including the following information
 #' * `ccaa` a vector containing all the regions of Spain. Indeed, the column takes the following information: Spain, Andalucia, Aragon, Asturias, Baleares, Canarias, Cantabria, Castillayla Mancha, CastillayLeon, Cataluna, ComunidadValenciana, Extremadura, Galicia, Madrid, Murcia, Navarra, PaisVasco, and LaRioja.
-#' * `years` a vector containing the periods of the dataset from 1991 to 2020.
+#' * `periods` a vector containing the periods of the dataset from 1991 to 2020.
 #' * `ages` a vector containing the abridged ages considered in the dataset, 0, <1, 1-4, 5-9, 10-14, 15-19, 20-24, 25-29, 30-34, 35-39, 40-44, 45-49, 50-54, 55-59, 60-64, 65-69, 70-74, 75-79, 80-84, 85-89, and 90-94.
 #' * `qx_male` mortality rates for the males in every region of Spain including Nation data.
 #' * `qx_female` mortality rates for the females in every region of Spain including Nation data.

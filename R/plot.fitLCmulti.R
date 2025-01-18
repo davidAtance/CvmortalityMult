@@ -10,8 +10,7 @@
 #' @return plot the different parameters for the multi-population mortality models `ax`, `bx`, `kt` and `Ii`. This function is valid for both approaches Additive and Multiplicative multi-population mortality models.
 #'
 #' @seealso \code{\link{fitLCmulti}}, \code{\link{forecast.fitLCmulti}},
-#' \code{\link{plot.forLCmulti}},
-#' \code{\link{multipopulation_cv}}, \code{\link{multipopulation_loocv}}
+#' \code{\link{plot.forLCmulti}}, \code{\link{multipopulation_cv}}
 #'
 #' @references
 #' Debon, A., Montes, F., & Martinez-Ruiz, F. (2011).
@@ -30,6 +29,7 @@
 #' @importFrom graphics par
 #' @importFrom utils install.packages
 #' @importFrom stats plogis qlogis
+#' @importFrom graphics layout
 #'
 #' @examples
 #' #The example takes more than 5 seconds because it includes
@@ -116,18 +116,126 @@ plot.fitLCmulti <- function(x, ...){
 
 
   if(pops != 1){
-    oldpar <- par(no.readonly = TRUE)
-    on.exit(par(oldpar))
+    if(x$model == "additive" | x$model == "multiplicative"){
+      oldpar <- par(no.readonly = TRUE)
+      on.exit(par(oldpar))
 
-    par(mfrow=c(1,4))
-    plot(ages, ax, ylab="", xlab="x = age", main =ax_main,
-         type="l", lwd=2)
-    plot(ages, bx, ylab="", xlab="x = age", main =bx_main,
-         type="l", lwd=2)
-    plot(pers, kt, ylab="", xlab="t = period", main =kt_main,
-         type="l", lwd=2)
-    plot(c(1:x$nPop), Ii, ylab="", xlab="i = population", main = Ii_main,
-         type="l", lwd=2)
+      par(mfrow=c(1,4))
+      plot(ages, ax, ylab="", xlab="x = age", main =ax_main,
+           type="l", lwd=2)
+      plot(ages, bx, ylab="x", xlab="x = age", main =bx_main,
+           type="l", lwd=2)
+      plot(pers, kt, ylab="", xlab="t = period", main =kt_main,
+           type="l", lwd=2)
+      plot(c(1:x$nPop), Ii, ylab="", xlab="i = population", main = Ii_main,
+           type="l", lwd=2)
+    }else if(x$model == "CFM"){
+      oldpar <- par(no.readonly = TRUE)
+      on.exit(par(oldpar))
+
+      par(mfrow=c(1,3))
+      min1 <- min(ax)
+      max1 <- max(ax)
+      plot(ages, ax[1,], ylab="", xlab="x = age", main =ax_main,
+           type="l", lwd=1, lty=1, ylim = c(min1, max1))
+      namepop <- c("Pop1")
+      for(pe in 2:pops){
+        lines(ages, ax[pe,], lwd = 1, lty = pe)
+        namepop <- c(namepop, paste0("Pop", pe))
+      }
+      legend("topleft", c(namepop), lty = c(1:pops), cex = 0.5)
+      plot(ages, bx, ylab="x", xlab="x = age", main =bx_main,
+           type="l", lwd=2)
+      plot(pers, kt, ylab="", xlab="t = period", main =kt_main,
+           type="l", lwd=2)
+
+    }else if(x$model == "ACFM"){
+      oldpar <- par(no.readonly = TRUE)
+      on.exit(par(oldpar))
+
+      layout(matrix(c(1,2,3,4,5,6, 7, 7, 7), ncol = 3, byrow = T),
+             heights = c(0.45,0.45,0.1))
+
+      plot(ages, ax[1,], ylab="", xlab="x = age", main =ax_main,
+           type="l", lwd=2, lty=1)
+
+      plot(ages, bx[1,], ylab="", xlab="x = age", main =bx_main,
+           type="l", lwd=2)
+      plot(pers, kt[,1], ylab="", xlab="t = period", main =kt_main,
+           type="l", lwd=2)
+
+      namepop <- c("Pop1", "Pop2")
+      max1 <- max(ax[2:pops,])
+      min1 <- min(ax[2:pops,])
+      plot(ages, ax[2,], ylab="", xlab="x = age", main =expression(a[x[i]]),
+           type="l", lwd=1, ylim = c(min1, max1), lty = 2)
+      if(pops >=3){
+        for(pe in 3:pops){
+          lines(ages, ax[pe,], lwd = 1, lty = pe)
+          namepop <- c(namepop, paste0("Pop", pe))
+        }}
+
+      max2 <- max(bx[2:pops,])
+      min2 <- min(bx[2:pops,])
+      plot(ages, bx[2,], ylab="", xlab="x = age", main =expression(b[x[i]]),
+           type="l", lwd=1, ylim = c(min2, max2), lty = 2)
+      if(pops >=3){
+        for(pe in 3:pops){
+          lines(ages, bx[pe,], lwd = 1, lty = pe)
+      }}
+
+      max3 <- max(kt[,2:pops])
+      min3 <- min(kt[,2:pops])
+      plot(pers, kt[,2], ylab="", xlab="t = period", main =expression(k[x[i]]),
+           type="l", lwd=1, ylim = c(min3, max3), lty = 2)
+      if(pops >=3){
+        for(pe in 2:pops){
+          lines(pers, kt[,pe], lwd = 1, lty = pe)
+        }}
+      if(pops %% 2 != 0){
+        pops2 <- pops + 1
+        names_pops <- c(namepop, "NA")
+        pop_d <- pops2/2
+      } else{
+        pops2 <- pops
+        names_pops <- c(namepop)
+        pop_d <- pops2/2
+      }
+      legend_order <- matrix(1:pops2, ncol = pop_d, byrow = T)
+      par(mar=c(0,0,0,0))
+      plot(1, type = "n", axes=F, xlab="", ylab="")
+      legend("top", c(names_pops)[legend_order],
+             lty = c(1:pops2)[legend_order],
+             ncol = pop_d, cex = 0.6)
+
+    }else if(x$model == "joint-K"){
+      oldpar <- par(no.readonly = TRUE)
+      on.exit(par(oldpar))
+
+      par(mfrow=c(1,3))
+      min1 <- min(ax)
+      max1 <- max(ax)
+      plot(ages, ax[1,], ylab="", xlab="x = age", main =ax_main,
+           type="l", lwd=1, lty=1, ylim = c(min1, max1))
+      namepop <- c("Pop1")
+      for(pe in 2:pops){
+        lines(ages, ax[pe,], lwd = 1, lty = pe)
+        namepop <- c(namepop, paste0("Pop", pe))
+      }
+      legend("topleft", c(namepop), lty = c(1:pops), cex = 0.5)
+
+      min2 <- min(bx)
+      max2 <- max(bx)
+      plot(ages, bx[1,], ylab="", xlab="x = age", main =bx_main,
+           type="l", lwd=2, ylim = c(min2, max2))
+      for(pe in 2:pops){
+        lines(ages, bx[pe,], lwd = 1, lty = pe)
+      }
+      legend("topright", c(namepop), lty = c(1:pops), cex = 0.5)
+
+      plot(pers, kt, ylab="", xlab="t = period", main =kt_main,
+           type="l", lwd=2)
+    }
 
   } else if(pops == 1){
     oldpar <- par(no.readonly = TRUE)

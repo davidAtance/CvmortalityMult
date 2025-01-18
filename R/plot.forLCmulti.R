@@ -12,7 +12,7 @@
 #'
 #' @seealso \code{\link{fitLCmulti}}, \code{\link{forecast.fitLCmulti}},
 #' \code{\link{plot.fitLCmulti}},
-#' \code{\link{multipopulation_cv}}, \code{\link{multipopulation_loocv}}
+#' \code{\link{multipopulation_cv}}
 #'
 #' @references
 #' Debon, A., Montes, F., & Martinez-Ruiz, F. (2011).
@@ -31,6 +31,7 @@
 #' @importFrom graphics par legend lines mtext
 #' @importFrom utils install.packages
 #' @importFrom stats plogis qlogis
+#' @importFrom graphics layout
 #'
 #' @examples
 #' #The example takes more than 5 seconds because it includes
@@ -43,7 +44,7 @@
 #'
 #' library(gnm)
 #' library(forecast)
-#' #ADDITIVE MULTI-POPULATION MORTALITY MODEL
+#' #1. ADDITIVE MULTI-POPULATION MORTALITY MODEL
 #' #In the case, the user wants to fit the additive multi-population mortality model
 #' additive_Spainmales <- fitLCmulti(model = "additive",
 #'                               qxt = SpainRegions$qx_male,
@@ -64,7 +65,7 @@
 #' #Once, we have fit the data, it is possible to forecast the multipopulation
 #' #mortality model several years ahead, for example 10, as follows:
 #' fut_additive_Spainmales <- forecast(object = additive_Spainmales, nahead = 10,
-#'                                     ktmethod = "Arimapdq", kt_include.cte = TRUE)
+#'                                     ktmethod = "Arimapdq")
 #'
 #' fut_additive_Spainmales
 #' #Once the data have been adjusted, it is possible to display the fitted kt and
@@ -73,7 +74,7 @@
 #' #for the mean age of the data considered in all populations.
 #' plot(fut_additive_Spainmales)
 #'
-#' #MULTIPLICATIVE MULTI-POPULATION MORTALITY MODEL
+#' #2. MULTIPLICATIVE MULTI-POPULATION MORTALITY MODEL
 #' #In the case, the user wants to fit the multiplicative multi-population mortality model
 #' multiplicative_Spainmales <- fitLCmulti(model = "multiplicative",
 #'                               qxt = SpainRegions$qx_male,
@@ -91,7 +92,7 @@
 #' #Once, we have fit the data, it is possible to forecast the multipopulation
 #' #mortality model several years ahead, for example 10, as follows:
 #' fut_multi_Spainmales <- forecast(object = multiplicative_Spainmales, nahead = 10,
-#'                                  ktmethod = "Arimapdq", kt_include.cte = TRUE)
+#'                                  ktmethod = "Arimapdq")
 #'
 #' fut_multi_Spainmales
 #' #Once the data have been adjusted, it is possible to display the fitted kt and
@@ -100,7 +101,88 @@
 #' #for the mean age of the data considered in all populations.
 #' plot(fut_multi_Spainmales)
 #'
-#' #LEE-CARTER FOR SINGLE-POPULATION
+#' #3. COMMON-FACTOR MULTI-POPULATION MORTALITY MODEL
+#' #In the case, the user wants to fit the common-factor multi-population mortality model
+#' cfm_Spainmales <- fitLCmulti(model = "CFM",
+#'                              qxt = SpainRegions$qx_male,
+#'                              periods = c(1991:2020),
+#'                              ages = c(ages),
+#'                              nPop = 18,
+#'                              lxt = SpainRegions$lx_male)
+#'
+#' cfm_Spainmales
+#'
+#' #Once, we have fit the data, it is possible to see the ax, bx, kt, and It
+#' #provided parameters for the fitting.
+#' plot(cfm_Spainmales)
+#'
+#' #Once, we have fit the data, it is possible to forecast the multipopulation
+#' #mortality model several years ahead, for example 10, as follows:
+#' fut_cfm_Spainmales <- forecast(object = cfm_Spainmales, nahead = 10,
+#'                                ktmethod = "Arimapdq")
+#'
+#' fut_cfm_Spainmales
+#' #Once the data have been adjusted, it is possible to display the fitted kt and
+#' #its out-of-sample forecasting. In addition, the function shows
+#' #the logit mortality adjusted in-sample and projected out-of-sample
+#' #for the mean age of the data considered in all populations.
+#' plot(fut_cfm_Spainmales)
+#'
+#' #4. AUGMENTED-COMMON-FACTOR MULTI-POPULATION MORTALITY MODEL
+#' #In the case, the user wants to fit the augmented-common-factor multi-population mortality model
+#' acfm_Spainmales <- fitLCmulti(model = "ACFM",
+#'                               qxt = SpainRegions$qx_male,
+#'                               periods = c(1991:2020),
+#'                               ages = c(ages),
+#'                               nPop = 18,
+#'                               lxt = SpainRegions$lx_male)
+#'
+#' acfm_Spainmales
+#'
+#' #Once, we have fit the data, it is possible to see the ax, bx, kt, and It
+#' #provided parameters for the fitting.
+#' plot(acfm_Spainmales)
+#'
+#' #Once, we have fit the data, it is possible to forecast the multipopulation
+#' #mortality model several years ahead, for example 10, as follows:
+#' fut_acfm_Spainmales <- forecast(object = acfm_Spainmales, nahead = 10,
+#'                                ktmethod = "Arimapdq")
+#'
+#' fut_acfm_Spainmales
+#' #Once the data have been adjusted, it is possible to display the fitted kt and
+#' #its out-of-sample forecasting. In addition, the function shows
+#' #the logit mortality adjusted in-sample and projected out-of-sample
+#' #for the mean age of the data considered in all populations.
+#' plot(fut_acfm_Spainmales)
+#'
+#' #5. JOINT-K MULTI-POPULATION MORTALITY MODEL
+#' #In the case, the user wants to fit the joint-K multi-population mortality model
+#' jointk_Spainmales <- fitLCmulti(model = "joint-K",
+#'                                 qxt = SpainRegions$qx_male,
+#'                                 periods = c(1991:2020),
+#'                                 ages = c(ages),
+#'                                 nPop = 18,
+#'                                 lxt = SpainRegions$lx_male)
+#'
+#' jointk_Spainmales
+#'
+#' #Once, we have fit the data, it is possible to see the ax, bx, kt, and It
+#' #provided parameters for the fitting.
+#' plot(jointk_Spainmales)
+#'
+#' #Once, we have fit the data, it is possible to forecast the multipopulation
+#' #mortality model several years ahead, for example 10, as follows:
+#' fut_jointk_Spainmales <- forecast(object = jointk_Spainmales, nahead = 10,
+#'                                ktmethod = "Arimapdq")
+#'
+#' fut_jointk_Spainmales
+#' #Once the data have been adjusted, it is possible to display the fitted kt and
+#' #its out-of-sample forecasting. In addition, the function shows
+#' #the logit mortality adjusted in-sample and projected out-of-sample
+#' #for the mean age of the data considered in all populations.
+#' plot(fut_jointk_Spainmales)
+#'
+#' #6. LEE-CARTER FOR SINGLE-POPULATION
 #' #As we mentioned in the details of the function, if we only provide the data
 #' #from one-population the function fitLCmulti()
 #' #will fit the Lee-Carter model for single populations.
@@ -118,7 +200,7 @@
 #' #Once, we have fit the data, it is possible to forecast the multipopulation
 #' #mortality model several years ahead, for example 10, as follows:
 #' fut_LC_Spainmales <- forecast(object = LC_Spainmales, nahead = 10,
-#'                               ktmethod = "Arimapdq", kt_include.cte = TRUE)
+#'                               ktmethod = "Arimapdq")
 #'
 #' #Once the data have been adjusted, it is possible to display the fitted kt and
 #' #its out-of-sample forecasting. In addition, the function shows
@@ -140,10 +222,25 @@ plot.forLCmulti<- function(x, ...){
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))
 
-  par(mfrow=c(1,2))
-
-  plot(forecast(auto.arima(x$kt.fitted), h = length(x$FutPeriods)),
-       xlab = "periods", ylab = "kt")
+  layout(matrix(c(1,2,3,3), ncol = 2, byrow = T),
+         heights = c(0.9, 0.1))
+  if(x$model == "ACFM"){
+    if(x$ktmethod == "Arimapdq"){
+    plot(forecast(auto.arima(x$kt.fitted[,1]), h = length(x$FutPeriods)),
+         xlab = "periods", ylab = "kt")
+    }else if(x$ktmethod == "Arima010"){
+      plot(forecast(x$kt.fitted[,1], c(0,1,0), h = length(x$FutPeriods)),
+      xlab = "periods", ylab = "kt")
+    }
+  }else{
+    if(x$ktmethod == "Arimapdq"){
+      plot(forecast(auto.arima(x$kt.fitted), h = length(x$FutPeriods)),
+           xlab = "periods", ylab = "kt")
+    }else if(x$ktmethod == "Arima010"){
+      plot(forecast(x$kt.fitted, c(0,1,0), h = length(x$FutPeriods)),
+           xlab = "periods", ylab = "kt")
+    }
+  }
 
   showage <- round(length(x$Ages)/2, 0)
   ageshow <- x$Ages[showage]
@@ -159,24 +256,46 @@ plot.forLCmulti<- function(x, ...){
   xmin <- min(x$Periods)
   xmax <- max(x$FutPeriods)
 
-  plot(c(x$Periods),  x$logit.qxt.fitted$pob1[showage,], type="l",
+  plot(c(x$Periods),  x$logit.qxt.fitted$pop1[showage,], type="l",
        xlim=c(xmin, xmax), ylim = c(min(ymin), max(ymax)),
        main = paste0("Age ", ageshow), xlab = "periods", ylab = "logit qxt",
-  )
-  lines(c(x$FutPeriods), x$logit.qxt.future$pob1[showage,], col="blue")
+       )
+  lines(c(x$FutPeriods), x$logit.qxt.future$pop1[showage,], col="blue")
+  namepop <- c("Pop1")
   if(x$nPop != 1){
     for(i in 2:x$nPop){
+      namepop <- c(namepop, paste0("Pop", i))
       lines(c(x$Periods), x$logit.qxt.fitted[[(i)]][showage,], col="black", lty = (i+1))
       lines(c(x$FutPeriods), x$logit.qxt.future[[(i)]][showage,], col="blue", lty=(i+1))
     }
+    if(x$nPop %% 2 != 0){
+      pops2 <- x$nPop + 1
+      names_pops <- c(namepop, "NA")
+      pop_d <- pops2/2
+    } else{
+      pops2 <- x$nPop
+      names_pops <- c(namepop)
+      pop_d <- pops2/2
+    }
+    legend_order <- matrix(1:pops2, ncol = pop_d, byrow = T)
+    par(mar=c(0,0,0,0))
+    plot(1, type = "n", axes=F, xlab="", ylab="")
+    legend("top", c(names_pops)[legend_order],
+           lty = c(1:pops2)[legend_order],
+           ncol = pop_d, cex = 0.5)
   }
-  legend("bottomleft", names(x$logit.qxt.future), lty = c(1:x$nPop), cex = 0.4)
 
   if(x$nPop != 1){
     if(x$model == "additive"){
       text1 <- paste0("Forecasting the additive multi-population mortality model")
     } else if(x$model == "multiplicative"){
       text1 <- paste0("Forecasting the multiplicative multi-population mortality model")
+    } else if(x$model == "CFM"){
+      text1 <- paste0("Forecasting the common-factor multi-population mortality model")
+    } else if(x$model == "ACFM"){
+      text1 <- paste0("Forecasting the augmented-common-factor multi-population mortality model")
+    } else if(x$model == "joint-K"){
+      text1 <- paste0("Forecasting the joint-K multi-population mortality model")
     }
   } else if(x$nPop == 1){
     text1 <- paste0("Forecasting the single-population version of the Lee-Carter model")

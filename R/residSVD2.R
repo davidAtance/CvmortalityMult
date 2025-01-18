@@ -18,8 +18,8 @@
 #' @return If \code{d = 1}, a numeric vector; otherwise a numeric matrix with \code{d} columns.
 #'
 #' @seealso \code{\link{fitLCmulti}}, \code{\link{forecast.fitLCmulti}}
-#' \code{\link{multipopulation_cv}}, \code{\link{multipopulation_loocv}},
-#' \code{\link{plot.fitLCmulti}}
+#' \code{\link{multipopulation_cv}}, \code{\link{plot.fitLCmulti}}
+#' \code{\link{plot.forLCmulti}}
 #'
 #' @references
 #' Turner, H., & Firth, D. (2023).
@@ -28,6 +28,7 @@
 #'
 #' @import gnm
 #'
+#' @export
 residSVD2 <- function(model, fac1, fac2, d = 1) {
     if (!is.null(model$call$data)) {
         Data <- as.data.frame(eval(model$call$data, parent.frame()))

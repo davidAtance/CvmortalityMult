@@ -36,6 +36,6 @@ R package version 1.1-5. https://CRAN.R-project.org/package=gnm
 }
 \seealso{
 \code{\link{fitLCmulti}}, \code{\link{forecast.fitLCmulti}}
-\code{\link{multipopulation_cv}}, \code{\link{multipopulation_loocv}},
-\code{\link{plot.fitLCmulti}}
+\code{\link{multipopulation_cv}}, \code{\link{plot.fitLCmulti}}
+\code{\link{plot.forLCmulti}}
 }

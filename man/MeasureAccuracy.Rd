@@ -6,7 +6,7 @@
 \usage{
 MeasureAccuracy(
   measure = c("SSE", "MSE", "MAE", "MAPE", "All"),
-  qxt_re,
+  qxt_crude,
   qxt_aju,
   wxt
 )
@@ -14,7 +14,7 @@ MeasureAccuracy(
 \arguments{
 \item{measure}{choose the non-penalized measure of accuracy that you want to use; c("\code{SSE}", "\code{MSE}", "\code{MAE}", "\code{MAPE}", "\code{All}"). Check the function. In case you do not provide any value, the function will apply the "\code{SSE}" as measure of forecasting accuracy.}
 
-\item{qxt_re}{real mortality rates used to check the goodness of fit measure.}
+\item{qxt_crude}{corresponds to the crude mortality rates. These crude rate are directly obtained as: $$q_{x,t,i}=d_{x,t,i}/E_{x,t,i}^{0}$$, with the number of deaths recorded $$d_{x,t,i}$$, and relative to those initially exposed to risk $$E_{x,t,i}$$ for age x, period t and in each region i.}
 
 \item{qxt_aju}{adjusted mortality rates using a specific mode.}
 
@@ -28,16 +28,16 @@ R function to estimate different measures of accuracy.
 \enumerate{
 \item the sum of squared errors (SSE) for the mortality rates:
 \deqn{\sum_{x}^{} \sum_{t} \left( qxt1 - qxt2 \right)^{2}}
-where qxt1 is the real mortality rates \code{qxt_re}, and qxt2 is the adjusted mortality rates \code{qxt_aju}.
+where qxt1 is the real mortality rates \code{qxt_crude}, and qxt2 is the adjusted mortality rates \code{qxt_aju}.
 \item The mean squared errors (MSE) for the mortality rates:
 \deqn{\frac{1}{n}\sum_{x} \sum_{t} \left( qxt1 - qxt2 \right)^2 = \frac{1}{n} SSE}
-where qxt1 is the real mortality rates \code{qxt_re}, and qxt2 is the adjusted mortality rates \code{qxt_aju}.
+where qxt1 is the real mortality rates \code{qxt_crude}, and qxt2 is the adjusted mortality rates \code{qxt_aju}.
 \item The mean absolute errors (MAE) for the mortality rates:
 \deqn{\frac{1}{n}\sum_{x} \sum_{t} \left| qx1 - qxt2 \right|}.
-where qxt1 is the real mortality rates \code{qxt_re}, and qxt2 is the adjusted mortality rates \code{qxt_aju}.
+where qxt1 is the real mortality rates \code{qxt_crude}, and qxt2 is the adjusted mortality rates \code{qxt_aju}.
 \item The mean absolute percentage error (MAPE) for the mortality rates:
 \deqn{\frac{1}{n}\sum_{x} \sum_{t}\left| \frac{\left(qxt1 - qxt2\right) }{qxt2} \right|}
-where qxt1 is the real mortality rates \code{qxt_re}, and qxt2 is the adjusted mortality rates \code{qxt_aju}.
+where qxt1 is the real mortality rates \code{qxt_crude}, and qxt2 is the adjusted mortality rates \code{qxt_aju}.
 You only have to provide the real value, the fitted or forecasted value for your mortality rates and the measure of accuracy chosen.
 However, the function is constructed to provide the real value and the fitted or forecasted value of your independent variable.
 These variables must have the same dimensions to be compared.
@@ -70,39 +70,39 @@ plot(multiplicative_Spainmales)
 #for the first population.
 #We need to obtain wxt (weight of the mortality rates or data provided) using a
 library(StMoMo)
-wxt_1pob <- genWeightMat(ages = ages, years = c(1991:2020), clip = 0)
+wxt_1pop <- genWeightMat(ages = ages, years = c(1991:2020), clip = 0)
 
 ##########################
 #SSE#
 ##########################
 SSE_multSpmales <- MeasureAccuracy(measure = "SSE",
-                       qxt_re = multiplicative_Spainmales$qxt.real$pob1,
-                       qxt_aju = multiplicative_Spainmales$qxt.fitted$pob1,
-                       wxt = wxt_1pob)
+                       qxt_crude = multiplicative_Spainmales$qxt.crude$pop1,
+                       qxt_aju = multiplicative_Spainmales$qxt.fitted$pop1,
+                       wxt = wxt_1pop)
 SSE_multSpmales
 ##########################
 #MSE#
 ##########################
 MSE_multSpmales <- MeasureAccuracy(measure = "MSE",
-                       qxt_re = multiplicative_Spainmales$qxt.real$pob1,
-                       qxt_aju = multiplicative_Spainmales$qxt.fitted$pob1,
-                       wxt = wxt_1pob)
+                       qxt_crude = multiplicative_Spainmales$qxt.crude$pop1,
+                       qxt_aju = multiplicative_Spainmales$qxt.fitted$pop1,
+                       wxt = wxt_1pop)
 MSE_multSpmales
 ##########################
 #MAE#
 ##########################
 MAE_multSpmales <- MeasureAccuracy(measure = "MSE",
-                       qxt_re = multiplicative_Spainmales$qxt.real$pob1,
-                       qxt_aju = multiplicative_Spainmales$qxt.fitted$pob1,
-                       wxt = wxt_1pob)
+                       qxt_crude = multiplicative_Spainmales$qxt.crude$pop1,
+                       qxt_aju = multiplicative_Spainmales$qxt.fitted$pop1,
+                       wxt = wxt_1pop)
 MAE_multSpmales
 ##########################
 #MAPE#
 ##########################
 MAPE_multSpmales <- MeasureAccuracy(measure = "MSE",
-                        qxt_re = multiplicative_Spainmales$qxt.real$pob1,
-                        qxt_aju = multiplicative_Spainmales$qxt.fitted$pob1,
-                        wxt = wxt_1pob)
+                        qxt_crude = multiplicative_Spainmales$qxt.crude$pop1,
+                        qxt_aju = multiplicative_Spainmales$qxt.fitted$pop1,
+                        wxt = wxt_1pop)
 MAPE_multSpmales
 
 }
@@ -115,5 +115,5 @@ Mathematics, 8(9), 1550.
 }
 \seealso{
 \code{\link{fitLCmulti}}, \code{\link{forecast.fitLCmulti}},
-\code{\link{multipopulation_cv}}, \code{\link{multipopulation_loocv}}.
+\code{\link{multipopulation_cv}}.
 }

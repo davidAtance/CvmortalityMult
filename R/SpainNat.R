@@ -47,6 +47,6 @@
 print.CVmortalityData <- function(x, ...) {
   cat("Mortality Data\n")
   cat(x$label, "including", x$series ,"\n")
-  cat("Years", c(min(x$years),":", max(x$years)),"\n")
+  cat("Periods", c(min(x$periods),":", max(x$periods)),"\n")
   cat("Abridged Ages", c(min(x$ages),":", max(x$ages)), "\n")
 }

@@ -19,40 +19,76 @@ SpainRegions <- Spain_Regions
 
 SpainNat <- Spain_Nat
 
-SpainRegions <- structure(list(ccaa = Spain_Regions$ccaa,
-                                years = Spain_Regions$periodo,
-                                ages = Spain_Regions$edad,
-                                qx_male = Spain_Regions$homqx,
-                                qx_female = Spain_Regions$mujqx,
-                                lx_male = Spain_Regions$homriesgo,
-                                lx_female = Spain_Regions$mujriesgo,
-                                series = c('males and females'),
-                                label = c('Spain regions')))
 print.CVmortalityData <- function(x) {
   cat("Mortality Data\n")
-  cat(x$label, "including", x$series ,"\n")
-  cat("Years", c(min(x$years),":", max(x$years)),"\n")
+  cat(attributes(x)$label, "including", attributes(x)$series ,"\n")
+  cat("Periods", c(min(x$periods),":", max(x$periods)),"\n")
   cat("Abridged Ages", c(min(x$ages),":", max(x$ages)), "\n")
 }
 
-class(SpainRegions) <- "CVmortalityData"
+SpainRegions <- structure(list(ccaa = Spain_Regions$ccaa,
+                               periods = Spain_Regions$periodo,
+                               ages = Spain_Regions$edad,
+                               qx_male = Spain_Regions$homqx,
+                               qx_female = Spain_Regions$mujqx,
+                               lx_male = Spain_Regions$homriesgo,
+                               lx_female = Spain_Regions$mujriesgo))
+SpainRegions <- as.data.frame(SpainRegions)
+attr(SpainRegions, "label") <- "Spain regions"
+attr(SpainRegions, "series") <- "males and females"
+
+class(SpainRegions) <- c("CVmortalityData", class(SpainRegions))
+
+class(SpainRegions)
+inherits(SpainRegions, "data.frame")
+
 SpainRegions
+
+library(dplyr)
+
+tabla_1 <- SpainRegions %>%
+  filter(ccaa == "Spain")
+
+tabla_2 <- SpainRegions %>%
+  group_by(ccaa) %>%
+  summarise(media_qx = mean(qx_male))
+
+save(SpainRegions, file = "SpainRegions.RData")
+
 save(SpainRegions, file = "data/SpainRegions.rda")
 
 SpainNat <- structure(list(ccaa = Spain_Nat$ccaa,
-                               years = Spain_Nat$periodo,
-                               ages = Spain_Nat$edad,
-                               qx_male = Spain_Nat$homqx,
-                               qx_female = Spain_Nat$mujqx,
-                               lx_male = Spain_Nat$homriesgo,
-                               lx_female = Spain_Nat$homriesgo,
-                               lx_female = Spain_Nat$mujriesgo,
-                               series = c('males and females'),
-                               label = c('Spain Total population')))
-class(SpainNat) <- "CVmortalityData"
-SpainNat
+                           periods = Spain_Nat$periodo,
+                           ages = Spain_Nat$edad,
+                           qx_male = Spain_Nat$homqx,
+                           qx_female = Spain_Nat$mujqx,
+                           lx_male = Spain_Nat$homriesgo,
+                           lx_female = Spain_Nat$homriesgo,
+                           lx_female = Spain_Nat$mujriesgo))
+
+SpainNat <- as.data.frame(SpainNat)
+attr(SpainNat, "label") <- "Spain Total population"
+attr(SpainNat, "series") <- "males and females"
+
+class(SpainNat) <- c("CVmortalityData", class(SpainNat))
+
+class(SpainNat)
+inherits(SpainNat, "data.frame")
+
 SpainRegions
+SpainNat
+
+library(dplyr)
+
+tabla_1 <- SpainNat %>%
+  filter(years == 2000)
+
+tabla_2 <- SpainNat %>%
+  group_by(years) %>%
+  summarise(media_qx = mean(qx_male))
+
 save(SpainNat, file = "data/SpainNat.rda")
+save(SpainRegions, file = "data/SpainNat.rda")
 
 regions <- load(file = "data/regions.rda")
 regions <- structure(regions,

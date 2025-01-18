@@ -96,6 +96,5 @@ Scandinavian Actuarial Journal, 2011(2), 96-117.
 }
 \seealso{
 \code{\link{fitLCmulti}}, \code{\link{forecast.fitLCmulti}},
-\code{\link{plot.forLCmulti}},
-\code{\link{multipopulation_cv}}, \code{\link{multipopulation_loocv}}
+\code{\link{plot.forLCmulti}}, \code{\link{multipopulation_cv}}
 }
