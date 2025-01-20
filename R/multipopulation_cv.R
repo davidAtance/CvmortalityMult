@@ -605,7 +605,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "ACF
 
       #we estimate the number of times (loops) that the model has to be fitted
       #and hence, the number of times to forecast the model
-      if(prue1 == TRUE){
+      if(isTRUE(prue1)){
         nrep <- as.integer(nrep)
         test1 <- c(rep(nahead, nrep))
       } else{
@@ -733,7 +733,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "ACF
 
         #we estimate the number of times (loops) that the model has to be fitted
         #and hence, the number of times to forecast the model
-        if(prue1 == TRUE){
+        if(isTRUE(prue1)){
           nrep <- as.integer(nrep)
           test1 <- c(rep(nahead, nrep))
         } else{
@@ -850,7 +850,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "ACF
 
       #we estimate the number of times (loops) that the model has to be fitted
       #and hence, the number of times to forecast the model
-      if(prue1 == TRUE){
+      if(isTRUE(prue1)){
         nrep <- as.integer(nrep)
         test1 <- c(rep(nahead, nrep))
       }
