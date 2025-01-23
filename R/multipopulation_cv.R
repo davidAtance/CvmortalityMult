@@ -23,12 +23,12 @@
 #' 2.3. Blocked Cross-Validation when blocked the first `trainset1` periods for training, while the rest of periods are divided into `nahead` sets.
 #' It is a similar process to the k-fold but increasing the size of the first train set (`trainset1`).
 #'
-#' 3. Rolling-Origin-Update, we have creates different CV-functions where the origin in the training set is moving ahead or not, depending on the option selected by the user.
+#' 3. Rolling-Origin-Update, we have creates different CV-functions where the origin in the first training set is moving ahead or not, depending on the option selected by the user.
 #' Three main options can be executed `fixed_train_origin` = c("`FALSE`", "`TRUE`", "`1`"):
 #' 3.1. `fixed_train_origin` = "`FALSE`" (The default value)
 #' The default value allows to apply the two previous CV methods
 #' 3.2. `fixed_train_origin` = "TRUE"
-#' In this case, the origin of the training set is moved "`nahead`" period ahead (selected by the user) in every iteration.
+#' In this case, the origin of the first training set is moved "`nahead`" period ahead (selected by the user) in every iteration.
 #' This process allows to test the forecasting accuracy of "`nahead`" periods ahead keeping constant the size of the training and test set.
 #' As an example, we present three different ways
 #' #3.2.1. similar to loocv with "`nahead`" = 1, keeping in all iterations the size of the train set equals to "`trainset1`" (selected by the user).
@@ -58,7 +58,7 @@
 #' @param lxt survivor function considered for every population, not necessary to provide.
 #' @param nahead is a vector specifying the number of periods to forecast `nahead` periods ahead. It should be noted that when `nahead` is equal to `trainset1` a k-fold CV will be applied. Whereas when `nahead` is equal to 1, the CV process will be a Leave-One-Out CV.
 #' @param trainset1 is a vector with the periods for the first training set.  This value must be greater than 2 to meet the minimum time series size (Hyndman and Khandakar, 2008).
-#' @param fixed_train_origin option to select how the rolling-window-evaluation is performed. The default value is `FALSE` where the origin of the training sets is fixed. The alternatives are: 1. `TRUE` when the train set is moved according to the indicated `nahead` in every repetition, and 2. `1` when the train set is moved one period ahead in every repetition (loop).
+#' @param fixed_train_origin option to select whether the origin in the first train set is fixed or not. The default value is `FALSE` where the origin of the first training sets is fixed. The alternatives are: `TRUE` when the first train set is moved in every iteration according to the provided `nahead` value, and 2. `1` when the train set is moved one period ahead in every repetition keeping constant the amount of data, and incorporating the next period observation, and discarding the last available period.
 #' @param ktmethod method used to forecast the value of `kt` Arima(p,d,q) or ARIMA(0,1,0); c("`Arimapdq`", "`arima010`").
 #' @param measures choose the non-penalized measure of forecasting accuracy that you want to use; c("`SSE`", "`MSE`", "`MAE`", "`MAPE`", "`All`"). Check the function. In case you do not provide any value, the function will apply the "`SSE`" as measure of forecasting accuracy.
 #' @param ... other arguments for \code{\link{iarima}}.
@@ -223,13 +223,13 @@
 #' blockedcv_Spainmales_addit$meas_pop
 #' blockedcv_Spainmales_addit$meas_total
 #'
-#' #3. Rolling-Origin-Update (fixed_train_origin = c("FALSE", "TRUE", "1"))
+#' #3. fixed_train_origin (fixed_train_origin = c("FALSE", "TRUE", "1"))
 #' #In this case, we have developed a CV-function where the origin
 #' #in the training set is moving ahead. Indeed, we have created three approaches:
-#' #3.1. Rolling-Origin-Update == "FALSE" (The default value)
+#' #3.1. fixed_train_origin == "FALSE" (The default value)
 #' #In this case, the previous processes (Hold-Out, LOOCV and K-fold) where applied,
 #' #because the default value of "fixed_train_origin" = "FALSE"
-#' #3.2. Rolling-Origin-Update == "TRUE"
+#' #3.2. fixed_train_origin == "TRUE"
 #' #where the origin in the training set is moved "nahead" period ahead in every iteration.
 #' #This process allows to test the forecasting accuracy of "nahead" periods ahead
 #' #keeping constant the size of the training and test set. As an example, we present
@@ -589,11 +589,11 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "ACF
 
     }else{
       if(nahead == 1){
-        CV <- "Rolling-origin-recalibration evaluation using the LOOCV procedure without rolling-window"
+        CV <- "Rolling-origin-recalibration evaluation using the LOOCV procedure keeping fixed the origin in the first train set."
       } else if(nahead == trainset1){
-        CV <- "Rolling-origin-recalibration evaluation using the nahead-Fold-CV procedure without rolling-window"
+        CV <- "Rolling-origin-recalibration evaluation using the nahead-Fold-CV procedure keeping fixed the origin in the first train set."
       } else {
-        CV <- "Rolling-origin-recalibration evaluation using the Blocked-CV procedure without rolling-window"
+        CV <- "Rolling-origin-recalibration evaluation using the Blocked-CV procedure keeping fixed the origin in the first train set."
       }
       #rolling-origin-recalibration
       #with different sizes for the first trainset.
@@ -719,11 +719,11 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "ACF
         #with different sizes for the first trainset.
         #indeed, loocv => nahead = 1, while k-fold => nahead = trainset1
         if(nahead == 1){
-          CV <- "Rolling-window evaluation using the LOOCV procedure, delete and add 1 period in the train set."
+          CV <- "Rolling-window evaluation using the LOOCV procedure, deleting and adding 1 period ahead to the train set."
         } else if(nahead == trainset1){
-          CV <- "Rolling-window evaluation using the nahead-Fold-CV procedure, delete and add  nahead-periods in the train set."
+          CV <- "Rolling-window evaluation using the nahead-Fold-CV procedure, deleting and adding nahead-periods to the train set."
         } else {
-          CV <- "Rolling-window evaluation using the Blocked-CV procedure, delete and add nahead-periods in the train set."
+          CV <- "Rolling-window evaluation using the Blocked-CV procedure, deleting and adding nahead-periods to the train set."
         }
 
         #Estimate the first set of fitting-sample
@@ -840,7 +840,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "ACF
 
     }
     }else if(fixed_train_origin == "1"){
-      CV <- "Rolling-window evaluation using the nahead-step-ahead forecast procedure, keeping the size of the test and train sets."
+      CV <- "Rolling-window evaluation using the nahead-step-ahead forecast procedure, keeping the size of the test and train sets while add and discard one period in every iteration."
       #When the user wants to test the forecast accuracy of
       #nahead-step-ahead forecast with nahead != 1 keeping the size of the
       #test and train sets.
@@ -2263,7 +2263,7 @@ print.MultiCv <- function(x, ...) {
     cat("Fitting the single-population version of the Lee-Carter model: \n")
   }
   print(x$formula)
-  cat(paste0("\nWe employ the"), x$CV_method, "(with rolling window =", x$fixed_train_origin, "); and using as:\n")
+  cat(paste0("\nWe employ the"), x$CV_method, "(with fixed train origin =", x$fixed_train_origin, "); and using as:\n")
   cat(paste("\nFitting and Forecasting periods:", min(x$Periods), "-", max(x$Periods), "\n"))
   cat(paste("\nFitting and Forecasting ages:", min(x$Ages), "-", max(x$Ages), "\n"))
   cat(paste("\nFitting populations:", x$nPop, "\n"))
