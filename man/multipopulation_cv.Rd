@@ -15,7 +15,7 @@ multipopulation_cv(
   ktmethod = c("Arimapdq", "arima010"),
   nahead,
   trainset1,
-  rolling_window = FALSE,
+  fixed_train_origin = FALSE,
   measures = c("SSE", "MSE", "MAE", "MAPE", "All"),
   ...
 )
@@ -39,7 +39,7 @@ multipopulation_cv(
 
 \item{trainset1}{is a vector with the periods for the first training set.  This value must be greater than 2 to meet the minimum time series size (Hyndman and Khandakar, 2008).}
 
-\item{rolling_window}{option to select how the rolling-window-evaluation is performed. The default value is \code{FALSE} where the origin of the training sets is fixed. The alternatives are: 1. \code{TRUE} when the train set is moved according to the indicated \code{nahead} in every repetition, and 2. \code{1} when the train set is moved one period ahead in every repetition (loop).}
+\item{fixed_train_origin}{option to select how the rolling-window-evaluation is performed. The default value is \code{FALSE} where the origin of the training sets is fixed. The alternatives are: 1. \code{TRUE} when the train set is moved according to the indicated \code{nahead} in every repetition, and 2. \code{1} when the train set is moved one period ahead in every repetition (loop).}
 
 \item{measures}{choose the non-penalized measure of forecasting accuracy that you want to use; c("\code{SSE}", "\code{MSE}", "\code{MAE}", "\code{MAPE}", "\code{All}"). Check the function. In case you do not provide any value, the function will apply the "\code{SSE}" as measure of forecasting accuracy.}
 
@@ -72,7 +72,7 @@ We provide a R function that employ the cross-validation techniques for data pan
 These techniques consist on split the database in two parts: training set (to run the model) and test set (to check the forecasting accuracy of the model).
 This procedure is repeated several times trying to check the forecasting accuracy in different ways.
 With this function, the user can provide its own mortality rates for different populations and apply different cross-validation techniques.
-The user must specify three main parameters in the function (\code{nahead}, \code{trainset1}, and \code{rolling_window}) to apply one specific cross-validation technique.
+The user must specify three main parameters in the function (\code{nahead}, \code{trainset1}, and \code{fixed_train_origin}) to apply one specific cross-validation technique.
 Indeed, you can apply the next cross-validation method, following the terminology employed by Bergmeir et al. (2012):
 \enumerate{
 \item Fixed-Origin or Hold-Out CV where the function will chronologically split the data set into two parts, first for training the model and second for testing the forecasting accuracy.
@@ -88,10 +88,10 @@ It should be noted that the function allows to block some periods at the beginni
 2.3. Blocked Cross-Validation when blocked the first \code{trainset1} periods for training, while the rest of periods are divided into \code{nahead} sets.
 It is a similar process to the k-fold but increasing the size of the first train set (\code{trainset1}).
 \item Rolling-Origin-Update, we have creates different CV-functions where the origin in the training set is moving ahead or not, depending on the option selected by the user.
-Three main options can be executed \code{rolling_origin} = c("\code{FALSE}", "\code{TRUE}", "\code{1}"):
-3.1. \code{rolling_origin} = "\code{FALSE}" (The default value)
+Three main options can be executed \code{fixed_train_origin} = c("\code{FALSE}", "\code{TRUE}", "\code{1}"):
+3.1. \code{fixed_train_origin} = "\code{FALSE}" (The default value)
 The default value allows to apply the two previous CV methods
-3.2. \code{rolling_origin} = "TRUE"
+3.2. \code{fixed_train_origin} = "TRUE"
 In this case, the origin of the training set is moved "\code{nahead}" period ahead (selected by the user) in every iteration.
 This process allows to test the forecasting accuracy of "\code{nahead}" periods ahead keeping constant the size of the training and test set.
 As an example, we present three different ways
@@ -100,7 +100,7 @@ As an example, we present three different ways
 #3.2.2  similar to blocked-CV where you blocked "\code{trainset1}" perios as first train set and in every iteration "\code{nahead}" period are incorporated to train set to forecast the next "\code{nahead}" periods.
 }
 
-#3.3. \code{rolling_origin} =  '\code{1}'
+#3.3. \code{fixed_train_origin} =  '\code{1}'
 The origin in the training set is moved 1 period ahead in every iteration.
 This process allows to test the forecasting accuracy of "\code{nahead}" periods ahead modifying the origin in the training set by 1 and keeping th whole process with the same number of periods in the train set.
 When "\code{nahead}" = 1 --- we will have a loocv equally as in the previous process,
@@ -197,7 +197,7 @@ blockedcv_Spainmales_addit <- multipopulation_cv(qxt = SpainRegions$qx_male,
                                          periods =  c(1991:2020), ages = c(ages),
                                          nPop = 18, lxt = SpainRegions$lx_male,
                                          nahead = 5, trainset1 = 10,
-                                         rolling_window = "TRUE",
+                                         fixed_train_origin = "TRUE",
                                          ktmethod = c("Arimapdq"),
                                          measures = c("SSE"))
 
@@ -208,12 +208,12 @@ blockedcv_Spainmales_addit$meas_periodsfut
 blockedcv_Spainmales_addit$meas_pop
 blockedcv_Spainmales_addit$meas_total
 
-#3. Rolling-Origin-Update (rolling_origin = c("FALSE", "TRUE", "1"))
+#3. Rolling-Origin-Update (fixed_train_origin = c("FALSE", "TRUE", "1"))
 #In this case, we have developed a CV-function where the origin
 #in the training set is moving ahead. Indeed, we have created three approaches:
 #3.1. Rolling-Origin-Update == "FALSE" (The default value)
 #In this case, the previous processes (Hold-Out, LOOCV and K-fold) where applied,
-#because the default value of "Rolling_Origin" = "FALSE"
+#because the default value of "fixed_train_origin" = "FALSE"
 #3.2. Rolling-Origin-Update == "TRUE"
 #where the origin in the training set is moved "nahead" period ahead in every iteration.
 #This process allows to test the forecasting accuracy of "nahead" periods ahead
@@ -225,7 +225,7 @@ loocv_Spainmales_addit_rw <- multipopulation_cv(qxt = SpainRegions$qx_male,
                                          periods =  c(1991:2020), ages = c(ages),
                                          nPop = 18, lxt = SpainRegions$lx_male,
                                          nahead = 1, trainset1 = 10,
-                                         rolling_window = TRUE,
+                                         fixed_train_origin = "TRUE",
                                          ktmethod = c("Arimapdq"),
                                          measures = c("SSE"))
 
@@ -243,7 +243,7 @@ kfoldcv_Spainmales_addit_rw <- multipopulation_cv(qxt = SpainRegions$qx_male,
                                          periods =  c(1991:2020), ages = c(ages),
                                          nPop = 18, lxt = SpainRegions$lx_male,
                                          nahead = 5, trainset1 = 5,
-                                         rolling_window = TRUE,
+                                         fixed_train_origin = "TRUE",
                                          ktmethod = c("Arimapdq"),
                                          measures = c("SSE"))
 
@@ -261,7 +261,7 @@ blockedcv_Spainmales_addit_rw <- multipopulation_cv(qxt = SpainRegions$qx_male,
                                          periods =  c(1991:2020), ages = c(ages),
                                          nPop = 18, lxt = SpainRegions$lx_male,
                                          nahead = 5, trainset1 = 10,
-                                         rolling_window = "TRUE",
+                                         fixed_train_origin = "TRUE",
                                          ktmethod = c("Arimapdq"),
                                          measures = c("SSE"))
 
@@ -285,7 +285,7 @@ blockedcv_Spainmales_addit_rw1 <- multipopulation_cv(qxt = SpainRegions$qx_male,
                                          periods =  c(1991:2020), ages = c(ages),
                                          nPop = 18, lxt = SpainRegions$lx_male,
                                          nahead = 5, trainset1 = 15,
-                                         rolling_window = "1",
+                                         fixed_train_origin = "1",
                                          ktmethod = c("Arimapdq"),
                                          measures = c("SSE"))
 blockedcv_Spainmales_addit_rw1
