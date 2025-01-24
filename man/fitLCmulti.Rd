@@ -42,6 +42,7 @@ A list with class \code{"LCmulti"} including different components of the fitting
 \item \code{Ages} provided ages to fit the data.
 \item \code{Periods} provided periods to fit the periods.
 \item \code{nPop} provided number of populations to fit the periods.
+\item \code{warn_msgs } vector with the populations where the model has not converged.
 }
 }
 \description{

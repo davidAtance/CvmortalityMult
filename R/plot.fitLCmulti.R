@@ -254,7 +254,7 @@ plot.fitLCmulti <- function(x, ...){
 
       max3 <- max(kt[,2:pops])
       min3 <- min(kt[,2:pops])
-      plot(pers, kt[,2], ylab="", xlab="t = period", main =expression(k[x[i]]),
+      plot(pers, kt[,2], ylab="", xlab="t = period", main =expression(k[t[i]]),
            type="l", ylim = c(min3, max3), lty = 2)
       if(pops >=3){
         for(pe in 2:pops){
@@ -323,7 +323,6 @@ plot.fitLCmulti <- function(x, ...){
       legend("top", c(names_pops)[legend_order],
              lty = c(1:pops2)[legend_order],
              ncol = pop_d, cex = 0.6)
-
 
     }
 

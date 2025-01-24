@@ -15,7 +15,7 @@ multipopulation_cv(
   ktmethod = c("Arimapdq", "arima010"),
   nahead,
   trainset1,
-  fixed_train_origin = FALSE,
+  fixed_train_origin = TRUE,
   measures = c("SSE", "MSE", "MAE", "MAPE", "All"),
   ...
 )
@@ -39,7 +39,7 @@ multipopulation_cv(
 
 \item{trainset1}{is a vector with the periods for the first training set.  This value must be greater than 2 to meet the minimum time series size (Hyndman and Khandakar, 2008).}
 
-\item{fixed_train_origin}{option to select how the rolling-window-evaluation is performed. The default value is \code{FALSE} where the origin of the training sets is fixed. The alternatives are: 1. \code{TRUE} when the train set is moved according to the indicated \code{nahead} in every repetition, and 2. \code{1} when the train set is moved one period ahead in every repetition (loop).}
+\item{fixed_train_origin}{option to select whether the origin in the first train set is fixed or not. The default value is \code{TRUE} where the origin of the first training sets is fixed. The alternatives are: \code{FALSE} when the first train set is moved in every iteration according to the provided \code{nahead} value, and 2. \code{1} when the train set is moved one period ahead in every repetition keeping constant the amount of data, and incorporating the next period observation, and discarding the last available period.}
 
 \item{measures}{choose the non-penalized measure of forecasting accuracy that you want to use; c("\code{SSE}", "\code{MSE}", "\code{MAE}", "\code{MAPE}", "\code{All}"). Check the function. In case you do not provide any value, the function will apply the "\code{SSE}" as measure of forecasting accuracy.}
 
@@ -64,6 +64,7 @@ An object of the class \code{"MultiCv"} including a \code{list()} with different
 \item \code{meas_periodsfut} measure of forecasting accuracy in every forecasting period(s) of the study.
 \item \code{meas_pop} measure of forecasting accuracy through the populations considered in the study.
 \item \code{meas_total} a global measure of forecasting accuracy through the ages, periods and populations of the study.
+\item \code{warn_msgs } vector with the populations where the model has not converged.
 }
 }
 \description{
@@ -87,12 +88,12 @@ The size of must be: \code{nahead} + \code{trainset1} != number of periods, to a
 It should be noted that the function allows to block some periods at the beginning of the sample to increase the size of the first training set.
 2.3. Blocked Cross-Validation when blocked the first \code{trainset1} periods for training, while the rest of periods are divided into \code{nahead} sets.
 It is a similar process to the k-fold but increasing the size of the first train set (\code{trainset1}).
-\item Rolling-Origin-Update, we have creates different CV-functions where the origin in the training set is moving ahead or not, depending on the option selected by the user.
+\item Rolling-Origin-Update, we have creates different CV-functions where the origin in the first training set is moving ahead or not, depending on the option selected by the user.
 Three main options can be executed \code{fixed_train_origin} = c("\code{FALSE}", "\code{TRUE}", "\code{1}"):
 3.1. \code{fixed_train_origin} = "\code{FALSE}" (The default value)
 The default value allows to apply the two previous CV methods
 3.2. \code{fixed_train_origin} = "TRUE"
-In this case, the origin of the training set is moved "\code{nahead}" period ahead (selected by the user) in every iteration.
+In this case, the origin of the first training set is moved "\code{nahead}" period ahead (selected by the user) in every iteration.
 This process allows to test the forecasting accuracy of "\code{nahead}" periods ahead keeping constant the size of the training and test set.
 As an example, we present three different ways
 #3.2.1. similar to loocv with "\code{nahead}" = 1, keeping in all iterations the size of the train set equals to "\code{trainset1}" (selected by the user).
@@ -133,7 +134,7 @@ library(StMoMo)
 #The function "multipopulation_cv" understands fixed origin when
 # "trainset1" + "nahead" = number of periods; in this case 25 + 5 = 30 (1991:2020)
 ho_Spainmales_addit <- multipopulation_cv(qxt = SpainRegions$qx_male,
-                                         model = c("additive"),
+                                         model = c("ACFM"),
                                          periods =  c(1991:2020), ages = c(ages),
                                          nPop = 18, lxt = SpainRegions$lx_male,
                                          nahead = 5,
@@ -208,13 +209,13 @@ blockedcv_Spainmales_addit$meas_periodsfut
 blockedcv_Spainmales_addit$meas_pop
 blockedcv_Spainmales_addit$meas_total
 
-#3. Rolling-Origin-Update (fixed_train_origin = c("FALSE", "TRUE", "1"))
+#3. fixed_train_origin (fixed_train_origin = c("TRUE", "FALSE", "1"))
 #In this case, we have developed a CV-function where the origin
 #in the training set is moving ahead. Indeed, we have created three approaches:
-#3.1. Rolling-Origin-Update == "FALSE" (The default value)
+#3.1. fixed_train_origin == "TRUE" (The default value)
 #In this case, the previous processes (Hold-Out, LOOCV and K-fold) where applied,
-#because the default value of "fixed_train_origin" = "FALSE"
-#3.2. Rolling-Origin-Update == "TRUE"
+#because the default value of "fixed_train_origin" = "TRUE"
+#3.2. fixed_train_origin == "FALSE"
 #where the origin in the training set is moved "nahead" period ahead in every iteration.
 #This process allows to test the forecasting accuracy of "nahead" periods ahead
 #keeping constant the size of the training and test set. As an example, we present
@@ -225,7 +226,7 @@ loocv_Spainmales_addit_rw <- multipopulation_cv(qxt = SpainRegions$qx_male,
                                          periods =  c(1991:2020), ages = c(ages),
                                          nPop = 18, lxt = SpainRegions$lx_male,
                                          nahead = 1, trainset1 = 10,
-                                         fixed_train_origin = "TRUE",
+                                         fixed_train_origin = "FALSE",
                                          ktmethod = c("Arimapdq"),
                                          measures = c("SSE"))
 
@@ -243,7 +244,7 @@ kfoldcv_Spainmales_addit_rw <- multipopulation_cv(qxt = SpainRegions$qx_male,
                                          periods =  c(1991:2020), ages = c(ages),
                                          nPop = 18, lxt = SpainRegions$lx_male,
                                          nahead = 5, trainset1 = 5,
-                                         fixed_train_origin = "TRUE",
+                                         fixed_train_origin = "FALSE",
                                          ktmethod = c("Arimapdq"),
                                          measures = c("SSE"))
 
@@ -261,7 +262,7 @@ blockedcv_Spainmales_addit_rw <- multipopulation_cv(qxt = SpainRegions$qx_male,
                                          periods =  c(1991:2020), ages = c(ages),
                                          nPop = 18, lxt = SpainRegions$lx_male,
                                          nahead = 5, trainset1 = 10,
-                                         fixed_train_origin = "TRUE",
+                                         fixed_train_origin = "FALSE",
                                          ktmethod = c("Arimapdq"),
                                          measures = c("SSE"))
 

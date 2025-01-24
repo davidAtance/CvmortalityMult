@@ -27,6 +27,7 @@
 #' * `Ages` provided ages to fit the data.
 #' * `Periods` provided periods to fit the periods.
 #' * `nPop` provided number of populations to fit the periods.
+#' * `warn_msgs ` vector with the populations where the model has not converged.
 #'
 #' @seealso \code{\link{forecast.fitLCmulti}},
 #' \code{\link{multipopulation_cv}}, \code{\link{plot.fitLCmulti}},
@@ -326,7 +327,7 @@ fitLCmulti <- function(model = c("additive", "multiplicative", "CFM", "ACFM", "j
   if(nPop != 1){
     #Additive multi-population mortality model
     if(model == "additive"){
-
+      warn_msgs <- c()
       emptymodel <- gnm(qxt ~ -1 + as.factor(age), weights=df_qxtdata$lx,
                         family= 'quasibinomial', data=df_qxtdata)
 
@@ -357,6 +358,7 @@ fitLCmulti <- function(model = c("additive", "multiplicative", "CFM", "ACFM", "j
 
       #Multiplicative multi-population mortality model
     } else if(model == "multiplicative") {
+      warn_msgs <- c()
       emptymodel <- gnm(qxt ~ -1 + factor(age), weights=df_qxtdata$lx,
                         family= 'quasibinomial', data=df_qxtdata)
       biplotStart <- residSVD2(emptymodel,
@@ -411,7 +413,7 @@ fitLCmulti <- function(model = c("additive", "multiplicative", "CFM", "ACFM", "j
       bx.geo3[1,] <- as.numeric(c(1,coef(lee.geo3)[(nages+nperiods+2):(nages+nperiods+nages)]))
       kt.geo3[,1] <- as.numeric(c(0,coef(lee.geo3)[(nages+2):(nages+nperiods)]))
       #deviance(lee.geo3)
-
+      warn_msgs <- c()
       for(i in 2:nPop){
         pop_loop <- min(df_qxtdata$pop) + i - 1
         df_qxtdata_spe <- df_qxtdata[df_qxtdata$pop == pop_loop,]
@@ -424,12 +426,15 @@ fitLCmulti <- function(model = c("additive", "multiplicative", "CFM", "ACFM", "j
         aini<-coef(emptymodel2)+biplotStart2[1]*biplotStart2[(nages+1)]*biplotStart2[1:nages]/biplotStart2[1]  #para que cumpla las restricciones el punto inicial b[1]=1 y k[1]=0
         bini<-biplotStart2[1:nages]/biplotStart2[1]
         kini<-biplotStart2[1]*biplotStart2[(nages+1):(nages+nperiods)]-biplotStart2[1]*biplotStart2[(nages+1)]
+        withCallingHandlers(
+          {
+            lee1.liglm<-gnm(qxt ~ -1 + offset(predict(lee.geo3)) + factor(age) + Mult(factor(period), factor(age)),
+                            weights = df_qxtdata_spe$lx,
+                            family = 'quasibinomial',
+                            constrain = c((nages+1), (nages+nperiods+1)), constrainTo=c(0,1),
+                            data = df_qxtdata_spe, start = c(aini, kini, bini))},
+          warning = function(w) warn_msgs <<- c(warn_msgs, paste0("pob", i)))
 
-        lee1.liglm<-gnm(qxt ~ -1 + offset(predict(lee.geo3)) + factor(age) + Mult(factor(period), factor(age)),
-                        weights = df_qxtdata_spe$lx,
-                        family = 'quasibinomial',
-                        constrain = c((nages+1), (nages+nperiods+1)), constrainTo=c(0,1),
-                        data = df_qxtdata_spe, start = c(aini, kini, bini))
 
         ax.geo3[i,] <- as.numeric(coef(lee1.liglm)[1:nages])
         bx.geo3[i,] <- as.numeric(c(1,coef(lee1.liglm)[(nages+nperiods+2):(nages+nperiods+nages)]))
@@ -445,7 +450,7 @@ fitLCmulti <- function(model = c("additive", "multiplicative", "CFM", "ACFM", "j
       }
     } else if(model == "CFM"){
       message("You decide Common Factor multi-population model. Thus, the first population corresponds with the all population group.")
-
+      warn_msgs <- c()
       ax.geo3 = matrix(NA, nrow = nPop, ncol = nages, dimnames = list(c(1:nPop), ages))
       bx.geo3 = matrix(NA, nrow = 1, ncol = nages, dimnames = list("bx", ages))
       kt.geo3 = matrix(NA, nrow = nperiods, ncol = 1, dimnames = list(c(min(periods):max(periods)), "kt"))
@@ -477,7 +482,7 @@ fitLCmulti <- function(model = c("additive", "multiplicative", "CFM", "ACFM", "j
 
     } else if(model == "joint-K"){
       message("You decide joint-K multi-population model. Thus, the first population corresponds with the all population group.")
-
+      warn_msgs <- c()
       ax.geo3 = matrix(NA, nrow = nPop, ncol = nages, dimnames = list(c(1:nPop), ages))
       bx.geo3 = matrix(NA, nrow = nPop, ncol = nages, dimnames = list(c(1:nPop), ages))
       kt.geo3 = matrix(NA, nrow = nperiods, ncol = 1, dimnames = list(c(min(periods):max(periods)), "kt"))
@@ -512,6 +517,7 @@ fitLCmulti <- function(model = c("additive", "multiplicative", "CFM", "ACFM", "j
     #For one-single population the function applies the single-population version of the LC, the classical one.
   } else {
     message("You only provide one country. Thus, we fit LC one-single model population.")
+    warn_msgs <- c()
     emptymodel <- gnm(qxt ~ -1 + factor(age), weights = df_qxtdata$lx,
                       family='quasibinomial', data=df_qxtdata)
     biplotStart <- residSVD2(emptymodel,
@@ -633,7 +639,8 @@ fitLCmulti <- function(model = c("additive", "multiplicative", "CFM", "ACFM", "j
                  logit.qxt.fitted = lee.logit,
                  Ages = ages,
                  Periods = periods,
-                 nPop = nPop)
+                 nPop = nPop,
+                 warn_msgs = warn_msgs)
   class(return) <- "fitLCmulti"
   return
 
