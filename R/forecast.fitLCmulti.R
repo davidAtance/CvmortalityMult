@@ -274,7 +274,7 @@ forecast.fitLCmulti <- function(object, nahead,
 
     if(ktmethod == "Arimapdq"){
       kt.a2 <- auto.arima(object$kt, ... )
-      fut.kt <- forecast(kt.a2, h = nahead, ...)
+      fut.kt <- forecast(kt.a2, h = nahead)
 
       kt.var <- list(kt.arima = kt.a2, mean.kt = fut.kt$mean,
                      lower = fut.kt$lower, upper = fut.kt$upper)
@@ -283,9 +283,8 @@ forecast.fitLCmulti <- function(object, nahead,
                        dimnames= list(c(max(object$Periods+1):(max(object$Periods)+nahead)),"kt"))
 
     } else if(ktmethod == "arima010"){
-      kt.a2 <- Arima(object$kt, order = c(0,1,0),
-                     include.drift = T, ...)
-      fut.kt <- forecast(kt.a2, h = nahead, ...)
+      kt.a2 <- Arima(object$kt, order = c(0,1,0), ...)
+      fut.kt <- forecast(kt.a2, h = nahead)
 
       kt.var <- list(kt.arima = kt.a2, mean.kt = fut.kt$mean,
                      lower = fut.kt$lower, upper = fut.kt$upper)
@@ -321,8 +320,7 @@ forecast.fitLCmulti <- function(object, nahead,
       kt.fut<- matrix(NA, nrow= nahead, ncol=object$nPop,
                       dimnames= list(c(max(object$Periods+1):(max(object$Periods)+nahead)),c(1:object$nPop)))
       for(pe in 1:object$nPop){
-        kt.a2[[paste0("Pop", pe)]] <- Arima(object$kt[,pe], order = c(0,1,0),
-                                            include.drift = T, ...)
+        kt.a2[[paste0("Pop", pe)]] <- Arima(object$kt[,pe], order = c(0,1,0), ...)
         fut.kt[[paste0("Pop", pe)]] <- forecast(kt.a2[[pe]], h = nahead)
         kt.var[[paste0("Pop", pe)]] <- list(kt.arima = kt.a2[[pe]],
                                             mean.kt = fut.kt[[pe]]$mean,

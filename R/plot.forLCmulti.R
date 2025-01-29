@@ -226,18 +226,18 @@ plot.forLCmulti<- function(x, ...){
          heights = c(0.9, 0.1))
   if(x$model == "ACFM"){
     if(x$ktmethod == "Arimapdq"){
-    plot(forecast(auto.arima(x$kt.fitted[,1]), h = length(x$FutPeriods), ...),
+    plot(forecast(auto.arima(x$kt.fitted[,1], ...), h = length(x$FutPeriods)),
          xlab = "periods", ylab = "kt")
     }else if(x$ktmethod == "arima010"){
-      plot(forecast(x$kt.fitted[,1], c(0,1,0), h = length(x$FutPeriods), ...),
+      plot(forecast(Arima(x$kt.fitted[,1], c(0,1,0), ...), h = length(x$FutPeriods)),
       xlab = "periods", ylab = "kt", main = "Forecasts from Arima (0,1,0)")
     }
   }else{
     if(x$ktmethod == "Arimapdq"){
-      plot(forecast(auto.arima(x$kt.fitted[,1]), h = length(x$FutPeriods)),
+      plot(forecast(auto.arima(x$kt.fitted[,1], ...), h = length(x$FutPeriods)),
            xlab = "periods", ylab = "kt")
     }else if(x$ktmethod == "arima010"){
-      plot(forecast(x$kt.fitted[,1], c(0,1,0), h = length(x$FutPeriods), ...),
+      plot(forecast(Arima(x$kt.fitted[,1], c(0,1,0), ...), h = length(x$FutPeriods)),
            xlab = "periods", ylab = "kt", main = "Forecasts from Arima (0,1,0)")
     }
   }

@@ -598,7 +598,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "ACF
       } else if(nahead == trainset1){
         CV <- "Rolling-origin-recalibration evaluation using the nahead-Fold-CV procedure keeping fixed the origin in the first train set."
       } else {
-        CV <- "Rolling-origin-recalibration evaluation using the Blocked-CV procedure keeping fixed the origin in the first train set."
+        CV <- "Rolling-origin-recalibration evaluation using the common-CV procedure keeping fixed the origin in the first train set."
       }
       #rolling-origin-recalibration
       #with different sizes for the first trainset.
@@ -732,7 +732,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "ACF
         } else if(nahead == trainset1){
           CV <- "Rolling-window evaluation using the nahead-Fold-CV procedure, deleting and adding nahead-periods to the train set."
         } else {
-          CV <- "Rolling-window evaluation using the Blocked-CV procedure, deleting and adding nahead-periods to the train set."
+          CV <- "Rolling-window evaluation using the common-CV procedure, deleting and adding nahead-periods to the train set."
         }
 
         #Estimate the first set of fitting-sample
