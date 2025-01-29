@@ -52,13 +52,13 @@ SpainMap <- function(regionvalue, main, name){
   #}
 
   tm_shape(autonomias) +
-    tm_polygons(col=name, palette = c("#FF0000", "#FF9D00", "#FFD800", "#FFFFAF"),
+    tm_polygons(col=name, palette = c("#FFFFAF", "#FFD800", "#FF9D00", "#FF0000"),
                   breaks=quantile(autonomias[[5]]), border.col = "black",
                   title = name) +
     tm_layout(main,
                 legend.title.fontfamily = "serif",
                 legend.title.size = 1.3,
-                legend.text.size = 0.6,
+                legend.text.size = 0.9,
                 legend.width = 0.4) +
     tm_shape(autonomias) +
     tm_borders(lwd = 1)

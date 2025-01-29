@@ -226,19 +226,19 @@ plot.forLCmulti<- function(x, ...){
          heights = c(0.9, 0.1))
   if(x$model == "ACFM"){
     if(x$ktmethod == "Arimapdq"){
-    plot(forecast(auto.arima(x$kt.fitted[,1]), h = length(x$FutPeriods)),
+    plot(forecast(auto.arima(x$kt.fitted[,1]), h = length(x$FutPeriods), ...),
          xlab = "periods", ylab = "kt")
-    }else if(x$ktmethod == "Arima010"){
-      plot(forecast(x$kt.fitted[,1], c(0,1,0), h = length(x$FutPeriods)),
-      xlab = "periods", ylab = "kt")
+    }else if(x$ktmethod == "arima010"){
+      plot(forecast(x$kt.fitted[,1], c(0,1,0), h = length(x$FutPeriods), ...),
+      xlab = "periods", ylab = "kt", main = "Forecasts from Arima (0,1,0)")
     }
   }else{
     if(x$ktmethod == "Arimapdq"){
-      plot(forecast(auto.arima(x$kt.fitted), h = length(x$FutPeriods)),
+      plot(forecast(auto.arima(x$kt.fitted[,1]), h = length(x$FutPeriods)),
            xlab = "periods", ylab = "kt")
-    }else if(x$ktmethod == "Arima010"){
-      plot(forecast(x$kt.fitted, c(0,1,0), h = length(x$FutPeriods)),
-           xlab = "periods", ylab = "kt")
+    }else if(x$ktmethod == "arima010"){
+      plot(forecast(x$kt.fitted[,1], c(0,1,0), h = length(x$FutPeriods), ...),
+           xlab = "periods", ylab = "kt", main = "Forecasts from Arima (0,1,0)")
     }
   }
 
@@ -258,10 +258,27 @@ plot.forLCmulti<- function(x, ...){
 
   plot(c(x$Periods),  x$logit.qxt.fitted$pop1[showage,], type="l",
        xlim=c(xmin, xmax), ylim = c(min(ymin), max(ymax)),
-       main = paste0("Age ", ageshow), xlab = "periods", ylab = "logit qxt",
-       )
+       main = paste0("Age ", ageshow), xlab = "periods", ylab = "logit qxt")
+
   lines(c(x$FutPeriods), x$logit.qxt.future$pop1[showage,], col="blue")
   namepop <- c("Pop1")
+  if(x$nPop != 1){
+    if(x$model == "additive"){
+      text1 <- paste0("Forecasting the additive multi-population mortality model")
+    } else if(x$model == "multiplicative"){
+      text1 <- paste0("Forecasting the multiplicative multi-population mortality model")
+    } else if(x$model == "CFM"){
+      text1 <- paste0("Forecasting the common-factor multi-population mortality model")
+    } else if(x$model == "ACFM"){
+      text1 <- paste0("Forecasting the augmented-common-factor multi-population mortality model")
+    } else if(x$model == "joint-K"){
+      text1 <- paste0("Forecasting the joint-K multi-population mortality model")
+    }
+    mtext(text1, line = -1.35, outer = TRUE, cex = 1.5, col = "black")
+  } else if(x$nPop == 1){
+      text1 <- paste0("Forecasting the single-population version of the Lee-Carter model")
+      mtext(text1, line = -1.35, outer = TRUE, cex = 1.5, col = "black")
+    }
   if(x$nPop != 1){
     for(i in 2:x$nPop){
       namepop <- c(namepop, paste0("Pop", i))
@@ -278,29 +295,16 @@ plot.forLCmulti<- function(x, ...){
       pop_d <- pops2/2
     }
     legend_order <- matrix(1:pops2, ncol = pop_d, byrow = T)
+
     par(mar=c(0,0,0,0))
     plot(1, type = "n", axes=F, xlab="", ylab="")
     legend("top", c(names_pops)[legend_order],
            lty = c(1:pops2)[legend_order],
-           ncol = pop_d, cex = 0.5)
-  }
-
-  if(x$nPop != 1){
-    if(x$model == "additive"){
-      text1 <- paste0("Forecasting the additive multi-population mortality model")
-    } else if(x$model == "multiplicative"){
-      text1 <- paste0("Forecasting the multiplicative multi-population mortality model")
-    } else if(x$model == "CFM"){
-      text1 <- paste0("Forecasting the common-factor multi-population mortality model")
-    } else if(x$model == "ACFM"){
-      text1 <- paste0("Forecasting the augmented-common-factor multi-population mortality model")
-    } else if(x$model == "joint-K"){
-      text1 <- paste0("Forecasting the joint-K multi-population mortality model")
-    }
+           ncol = pop_d, cex = 0.7)
   } else if(x$nPop == 1){
     text1 <- paste0("Forecasting the single-population version of the Lee-Carter model")
+    mtext(text1, line = -1.35, outer = TRUE, cex = 1.5, col = "black")
+    legend("topright", c("pob1"), lty = 1, cex = 0.7)
   }
-
-  mtext(text1, line = -1.25, outer = TRUE, cex = 1.5, col = "black")
 
 }
