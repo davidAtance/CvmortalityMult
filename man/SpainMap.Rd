@@ -4,7 +4,7 @@
 \alias{SpainMap}
 \title{Spain National map information}
 \usage{
-SpainMap(regionvalue, main, name)
+SpainMap(regionvalue, main, name, bigred = TRUE)
 }
 \arguments{
 \item{regionvalue}{vector with the values that you want to plot in percentiles in the Spain map.}

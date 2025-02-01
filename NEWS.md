@@ -19,5 +19,5 @@
 ## 2024-08-31
 -Eliminate the warning messages in the SpainMap function.
 
-## 2025-01-20
+## 2025-02-07
 -Incorporate new multi-population mortality models and new cross-validation techniques. Indeed, we have modified different functions in order to facilitate its implementation. 

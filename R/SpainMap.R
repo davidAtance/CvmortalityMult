@@ -30,7 +30,7 @@
 #' SpainMap(regionvalue, main, name)
 #'
 #' @export
-SpainMap <- function(regionvalue, main, name){
+SpainMap <- function(regionvalue, main, name, bigred = TRUE){
 
   if(length(regionvalue) != 17){
     stop("The regionvalue is not a vector of length 17.")
@@ -42,17 +42,14 @@ SpainMap <- function(regionvalue, main, name){
   sf::st_crs(autonomias) <- 32630
   autonomias <- st_transform(autonomias, crs = 32630)
 
-  #if (is.na(st_crs(autonomias))) {
-  #  st_crs(autonomias) <- 32630
-  #} else {
-  #  # Si ya tiene un CRS asignado, y no es el correcto, cambiar a 32630
-  #  if (st_crs(autonomias)$epsg != 32630) {
-  #    autonomias <- st_transform(autonomias, crs = 32630)
-  #  }
-  #}
+  if(bigred == TRUE){
+    cols <- c("#FFFFAF", "#FFD800", "#FF9D00", "#FF0000")
+  }else if(bigred == FALSE){
+    cols <- c("#FF0000", "#FF9D00", "#FFD800", "#FFFFAF")
+  }
 
   tm_shape(autonomias) +
-    tm_polygons(col=name, palette = c("#FFFFAF", "#FFD800", "#FF9D00", "#FF0000"),
+    tm_polygons(col=name, palette = cols,
                   breaks=quantile(autonomias[[5]]), border.col = "black",
                   title = name) +
     tm_layout(main,
