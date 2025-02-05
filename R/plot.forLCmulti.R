@@ -269,10 +269,10 @@ plot.forLCmulti<- function(x, ...){
       text1 <- paste0("Forecasting the multiplicative multi-population mortality model")
     } else if(x$model == "CFM"){
       text1 <- paste0("Forecasting the common-factor multi-population mortality model")
-    } else if(x$model == "ACFM"){
-      text1 <- paste0("Forecasting the augmented-common-factor multi-population mortality model")
     } else if(x$model == "joint-K"){
       text1 <- paste0("Forecasting the joint-K multi-population mortality model")
+    } else if(x$model == "ACFM"){
+      text1 <- paste0("Forecasting the augmented-common-factor multi-population mortality model")
     }
     mtext(text1, line = -1.35, outer = TRUE, cex = 1.5, col = "black")
   } else if(x$nPop == 1){

@@ -15,7 +15,7 @@
 plot the different parameters for the multi-population mortality models \code{ax}, \code{bx}, \code{kt} and \code{Ii}. This function is valid for both approaches Additive and Multiplicative multi-population mortality models.
 }
 \description{
-R function to plot the parameters for the Additive (Debon et al., 2011) and Multiplicative (Russolillo et al., 2011) Multi-Population mortality model.
+R function to plot the parameters for the additive (Debon et al., 2011), multiplicative (Russolillo et al., 2011), common-factor (CFM) (Carter and Lee, 1992), Joint-k (Carter and Lee, 1992), and augmented-common factor (ACFM) (Li and Lee, 2005) multi-Population mortality model.
 It should be mentioned that in case that this function is developed for fitting several populations.
 However, in case you only consider one population, the function will fit the one-population Lee-Carter model (Lee and Carter, 1992).
 }
@@ -63,7 +63,7 @@ multiplicative_Spainmales
 #provided parameters for the fitting.
 plot(multiplicative_Spainmales)
 
-#' #3. COMMON-FACTOR MULTI-POPULATION MORTALITY MODEL
+#3. COMMON-FACTOR MULTI-POPULATION MORTALITY MODEL
 #In the case, the user wants to fit the common-factor multi-population mortality model
 cfm_Spainmales <- fitLCmulti(model = "CFM",
                              qxt = SpainRegions$qx_male,
@@ -78,22 +78,7 @@ cfm_Spainmales
 #provided parameters for the fitting.
 plot(cfm_Spainmales)
 
-#4. AUGMENTED-COMMON-FACTOR MULTI-POPULATION MORTALITY MODEL
-#In the case, the user wants to fit the augmented-common-factor multi-population mortality model
-acfm_Spainmales <- fitLCmulti(model = "ACFM",
-                              qxt = SpainRegions$qx_male,
-                              periods = c(1991:2020),
-                              ages = c(ages),
-                              nPop = 18,
-                              lxt = SpainRegions$lx_male)
-
-acfm_Spainmales
-
-#Once, we have fit the data, it is possible to see the ax, bx, kt, and It
-#provided parameters for the fitting.
-plot(acfm_Spainmales)
-
-#5. JOINT-K MULTI-POPULATION MORTALITY MODEL
+#4. JOINT-K MULTI-POPULATION MORTALITY MODEL
 #In the case, the user wants to fit the augmented-common-factor multi-population mortality model
 jointk_Spainmales <- fitLCmulti(model = "joint-K",
                                 qxt = SpainRegions$qx_male,
@@ -107,6 +92,21 @@ jointk_Spainmales
 #Once, we have fit the data, it is possible to see the ax, bx, kt, and It
 #provided parameters for the fitting.
 plot(jointk_Spainmales)
+
+#5. AUGMENTED-COMMON-FACTOR MULTI-POPULATION MORTALITY MODEL
+#In the case, the user wants to fit the augmented-common-factor multi-population mortality model
+acfm_Spainmales <- fitLCmulti(model = "ACFM",
+                              qxt = SpainRegions$qx_male,
+                              periods = c(1991:2020),
+                              ages = c(ages),
+                              nPop = 18,
+                              lxt = SpainRegions$lx_male)
+
+acfm_Spainmales
+
+#Once, we have fit the data, it is possible to see the ax, bx, kt, and It
+#provided parameters for the fitting.
+plot(acfm_Spainmales)
 
 #6. LEE-CARTER FOR SINGLE-POPULATION
 #As we mentioned in the details of the function, if we only provide the data
@@ -126,6 +126,10 @@ plot(LC_Spainmales)
 }
 }
 \references{
+Carter, L.R. and Lee, R.D. (1992).
+Modeling and forecasting US sex differentials in mortality.
+International Journal of Forecasting, 8(3), 393–411.
+
 Debon, A., Montes, F., & Martinez-Ruiz, F. (2011).
 Statistical methods to compare mortality for a group with non-divergent populations: an application to Spanish regions.
 European Actuarial Journal, 1, 291-308.
@@ -133,6 +137,10 @@ European Actuarial Journal, 1, 291-308.
 Lee, R.D. & Carter, L.R. (1992).
 Modeling and forecasting US mortality.
 Journal of the American Statistical Association, 87(419), 659–671.
+
+Li, N. and Lee, R.D. (2005).
+Coherent mortality forecasts for a group of populations: An extension of the Lee-Carter method.
+Demography, 42(3), 575–594.
 
 Multi-population mortality model developed by:
 Russolillo, M., Giordano, G., & Haberman, S. (2011).

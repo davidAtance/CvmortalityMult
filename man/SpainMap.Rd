@@ -12,6 +12,8 @@ SpainMap(regionvalue, main, name, bigred = TRUE)
 \item{main}{the specific title of the map plot}
 
 \item{name}{the assigned name for the legend in map plot.}
+
+\item{bigred}{if the user wants red color for bigger values in the regions \code{bigred} == \code{'TRUE'} (default value). However if the user wants to modify the colors and assign red to lower values \code{bigred} == \code{'FALSE'}.}
 }
 \value{
 a map from the regions of Spain colored with the variable provided by the user.

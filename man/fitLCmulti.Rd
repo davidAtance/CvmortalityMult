@@ -5,7 +5,7 @@
 \title{Function to fit multi-population mortality models}
 \usage{
 fitLCmulti(
-  model = c("additive", "multiplicative", "CFM", "ACFM", "joint-K"),
+  model = c("additive", "multiplicative", "CFM", "joint-K", "ACFM"),
   qxt,
   periods,
   ages,
@@ -46,7 +46,7 @@ A list with class \code{"LCmulti"} including different components of the fitting
 }
 }
 \description{
-R function for fitting additive, multiplicative, common-factor (CFM), augmented-common-factor (ACFM), or joint-k multi-population mortality model developed by: Debon et al. (2011), Russolillo et al. (2011), Carter and Lee (1992), LI and Lee (2005), and Carter and Lee (2011), respectively.
+R function for fitting additive, multiplicative, common-factor (CFM), augmented-common-factor (ACFM), or joint-k multi-population mortality model developed by: Debon et al. (2011), Russolillo et al. (2011), Carter and Lee (1992), LI and Lee (2005), and Carter and Lee (1992), respectively.
 These models follow the structure of the well-known Lee-Carter model (Lee and Carter, 1992) but include different parameter(s) to capture the behavior of each population considered in different ways.
 In case, you want to understand in depth each model, please see Villegas et al. (2017).
 It should be mentioned that this function is developed for fitting several populations.
@@ -113,22 +113,7 @@ cfm_Spainmales
 #provided parameters for the fitting.
 plot(cfm_Spainmales)
 
-#4. AUGMENTED-COMMON-FACTOR MULTI-POPULATION MORTALITY MODEL
-#In the case, the user wants to fit the augmented-common-factor multi-population mortality model
-acfm_Spainmales <- fitLCmulti(model = "ACFM",
-                              qxt = SpainRegions$qx_male,
-                              periods = c(1991:2020),
-                              ages = c(ages),
-                              nPop = 18,
-                              lxt = SpainRegions$lx_male)
-
-acfm_Spainmales
-
-#Once, we have fit the data, it is possible to see the ax, bx, kt, and It
-#provided parameters for the fitting.
-plot(acfm_Spainmales)
-
-#5. JOINT-K MULTI-POPULATION MORTALITY MODEL
+#4. JOINT-K MULTI-POPULATION MORTALITY MODEL
 #In the case, the user wants to fit the augmented-common-factor multi-population mortality model
 jointk_Spainmales <- fitLCmulti(model = "joint-K",
                                 qxt = SpainRegions$qx_male,
@@ -142,6 +127,21 @@ jointk_Spainmales
 #Once, we have fit the data, it is possible to see the ax, bx, kt, and It
 #provided parameters for the fitting.
 plot(jointk_Spainmales)
+
+#5. AUGMENTED-COMMON-FACTOR MULTI-POPULATION MORTALITY MODEL
+#In the case, the user wants to fit the augmented-common-factor multi-population mortality model
+acfm_Spainmales <- fitLCmulti(model = "ACFM",
+                              qxt = SpainRegions$qx_male,
+                              periods = c(1991:2020),
+                              ages = c(ages),
+                              nPop = 18,
+                              lxt = SpainRegions$lx_male)
+
+acfm_Spainmales
+
+#Once, we have fit the data, it is possible to see the ax, bx, kt, and It
+#provided parameters for the fitting.
+plot(acfm_Spainmales)
 
 #6. LEE-CARTER FOR SINGLE-POPULATION
 #As we mentioned in the details of the function, if we only provide the data

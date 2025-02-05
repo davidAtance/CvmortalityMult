@@ -4,6 +4,7 @@
 #' @param regionvalue vector with the values that you want to plot in percentiles in the Spain map.
 #' @param main the specific title of the map plot
 #' @param name the assigned name for the legend in map plot.
+#' @param bigred if the user wants red color for bigger values in the regions `bigred` == `'TRUE'` (default value). However if the user wants to modify the colors and assign red to lower values `bigred` == `'FALSE'`.
 #'
 #' @return a map from the regions of Spain colored with the variable provided by the user.
 #'
