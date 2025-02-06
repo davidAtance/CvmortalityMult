@@ -36,7 +36,7 @@ A list with class \code{"LCmulti"} including different components of the fitting
 \item \code{formula} additive multi-population mortality formula used to fit the mortality rates.
 \item \code{model} provided the model selected in every case.
 \item \code{data.used} mortality rates used to fit the data.
-\item \code{qxt.crude} corresponds to the crude mortality rates. These crude rate are directly obtained as: $$q_{x,t,i}=d_{x,t,i}/E_{x,t,i}^{0}$$, with the number of deaths recorded $$d_{x,t,i}$$, and relative to those initially exposed to risk $$E_{x,t,i}$$ for age x, period t and in each region i.
+\item \code{qxt.crude} corresponds to the crude mortality rates. These crude rate are directly obtained by dividing the number of registered deaths by the number of those initially exposed to the risk for age x, period t and in each region i.
 \item \code{qxt.fitted} fitted mortality rates using the additive multi-population mortality model.
 \item \code{logit.qxt.fitted} fitted mortality rates in logit way.
 \item \code{Ages} provided ages to fit the data.
@@ -150,6 +150,7 @@ plot(acfm_Spainmales)
 LC_Spainmales <- fitLCmulti(qxt = SpainNat$qx_male,
                               periods = c(1991:2020),
                               ages = ages,
+                              model = "additive",
                               nPop = 1)
 
 LC_Spainmales

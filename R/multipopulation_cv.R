@@ -62,7 +62,7 @@
 #' @param fixed_train_origin option to select whether the origin in the first train set is fixed or not. The default value is `TRUE` where the origin of the first training sets is fixed. The alternatives are: `FALSE` when the first train set is moved in every iteration according to the provided `nahead` value, and 2. `1` when the train set is moved one period ahead in every repetition keeping constant the amount of data, and incorporating the next period observation, and discarding the last available period.
 #' @param ktmethod method used to forecast the value of `kt` Arima(p,d,q) or ARIMA(0,1,0); c("`Arimapdq`", "`arima010`").
 #' @param measures choose the non-penalized measure of forecasting accuracy that you want to use; c("`SSE`", "`MSE`", "`MAE`", "`MAPE`", "`All`"). Check the function. In case you do not provide any value, the function will apply the "`SSE`" as measure of forecasting accuracy.
-#' @param ... other arguments for \code{\link{iarima}}.
+#' @param ... other arguments for \code{\link[StMoMo:iarima]{iarima}}.
 #'
 #' @return An object of the class \code{"MultiCv"} including a `list()` with different components of the cross-validation process:
 #' * `ax` parameter that captures the average shape of the mortality curve in all considered populations.
@@ -74,7 +74,7 @@
 #' * `formula` multi-population mortality formula used to fit the mortality rates.
 #' * `model` provided the model selected in every case.
 #' * `nPop` provided number of populations to fit the periods.
-#' * `qxt.crude` corresponds to the crude mortality rates. These crude rate are directly obtained as: $$q_{x,t,i}=d_{x,t,i}/E_{x,t,i}^{0}$$, with the number of deaths recorded $$d_{x,t,i}$$, and relative to those initially exposed to risk $$E_{x,t,i}$$ for age x, period t and in each region i.
+#' * `qxt.crude` corresponds to the crude mortality rates. These crude rate are directly obtained by dividing the number of registered deaths by the number of those initially exposed to the risk for age x, period t and in each region i.
 #' * `qxt.future` future mortality rates estimated with the multi-population mortality model.
 #' * `logit.qxt.future` future mortality rates in logit way estimated with the multi-population mortality model.
 #' * `meas_ages` measure of forecasting accuracy through the ages of the study.
@@ -129,7 +129,6 @@
 #' @importFrom StMoMo genWeightMat
 #' @importFrom utils install.packages
 #' @importFrom stats plogis qlogis
-#' @importFrom stats plogis qlogis
 #'
 #' @examples
 #'
@@ -145,7 +144,8 @@
 #' library(forecast)
 #' library(StMoMo)
 #'
-#' #1. FIXED-ORIGIN -- using the ACFM nahead + trainset1 = periods; fixed_train_origin = TRUE (defualt value)
+#' #1. FIXED-ORIGIN -- using the ACFM nahead + trainset1 = periods;
+#' #fixed_train_origin = TRUE (defualt value)
 #' ho_Spainmales_addit <- multipopulation_cv(qxt = SpainRegions$qx_male,
 #'                                          model = c("ACFM"),
 #'                                          periods =  c(1991:2020), ages = c(ages),
@@ -162,10 +162,11 @@
 #' ho_Spainmales_addit$meas_pop
 #' ho_Spainmales_addit$meas_total
 #'
-#' #2. Let's continue with a RO-recalibration, (fixed_train_origin = TRUE (defualt value))
+#' #2. Let's continue with a RO-recalibration,
+#' #(fixed_train_origin = TRUE (defualt value))
 #' #where we have implemented three main CV techniques:
 #' #2.1. Leave-One-Out-Cross-Validation (LOOCV) RO-recalibration when nahead = 1;
-#' #(independently the number of periods blocked for the first train set -- "trainset1")
+#' #(independently the number of periods blocked for the first train set; trainset1"
 #' loocv_Spainmales_addit <- multipopulation_cv(qxt = SpainRegions$qx_male,
 #'                                          model = c("additive"),
 #'                                          periods =  c(1991:2020), ages = c(ages),

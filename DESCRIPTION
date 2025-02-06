@@ -2,7 +2,7 @@ Package: CvmortalityMult
 Type: Package
 Title: Cross-Validation for Multi-Population Mortality Models
 Version: 1.0.8
-Date: 2025-02-07
+Date: 2025-02-06
 Authors@R: c(
   person("David", "Atance", role = c("aut", "cre"),
          email = "david.atance@uah.es", comment =c(ORCID = "0000-0001-5860-0584")),

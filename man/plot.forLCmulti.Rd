@@ -176,6 +176,7 @@ plot(fut_jointk_Spainmales)
 LC_Spainmales <- fitLCmulti(qxt = SpainNat$qx_male,
                               periods = c(1991:2020),
                               ages = ages,
+                              model = "additive",
                               nPop = 1)
 
 LC_Spainmales

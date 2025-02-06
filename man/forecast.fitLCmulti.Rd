@@ -28,7 +28,7 @@ A list with class \code{"forLCmulti"} including different components of the fore
 \item \code{ktmethod} method selected to forecast the value of \code{kt} Arima(p,d,q) or ARIMA(0,1,0); c("\code{Arimapdq}", "\code{arima010}").
 \item \code{formula} additive multi-population mortality formula used to fit the mortality rates.
 \item \code{model} provided the model selected in every case.
-\item \code{qxt.crude} corresponds to the crude mortality rates. These crude rate are directly obtained as: $$q_{x,t,i}=d_{x,t,i}/E_{x,t,i}^{0}$$, with the number of deaths recorded $$d_{x,t,i}$$, and relative to those initially exposed to risk $$E_{x,t,i}$$ for age x, period t and in each region i.
+\item \code{qxt.crude} corresponds to the crude mortality rates. These crude rate are directly obtained by dividing the number of registered deaths by the number of those initially exposed to the risk for age x, period t and in each region i.
 \item \code{qxt.fitted} fitted mortality rates using the additive multi-population mortality model.
 \item \code{logit.qxt.fitted} fitted mortality rates in logit way estimated with the additive multi-population mortality model.
 \item \code{qxt.future} future mortality rates estimated with the additive multi-population mortality model.
@@ -139,34 +139,7 @@ fut_cfm_Spainmales
 #for the mean age of the data considered in all populations.
 plot(fut_cfm_Spainmales)
 
-#4. AUGMENTED-COMMON-FACTOR MULTI-POPULATION MORTALITY MODEL
-#In the case, the user wants to fit the augmented-common-factor multi-population mortality model
-acfm_Spainmales <- fitLCmulti(model = "ACFM",
-                              qxt = SpainRegions$qx_male,
-                              periods = c(1991:2020),
-                              ages = c(ages),
-                              nPop = 18,
-                              lxt = SpainRegions$lx_male)
-
-acfm_Spainmales
-
-#Once, we have fit the data, it is possible to see the ax, bx, kt, and It
-#provided parameters for the fitting.
-plot(acfm_Spainmales)
-
-#Once, we have fit the data, it is possible to forecast the multipopulation
-#mortality model several years ahead, for example 10, as follows:
-fut_acfm_Spainmales <- forecast(object = acfm_Spainmales, nahead = 10,
-                               ktmethod = "Arimapdq")
-
-fut_acfm_Spainmales
-#Once the data have been adjusted, it is possible to display the fitted kt and
-#its out-of-sample forecasting. In addition, the function shows
-#the logit mortality adjusted in-sample and projected out-of-sample
-#for the mean age of the data considered in all populations.
-plot(fut_acfm_Spainmales)
-
-#5. JOINT-K MULTI-POPULATION MORTALITY MODEL
+#4. JOINT-K MULTI-POPULATION MORTALITY MODEL
 #In the case, the user wants to fit the joint-K multi-population mortality model
 jointk_Spainmales <- fitLCmulti(model = "joint-K",
                                 qxt = SpainRegions$qx_male,
@@ -193,6 +166,33 @@ fut_jointk_Spainmales
 #for the mean age of the data considered in all populations.
 plot(fut_jointk_Spainmales)
 
+#5. AUGMENTED-COMMON-FACTOR MULTI-POPULATION MORTALITY MODEL
+#In the case, the user wants to fit the augmented-common-factor multi-population mortality model
+acfm_Spainmales <- fitLCmulti(model = "ACFM",
+                              qxt = SpainRegions$qx_male,
+                              periods = c(1991:2020),
+                              ages = c(ages),
+                              nPop = 18,
+                              lxt = SpainRegions$lx_male)
+
+acfm_Spainmales
+
+#Once, we have fit the data, it is possible to see the ax, bx, kt, and It
+#provided parameters for the fitting.
+plot(acfm_Spainmales)
+
+#Once, we have fit the data, it is possible to forecast the multipopulation
+#mortality model several years ahead, for example 10, as follows:
+fut_acfm_Spainmales <- forecast(object = acfm_Spainmales, nahead = 10,
+                               ktmethod = "Arimapdq")
+
+fut_acfm_Spainmales
+#Once the data have been adjusted, it is possible to display the fitted kt and
+#its out-of-sample forecasting. In addition, the function shows
+#the logit mortality adjusted in-sample and projected out-of-sample
+#for the mean age of the data considered in all populations.
+plot(fut_acfm_Spainmales)
+
 #6. LEE-CARTER FOR SINGLE-POPULATION
 #As we mentioned in the details of the function, if we only provide the data
 #from one-population the function fitLCmulti()
@@ -200,6 +200,7 @@ plot(fut_jointk_Spainmales)
 LC_Spainmales <- fitLCmulti(qxt = SpainNat$qx_male,
                               periods = c(1991:2020),
                               ages = ages,
+                              model = "additive",
                               nPop = 1)
 
 LC_Spainmales

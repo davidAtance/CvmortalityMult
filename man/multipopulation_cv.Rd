@@ -43,7 +43,7 @@ multipopulation_cv(
 
 \item{measures}{choose the non-penalized measure of forecasting accuracy that you want to use; c("\code{SSE}", "\code{MSE}", "\code{MAE}", "\code{MAPE}", "\code{All}"). Check the function. In case you do not provide any value, the function will apply the "\code{SSE}" as measure of forecasting accuracy.}
 
-\item{...}{other arguments for \code{\link{iarima}}.}
+\item{...}{other arguments for \code{\link[StMoMo:iarima]{iarima}}.}
 }
 \value{
 An object of the class \code{"MultiCv"} including a \code{list()} with different components of the cross-validation process:
@@ -57,7 +57,7 @@ An object of the class \code{"MultiCv"} including a \code{list()} with different
 \item \code{formula} multi-population mortality formula used to fit the mortality rates.
 \item \code{model} provided the model selected in every case.
 \item \code{nPop} provided number of populations to fit the periods.
-\item \code{qxt.crude} corresponds to the crude mortality rates. These crude rate are directly obtained as: $$q_{x,t,i}=d_{x,t,i}/E_{x,t,i}^{0}$$, with the number of deaths recorded $$d_{x,t,i}$$, and relative to those initially exposed to risk $$E_{x,t,i}$$ for age x, period t and in each region i.
+\item \code{qxt.crude} corresponds to the crude mortality rates. These crude rate are directly obtained by dividing the number of registered deaths by the number of those initially exposed to the risk for age x, period t and in each region i.
 \item \code{qxt.future} future mortality rates estimated with the multi-population mortality model.
 \item \code{logit.qxt.future} future mortality rates in logit way estimated with the multi-population mortality model.
 \item \code{meas_ages} measure of forecasting accuracy through the ages of the study.
@@ -134,7 +134,8 @@ library(gnm)
 library(forecast)
 library(StMoMo)
 
-#1. FIXED-ORIGIN -- using the ACFM nahead + trainset1 = periods; fixed_train_origin = TRUE (defualt value)
+#1. FIXED-ORIGIN -- using the ACFM nahead + trainset1 = periods;
+#fixed_train_origin = TRUE (defualt value)
 ho_Spainmales_addit <- multipopulation_cv(qxt = SpainRegions$qx_male,
                                          model = c("ACFM"),
                                          periods =  c(1991:2020), ages = c(ages),
@@ -151,10 +152,11 @@ ho_Spainmales_addit$meas_periodsfut
 ho_Spainmales_addit$meas_pop
 ho_Spainmales_addit$meas_total
 
-#2. Let's continue with a RO-recalibration, (fixed_train_origin = TRUE (defualt value))
+#2. Let's continue with a RO-recalibration,
+#(fixed_train_origin = TRUE (defualt value))
 #where we have implemented three main CV techniques:
 #2.1. Leave-One-Out-Cross-Validation (LOOCV) RO-recalibration when nahead = 1;
-#(independently the number of periods blocked for the first train set -- "trainset1")
+#(independently the number of periods blocked for the first train set; trainset1"
 loocv_Spainmales_addit <- multipopulation_cv(qxt = SpainRegions$qx_male,
                                          model = c("additive"),
                                          periods =  c(1991:2020), ages = c(ages),
