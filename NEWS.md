@@ -21,3 +21,6 @@
 
 ## 2025-02-06
 -Incorporate new multi-population mortality models and new cross-validation techniques. Indeed, we have modified different functions in order to facilitate its implementation. 
+
+## 2025-02-13
+-Correct some of the model fitting outputs and modify the graphics in the package.
