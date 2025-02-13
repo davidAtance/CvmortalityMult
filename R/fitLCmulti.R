@@ -450,7 +450,6 @@ fitLCmulti <- function(model = c("additive", "multiplicative", "CFM", "joint-K",
         #lines(kt.liglm, col="red")
       }
     } else if(model == "CFM"){
-      message("You decide Common Factor multi-population model. Thus, the first population corresponds with the all population group.")
       warn_msgs <- c()
       ax.geo3 = matrix(NA, nrow = nPop, ncol = nages, dimnames = list(c(1:nPop), ages))
       bx.geo3 = matrix(NA, nrow = 1, ncol = nages, dimnames = list("bx", ages))
@@ -482,7 +481,6 @@ fitLCmulti <- function(model = c("additive", "multiplicative", "CFM", "joint-K",
       kt.geo3[,1] <- kt.commonk
 
     } else if(model == "joint-K"){
-      message("You decide joint-K multi-population model. Thus, the first population corresponds with the all population group.")
       warn_msgs <- c()
       ax.geo3 = matrix(NA, nrow = nPop, ncol = nages, dimnames = list(c(1:nPop), ages))
       bx.geo3 = matrix(NA, nrow = nPop, ncol = nages, dimnames = list(c(1:nPop), ages))
