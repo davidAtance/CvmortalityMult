@@ -24,3 +24,6 @@
 
 ## 2025-02-13
 -Correct some of the model fitting outputs and modify the graphics in the package.
+
+## 2025-05-09
+We have updated the structure of the package to be more rigorous with the R software. In addition, we have incorporated a new and different way of forecasting single and multi mortality models. Indeed, the user will have the possibility to specify his own ARIMA model. 

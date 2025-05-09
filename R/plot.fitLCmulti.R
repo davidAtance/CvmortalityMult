@@ -30,10 +30,13 @@
 #' Coherent mortality forecasts for a group of populations: An extension of the Lee-Carter method.
 #' Demography, 42(3), 575–594.
 #'
-#' Multi-population mortality model developed by:
 #' Russolillo, M., Giordano, G., & Haberman, S. (2011).
 #' Extending the Lee–Carter model: a three-way decomposition.
 #' Scandinavian Actuarial Journal, 2011(2), 96-117.
+#'
+#' Villegas, A. M., Haberman, S., Kaishev, V. K., & Millossovich, P. (2017).
+#' A comparative study of two-population models for the assessment of basis risk in longevity hedges.
+#' ASTIN Bulletin, 47(3), 631-679.
 #'
 #' @importFrom graphics par
 #' @importFrom utils install.packages

@@ -15,8 +15,8 @@
 plot the trend parameter kt fitted for the in-sample periods and its forecast results for the multi-population mortality models. Similarly, the behavior of the logit mortality rate for the mean in-sample age and the out-of-sample forecast will be shown for all the populations considered.
 }
 \description{
-Function to plot different results of the forecasting process of multi-population mortality models, the additive (Debon et al., 2011) and the multiplicative (Russolillo et al., 2011), obtained using the \code{forecast.fitLCmulti} function which are xs of the \code{forecastLCmulti} class.
-In fact, the function will show the trend parameter kt fitted for the in-sample periods and its forecast results. Similarly, the behavior of the logit mortality rate for the mean in-sample age and the out-of-sample forecast will be shown for all the populations considered.
+Function to plot different results of the forecasting process of multi-population mortality models, five different options which are obtained using the \code{forecast.fitLCmulti()} function.
+In fact, the function will show the trend parameters kt fitted for the in-sample periods and its forecast results. Similarly, the behavior of the logit mortality rate for the mean in-sample age and the out-of-sample forecast will be shown for all the populations considered.
 It should be mentioned that this function is developed for fitting several populations.
 However, in case you only consider one population, the function will show the single population version of the Lee-Carter model, the classical one.
 }
@@ -201,6 +201,10 @@ plot(fut_LC_Spainmales)
 }
 }
 \references{
+Carter, L.R. and Lee, R.D. (1992).
+Modeling and forecasting US sex differentials in mortality.
+International Journal of Forecasting, 8(3), 393–411.
+
 Debon, A., Montes, F., & Martinez-Ruiz, F. (2011).
 Statistical methods to compare mortality for a group with non-divergent populations: an application to Spanish regions.
 European Actuarial Journal, 1, 291-308.
@@ -209,10 +213,17 @@ Lee, R.D. & Carter, L.R. (1992).
 Modeling and forecasting US mortality.
 Journal of the American Statistical Association, 87(419), 659–671.
 
-Multi-population mortality model developed by:
+Li, N. and Lee, R.D. (2005).
+Coherent mortality forecasts for a group of populations: An extension of the Lee-Carter method.
+Demography, 42(3), 575–594.
+
 Russolillo, M., Giordano, G., & Haberman, S. (2011).
 Extending the Lee–Carter model: a three-way decomposition.
 Scandinavian Actuarial Journal, 2011(2), 96-117.
+
+Villegas, A. M., Haberman, S., Kaishev, V. K., & Millossovich, P. (2017).
+A comparative study of two-population models for the assessment of basis risk in longevity hedges.
+ASTIN Bulletin, 47(3), 631-679.
 }
 \seealso{
 \code{\link{fitLCmulti}}, \code{\link{forecast.fitLCmulti}},

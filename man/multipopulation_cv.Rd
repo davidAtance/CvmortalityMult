@@ -34,22 +34,22 @@ multipopulation_cv(
 
 \item{lxt}{survivor function considered for every population, not necessary to provide.}
 
-\item{ktmethod}{method used to forecast the value of \code{kt} ARIMA(p,d,q), ARIMA(0,1,0) or an ARIMA(p,d,q) selected by the user with \code{order} argument; c("\code{arimapdq}", "\code{arima010}", "\code{arimauser}"), respectivelly. The selection process will be used for the single or all trend parameters considered in each model.}
+\item{ktmethod}{method used to forecast the value of the trend parameter can choose among different ARIMA processes c("\code{arimapdq}", "\code{arima010}", "\code{arimauser}"). First, with \code{ktmethod} = "\code{arimapdq}", the user assumes the best ARIMA (p,d,q) model according to the \code{auto.arima} function. Second with \code{ktmethod} = "\code{arima010}" a random walk with drift (ARIMA (0,1,0)) is assumed. Third, users can specify the (p, d, q) order for each ARIMA model by setting the corresponding parameters in \code{code} argument.}
 
-\item{order}{a vector or matrix (only when the model = "\code{ACFM}" was used in the \code{"fitLCmulti"} function) with one row per trend parameter, specifying the fixed components p, d, and q for the ARIMA models applied for every iteration. The same fixed ARIMA components will be used for every trend parameter across the iterations in the cross-validation method selected. This argument is only used when \code{ktmethod} is set to "\code{arimauser}".}
+\item{order}{a vector or matrix (only when the \code{model} = "\code{ACFM}" was used in the \code{forLCmulti()} function) with one row per trend parameter, specifying the fixed components p, d, and q for the ARIMA models applied for every iteration. The same fixed ARIMA components will be used for every trend parameter across the iterations in the cross-validation method selected. This argument is only used when \code{ktmethod} is set to "\code{arimauser}".}
 
 \item{nahead}{is a vector specifying the number of periods to forecast \code{nahead} periods ahead. It should be noted that when \code{nahead} is equal to \code{trainset1} a k-fold CV will be applied. Whereas when \code{nahead} is equal to 1, the CV process will be a Leave-One-Out CV.}
 
 \item{trainset1}{is a vector with the periods for the first training set.  This value must be greater than 2 to meet the minimum time series size (Hyndman and Khandakar, 2008).}
 
-\item{fixed_train_origin}{option to select whether the origin in the first train set is fixed or not. The default value is \code{TRUE} where the origin of the first training sets is fixed. The alternatives are: \code{FALSE} when the first train set is moved in every iteration according to the provided \code{nahead} value, and 2. '\code{add_remove1}' when the train set is moved one period ahead in every repetition keeping constant the amount of data, and incorporating the next period observation, and discarding the last available period.}
+\item{fixed_train_origin}{option to select whether the origin in the first train set is fixed or not. The default value is \code{TRUE} where the origin of the first training sets is fixed. The alternatives are: \code{FALSE} when the first train set is moved in every iteration according to the provided \code{nahead} value, and '\code{add_remove1}' when the train set is moved one period ahead in every repetition keeping constant the amount of data, and incorporating the next period observation, and discarding the last available period.}
 
 \item{measures}{choose the non-penalized measure of forecasting accuracy that you want to use; c("\code{SSE}", "\code{MSE}", "\code{MAE}", "\code{MAPE}", "\code{All}"). Check the function. In case you do not provide any value, the function will apply the "\code{SSE}" as measure of forecasting accuracy.}
 
 \item{...}{additional arguments depending on the \code{ktmethod} provided by the user for the corresponding \code{auto.arima} or \code{Arima} function.}
 }
 \value{
-An object of the class \code{"MultiCv"} including a \code{list()} with different components of the cross-validation process:
+An object of the class \code{MultiCv} including a list with different components of the cross-validation process:
 \itemize{
 \item \code{ax} parameter that captures the average shape of the mortality curve in all considered populations.
 \item \code{bx} parameter that explains the age effect x with respect to the general trend \code{kt} in the mortality rates of all considered populations.
@@ -57,6 +57,7 @@ An object of the class \code{"MultiCv"} including a \code{list()} with different
 \item \code{kt.future} future values of \code{kt} for every iteration in the cross-validation.
 \item \code{kt.arima}  the ARIMA selected for each \code{kt} time series.
 \item \code{kt.order } order of the components in the ARIMA models used for the trend parameters in every iteration.
+\item \code{ktmethod} method selected to forecast the value of \code{kt}; the user can choose among different options; c("\code{arimapdq}", "\code{arima010}", "\code{arimauser}").
 \item \code{Ii} parameter that captures the differences in the pattern of mortality in any region i with respect to Region 1.
 \item \code{formula} multi-population mortality formula used to fit the mortality rates.
 \item \code{model} provided the model selected in every case.

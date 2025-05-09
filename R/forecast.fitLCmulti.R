@@ -6,22 +6,22 @@
 #' It should be mentioned that this function is developed for fitting several populations.
 #' However, in case you only consider one population, the function will fit the single population version of the Lee-Carter model, the classical one.
 #'
-#' @param object object \code{"fitLCmulti"} developed using function `fitLCmulti()`. With this object the function will determine the multi-population fitted with the function `fitLCmulti()`.
+#' @param object object `forLCmulti` developed using function `fitLCmulti()`. With this object the function will determine the multi-population fitted with the function `fitLCmulti()`.
 #' @param nahead number of periods ahead to forecast.
-#' @param ktmethod method used to forecast the value of `kt` ARIMA(p,d,q), ARIMA(0,1,0) or an ARIMA(p,d,q) selected by the user with `order` argument; c("`arimapdq`", "`arima010`", "`arimauser`"), respectivelly. The selection process will be used for the single or all trend parameters considered in each model.
-#' @param order a vector or matrix (only when the model = "`ACFM`" was used in the \code{"fitLCmulti"} function) with one row per trend parameter, `kt`, specifying the fixed components p, d, and q for the ARIMA models. This argument is only used when `ktmethod` is set to "`arimauser`".
+#' @param ktmethod method used to forecast the value of the trend parameter can choose among different ARIMA processes c("`arimapdq`", "`arima010`", "`arimauser`"). First, with `ktmethod` = "`arimapdq`", the user assumes the best ARIMA (p,d,q) model according to the `auto.arima` function. Second with `ktmethod` = "`arima010`" a random walk with drift (ARIMA (0,1,0)) is assumed. Third, users can specify the (p, d, q) order for each ARIMA model by setting the corresponding parameters in `code` argument.
+#' @param order a vector or matrix (only when the `model` = "`ACFM`" was used in the `forLCmulti()` function) with one row per trend parameter, `kt`, specifying the fixed components p, d, and q for the ARIMA models. This argument is only used when `ktmethod` is set to "`arimauser`".
 #' @param ... additional arguments depending on the `ktmethod` provided by the user for the corresponding `auto.arima` or `Arima` function.
 #'
-#' @return A list with class \code{"forLCmulti"} including different components of the forecasting process:
+#' @return A list with class `forLCmulti` including different components of the forecasting process:
 #' * `ax` parameter that captures the average shape of the mortality curve in all considered populations.
 #' * `bx` parameter that explains the age effect x with respect to the general trend `kt` in the mortality rates of all considered populations.
 #' * `arimakt` the ARIMA selected for the `kt` time series.
 #' * `kt.fitted` obtained values for the tendency behavior captured by `kt`.
 #' * `kt.fut` projected values of `kt` for the nahead periods ahead.
-#' * `kt.futintervals` ARIMA selected and future values of `kt` with the different intervals, lower and upper, 80\% and 90\%.
+#' * `kt.futintervals` ARIMA selected and future values of `kt` with the different intervals, lower and upper, 80% and 90%.
 #' * `kt.order ` order of the components in the ARIMA models used for the trend parameters.
+#' * `ktmethod` method selected to forecast the value of `kt`; the user can choose among different options; c("`arimapdq`", "`arima010`", "`arimauser`").
 #' * `Ii` parameter that captures the differences in the pattern of mortality in any region i with respect to Region 1.
-#' * `ktmethod` method selected to forecast the value of `kt` ARIMA(p,d,q) or ARIMA(0,1,0); c("`arimapdq`", "`arima010`").
 #' * `formula` additive multi-population mortality formula used to fit the mortality rates.
 #' * `model` provided the model selected in every case.
 #' * `qxt.crude` corresponds to the crude mortality rates. These crude rate are directly obtained by dividing the number of registered deaths by the number of those initially exposed to the risk for age x, period t and in each region i.
@@ -483,8 +483,8 @@ forecast.fitLCmulti <- function(object, nahead, order = NULL,
                  kt.fut = kt.fut,
                  kt.futintervals = kt.var,
                  kt.order = kt.order,
-                 Ii = object$Ii,
                  ktmethod = ktmethod,
+                 Ii = object$Ii,
                  formula = object$formula,
                  model = object$model,
                  qxt.crude = object$qxt.crude,

@@ -7,28 +7,28 @@
 \method{forecast}{fitLCmulti}(object, nahead, order = NULL, ktmethod = c("arima010"), ...)
 }
 \arguments{
-\item{object}{object \code{"fitLCmulti"} developed using function \code{fitLCmulti()}. With this object the function will determine the multi-population fitted with the function \code{fitLCmulti()}.}
+\item{object}{object \code{forLCmulti} developed using function \code{fitLCmulti()}. With this object the function will determine the multi-population fitted with the function \code{fitLCmulti()}.}
 
 \item{nahead}{number of periods ahead to forecast.}
 
-\item{order}{a vector or matrix (only when the model = "\code{ACFM}" was used in the \code{"fitLCmulti"} function) with one row per trend parameter, \code{kt}, specifying the fixed components p, d, and q for the ARIMA models. This argument is only used when \code{ktmethod} is set to "\code{arimauser}".}
+\item{order}{a vector or matrix (only when the \code{model} = "\code{ACFM}" was used in the \code{forLCmulti()} function) with one row per trend parameter, \code{kt}, specifying the fixed components p, d, and q for the ARIMA models. This argument is only used when \code{ktmethod} is set to "\code{arimauser}".}
 
-\item{ktmethod}{method used to forecast the value of \code{kt} ARIMA(p,d,q), ARIMA(0,1,0) or an ARIMA(p,d,q) selected by the user with \code{order} argument; c("\code{arimapdq}", "\code{arima010}", "\code{arimauser}"), respectivelly. The selection process will be used for the single or all trend parameters considered in each model.}
+\item{ktmethod}{method used to forecast the value of the trend parameter can choose among different ARIMA processes c("\code{arimapdq}", "\code{arima010}", "\code{arimauser}"). First, with \code{ktmethod} = "\code{arimapdq}", the user assumes the best ARIMA (p,d,q) model according to the \code{auto.arima} function. Second with \code{ktmethod} = "\code{arima010}" a random walk with drift (ARIMA (0,1,0)) is assumed. Third, users can specify the (p, d, q) order for each ARIMA model by setting the corresponding parameters in \code{code} argument.}
 
 \item{...}{additional arguments depending on the \code{ktmethod} provided by the user for the corresponding \code{auto.arima} or \code{Arima} function.}
 }
 \value{
-A list with class \code{"forLCmulti"} including different components of the forecasting process:
+A list with class \code{forLCmulti} including different components of the forecasting process:
 \itemize{
 \item \code{ax} parameter that captures the average shape of the mortality curve in all considered populations.
 \item \code{bx} parameter that explains the age effect x with respect to the general trend \code{kt} in the mortality rates of all considered populations.
 \item \code{arimakt} the ARIMA selected for the \code{kt} time series.
 \item \code{kt.fitted} obtained values for the tendency behavior captured by \code{kt}.
 \item \code{kt.fut} projected values of \code{kt} for the nahead periods ahead.
-\item \code{kt.futintervals} ARIMA selected and future values of \code{kt} with the different intervals, lower and upper, 80\\% and 90\\%.
+\item \code{kt.futintervals} ARIMA selected and future values of \code{kt} with the different intervals, lower and upper, 80\% and 90\%.
 \item \code{kt.order } order of the components in the ARIMA models used for the trend parameters.
+\item \code{ktmethod} method selected to forecast the value of \code{kt}; the user can choose among different options; c("\code{arimapdq}", "\code{arima010}", "\code{arimauser}").
 \item \code{Ii} parameter that captures the differences in the pattern of mortality in any region i with respect to Region 1.
-\item \code{ktmethod} method selected to forecast the value of \code{kt} ARIMA(p,d,q) or ARIMA(0,1,0); c("\code{arimapdq}", "\code{arima010}").
 \item \code{formula} additive multi-population mortality formula used to fit the mortality rates.
 \item \code{model} provided the model selected in every case.
 \item \code{qxt.crude} corresponds to the crude mortality rates. These crude rate are directly obtained by dividing the number of registered deaths by the number of those initially exposed to the risk for age x, period t and in each region i.
