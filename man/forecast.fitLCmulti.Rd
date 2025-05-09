@@ -4,28 +4,31 @@
 \alias{forecast.fitLCmulti}
 \title{Function to forecast multi-population mortality model}
 \usage{
-\method{forecast}{fitLCmulti}(object, nahead, ktmethod = c("Arimapdq", "arima010"), ...)
+\method{forecast}{fitLCmulti}(object, nahead, order = NULL, ktmethod = c("arima010"), ...)
 }
 \arguments{
 \item{object}{object \code{"fitLCmulti"} developed using function \code{fitLCmulti()}. With this object the function will determine the multi-population fitted with the function \code{fitLCmulti()}.}
 
 \item{nahead}{number of periods ahead to forecast.}
 
-\item{ktmethod}{method used to forecast the value of \code{kt} Arima(p,d,q) or ARIMA(0,1,0); c("\code{Arimapdq}", "\code{arima010}").}
+\item{order}{a vector or matrix (only when the model = "\code{ACFM}" was used in the \code{"fitLCmulti"} function) with one row per trend parameter, \code{kt}, specifying the fixed components p, d, and q for the ARIMA models. This argument is only used when \code{ktmethod} is set to "\code{arimauser}".}
 
-\item{...}{other arguments for \code{\link[StMoMo:iarima]{iarima}}.}
+\item{ktmethod}{method used to forecast the value of \code{kt} ARIMA(p,d,q), ARIMA(0,1,0) or an ARIMA(p,d,q) selected by the user with \code{order} argument; c("\code{arimapdq}", "\code{arima010}", "\code{arimauser}"), respectivelly. The selection process will be used for the single or all trend parameters considered in each model.}
+
+\item{...}{additional arguments depending on the \code{ktmethod} provided by the user for the corresponding \code{auto.arima} or \code{Arima} function.}
 }
 \value{
 A list with class \code{"forLCmulti"} including different components of the forecasting process:
 \itemize{
 \item \code{ax} parameter that captures the average shape of the mortality curve in all considered populations.
 \item \code{bx} parameter that explains the age effect x with respect to the general trend \code{kt} in the mortality rates of all considered populations.
-\item \code{arimakt} the arima selected for the \code{kt} time series.
+\item \code{arimakt} the ARIMA selected for the \code{kt} time series.
 \item \code{kt.fitted} obtained values for the tendency behavior captured by \code{kt}.
 \item \code{kt.fut} projected values of \code{kt} for the nahead periods ahead.
-\item \code{kt.futintervals} arima selected and future values of \code{kt} with the different intervals, lower and upper, 80\\% and 90\\%.
+\item \code{kt.futintervals} ARIMA selected and future values of \code{kt} with the different intervals, lower and upper, 80\\% and 90\\%.
+\item \code{kt.order } order of the components in the ARIMA models used for the trend parameters.
 \item \code{Ii} parameter that captures the differences in the pattern of mortality in any region i with respect to Region 1.
-\item \code{ktmethod} method selected to forecast the value of \code{kt} Arima(p,d,q) or ARIMA(0,1,0); c("\code{Arimapdq}", "\code{arima010}").
+\item \code{ktmethod} method selected to forecast the value of \code{kt} ARIMA(p,d,q) or ARIMA(0,1,0); c("\code{arimapdq}", "\code{arima010}").
 \item \code{formula} additive multi-population mortality formula used to fit the mortality rates.
 \item \code{model} provided the model selected in every case.
 \item \code{qxt.crude} corresponds to the crude mortality rates. These crude rate are directly obtained by dividing the number of registered deaths by the number of those initially exposed to the risk for age x, period t and in each region i.
@@ -76,7 +79,7 @@ plot(additive_Spainmales)
 #Once, we have fit the data, it is possible to forecast the multipopulation
 #mortality model several years ahead, for example 10, as follows:
 fut_additive_Spainmales <- forecast(object = additive_Spainmales, nahead = 10,
-                                    ktmethod = "Arimapdq")
+                                    ktmethod = "arimapdq")
 
 fut_additive_Spainmales
 #Once the data have been adjusted, it is possible to display the fitted kt and
@@ -103,7 +106,7 @@ plot(multiplicative_Spainmales)
 #Once, we have fit the data, it is possible to forecast the multipopulation
 #mortality model several years ahead, for example 10, as follows:
 fut_multi_Spainmales <- forecast(object = multiplicative_Spainmales, nahead = 10,
-                                 ktmethod = "Arimapdq")
+                                 ktmethod = "arimapdq")
 
 fut_multi_Spainmales
 #Once the data have been adjusted, it is possible to display the fitted kt and
@@ -128,9 +131,11 @@ cfm_Spainmales
 plot(cfm_Spainmales)
 
 #Once, we have fit the data, it is possible to forecast the multipopulation
-#mortality model several years ahead, for example 10, as follows:
+#mortality model several years ahead, for example 10.
+#In this case, we apply another ktmethod = arimauser which implies to specify
+#by the user the order of the trend parameters as follows:
 fut_cfm_Spainmales <- forecast(object = cfm_Spainmales, nahead = 10,
-                               ktmethod = "Arimapdq")
+                               ktmethod = "arimauser", order = c(0,1,0))
 
 fut_cfm_Spainmales
 #Once the data have been adjusted, it is possible to display the fitted kt and
@@ -157,7 +162,7 @@ plot(jointk_Spainmales)
 #Once, we have fit the data, it is possible to forecast the multipopulation
 #mortality model several years ahead, for example 10, as follows:
 fut_jointk_Spainmales <- forecast(object = jointk_Spainmales, nahead = 10,
-                               ktmethod = "Arimapdq")
+                               ktmethod = "arimapdq")
 
 fut_jointk_Spainmales
 #Once the data have been adjusted, it is possible to display the fitted kt and
@@ -184,7 +189,7 @@ plot(acfm_Spainmales)
 #Once, we have fit the data, it is possible to forecast the multipopulation
 #mortality model several years ahead, for example 10, as follows:
 fut_acfm_Spainmales <- forecast(object = acfm_Spainmales, nahead = 10,
-                               ktmethod = "Arimapdq")
+                               ktmethod = "arimapdq")
 
 fut_acfm_Spainmales
 #Once the data have been adjusted, it is possible to display the fitted kt and
@@ -192,6 +197,10 @@ fut_acfm_Spainmales
 #the logit mortality adjusted in-sample and projected out-of-sample
 #for the mean age of the data considered in all populations.
 plot(fut_acfm_Spainmales)
+
+# When the user chooses to apply a custom ARIMA specification using ktmethod = "arimauser".
+# It should be noted that a matrix must be provided, containing the ARIMA components
+# for each trend parameter, with one row corresponding to each population.
 
 #6. LEE-CARTER FOR SINGLE-POPULATION
 #As we mentioned in the details of the function, if we only provide the data
@@ -212,7 +221,7 @@ plot(LC_Spainmales)
 #Once, we have fit the data, it is possible to forecast the multipopulation
 #mortality model several years ahead, for example 10, as follows:
 fut_LC_Spainmales <- forecast(object = LC_Spainmales, nahead = 10,
-                              ktmethod = "Arimapdq")
+                              ktmethod = "arimapdq")
 
 #Once the data have been adjusted, it is possible to display the fitted kt and
 #its out-of-sample forecasting. In addition, the function shows
@@ -251,5 +260,5 @@ ASTIN Bulletin, 47(3), 631-679.
 \seealso{
 \code{\link{fitLCmulti}},
 \code{\link{plot.fitLCmulti}}, \code{\link{plot.forLCmulti}},
-\code{\link{multipopulation_cv}}, \link[StMoMo:iarima]{iarima}
+\code{\link{multipopulation_cv}}, \code{\link[stats]{arima}}
 }

@@ -4,7 +4,7 @@
 #' @param regionvalue vector with the values that you want to plot in percentiles in the Spain map.
 #' @param main the specific title of the map plot
 #' @param name the assigned name for the legend in map plot.
-#' @param bigred if the user wants red color for bigger values in the regions `bigred` == `'TRUE'` (default value). However if the user wants to modify the colors and assign red to lower values `bigred` == `'FALSE'`.
+#' @param bigred if the user wants red color for bigger values in the regions `bigred` == `TRUE` (default value). However if the user wants to modify the colors and assign red to lower values `bigred` == `FALSE`.
 #'
 #' @return a map from the regions of Spain colored with the variable provided by the user.
 #'
@@ -55,10 +55,12 @@ SpainMap <- function(regionvalue, main, name, bigred = TRUE){
                   breaks=quantile(autonomias[[5]]), border.col = "black",
                   title = name) +
     tm_layout(main,
-                legend.title.fontfamily = "serif",
-                legend.title.size = 1.3,
-                legend.text.size = 0.9,
-                legend.width = 0.4) +
+              legend.title.fontfamily = "serif",
+              legend.title.size = 1,
+              legend.text.size = 0.8,
+              legend.outside = TRUE,
+              legend.outside.position = "right",
+              legend.outside.size = 0.5) +
     tm_shape(autonomias) +
     tm_borders(lwd = 1)
 

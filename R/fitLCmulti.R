@@ -13,7 +13,7 @@
 #' @param nPop number of population considered for fitting. If you consider 1 the model selected will be the singel version of the Lee-Carter model.
 #' @param lxt survivor function considered for every population, not necessary to provide.
 #'
-#' @return A list with class \code{"LCmulti"} including different components of the fitting process:
+#' @return A list with class `LCmulti` including different components of the fitting process:
 #' * `ax` parameter that captures the average shape of the mortality curve in all considered populations.
 #' * `bx` parameter that explains the age effect x with respect to the general trend `kt` in the mortality rates of all considered populations.
 #' * `kt` represent the national tendency of multi-mortality populations during the period.
@@ -171,7 +171,7 @@
 #' plot(LC_Spainmales)
 #' }
 #' @export
-fitLCmulti <- function(model = c("additive", "multiplicative", "CFM", "joint-K", "ACFM"),
+fitLCmulti <- function(model = c("additive"),
                        qxt, periods, ages, nPop, lxt = NULL){
 
   #Check several things before start
@@ -179,7 +179,7 @@ fitLCmulti <- function(model = c("additive", "multiplicative", "CFM", "joint-K",
     warning("Arguments model, qxt, periods, ages, and nPop, need to be provided.")
   }
 
-  #1. Check that the model corresponds to the additive o multiplicative multi-population mortality model
+  #1. Check that the model corresponds to one of the models provided by the package
   valid_model <- c("additive", "multiplicative", "CFM","ACFM", "joint-K")
   model <- match.arg(model, valid_model)
   #In case, you donot provide any value of model, the function applies the additive one.
@@ -515,7 +515,7 @@ fitLCmulti <- function(model = c("additive", "multiplicative", "CFM", "joint-K",
 
     #For one-single population the function applies the single-population version of the LC, the classical one.
   } else {
-    message("You only provide one country. Thus, we fit LC one-single model population.")
+    message("You only provide one country. Thus, we fit the LC single-population model.")
     warn_msgs <- c()
     emptymodel <- gnm(qxt ~ -1 + factor(age), weights = df_qxtdata$lx,
                       family='quasibinomial', data=df_qxtdata)

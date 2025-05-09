@@ -8,18 +8,20 @@
 #'
 #' @param object object \code{"fitLCmulti"} developed using function `fitLCmulti()`. With this object the function will determine the multi-population fitted with the function `fitLCmulti()`.
 #' @param nahead number of periods ahead to forecast.
-#' @param ktmethod method used to forecast the value of `kt` Arima(p,d,q) or ARIMA(0,1,0); c("`Arimapdq`", "`arima010`").
-#' @param ... other arguments for \code{\link[StMoMo:iarima]{iarima}}.
+#' @param ktmethod method used to forecast the value of `kt` ARIMA(p,d,q), ARIMA(0,1,0) or an ARIMA(p,d,q) selected by the user with `order` argument; c("`arimapdq`", "`arima010`", "`arimauser`"), respectivelly. The selection process will be used for the single or all trend parameters considered in each model.
+#' @param order a vector or matrix (only when the model = "`ACFM`" was used in the \code{"fitLCmulti"} function) with one row per trend parameter, `kt`, specifying the fixed components p, d, and q for the ARIMA models. This argument is only used when `ktmethod` is set to "`arimauser`".
+#' @param ... additional arguments depending on the `ktmethod` provided by the user for the corresponding `auto.arima` or `Arima` function.
 #'
 #' @return A list with class \code{"forLCmulti"} including different components of the forecasting process:
 #' * `ax` parameter that captures the average shape of the mortality curve in all considered populations.
 #' * `bx` parameter that explains the age effect x with respect to the general trend `kt` in the mortality rates of all considered populations.
-#' * `arimakt` the arima selected for the `kt` time series.
+#' * `arimakt` the ARIMA selected for the `kt` time series.
 #' * `kt.fitted` obtained values for the tendency behavior captured by `kt`.
 #' * `kt.fut` projected values of `kt` for the nahead periods ahead.
-#' * `kt.futintervals` arima selected and future values of `kt` with the different intervals, lower and upper, 80\% and 90\%.
+#' * `kt.futintervals` ARIMA selected and future values of `kt` with the different intervals, lower and upper, 80\% and 90\%.
+#' * `kt.order ` order of the components in the ARIMA models used for the trend parameters.
 #' * `Ii` parameter that captures the differences in the pattern of mortality in any region i with respect to Region 1.
-#' * `ktmethod` method selected to forecast the value of `kt` Arima(p,d,q) or ARIMA(0,1,0); c("`Arimapdq`", "`arima010`").
+#' * `ktmethod` method selected to forecast the value of `kt` ARIMA(p,d,q) or ARIMA(0,1,0); c("`arimapdq`", "`arima010`").
 #' * `formula` additive multi-population mortality formula used to fit the mortality rates.
 #' * `model` provided the model selected in every case.
 #' * `qxt.crude` corresponds to the crude mortality rates. These crude rate are directly obtained by dividing the number of registered deaths by the number of those initially exposed to the risk for age x, period t and in each region i.
@@ -31,7 +33,7 @@
 #'
 #' @seealso \code{\link{fitLCmulti}},
 #' \code{\link{plot.fitLCmulti}}, \code{\link{plot.forLCmulti}},
-#' \code{\link{multipopulation_cv}}, \link[StMoMo:iarima]{iarima}
+#' \code{\link{multipopulation_cv}}, \code{\link[stats]{arima}}
 #'
 #' @references
 #'
@@ -59,9 +61,9 @@
 #' A comparative study of two-population models for the assessment of basis risk in longevity hedges.
 #' ASTIN Bulletin, 47(3), 631-679.
 #'
-#' @importFrom forecast Arima auto.arima forecast
+#' @importFrom forecast Arima auto.arima forecast arimaorder
 #' @importFrom utils install.packages
-#' @importFrom stats plogis qlogis
+#' @importFrom stats plogis qlogis arima
 #'
 #' @examples
 #' #The example takes more than 5 seconds because it includes
@@ -95,7 +97,7 @@
 #' #Once, we have fit the data, it is possible to forecast the multipopulation
 #' #mortality model several years ahead, for example 10, as follows:
 #' fut_additive_Spainmales <- forecast(object = additive_Spainmales, nahead = 10,
-#'                                     ktmethod = "Arimapdq")
+#'                                     ktmethod = "arimapdq")
 #'
 #' fut_additive_Spainmales
 #' #Once the data have been adjusted, it is possible to display the fitted kt and
@@ -122,7 +124,7 @@
 #' #Once, we have fit the data, it is possible to forecast the multipopulation
 #' #mortality model several years ahead, for example 10, as follows:
 #' fut_multi_Spainmales <- forecast(object = multiplicative_Spainmales, nahead = 10,
-#'                                  ktmethod = "Arimapdq")
+#'                                  ktmethod = "arimapdq")
 #'
 #' fut_multi_Spainmales
 #' #Once the data have been adjusted, it is possible to display the fitted kt and
@@ -147,9 +149,11 @@
 #' plot(cfm_Spainmales)
 #'
 #' #Once, we have fit the data, it is possible to forecast the multipopulation
-#' #mortality model several years ahead, for example 10, as follows:
+#' #mortality model several years ahead, for example 10.
+#' #In this case, we apply another ktmethod = arimauser which implies to specify
+#' #by the user the order of the trend parameters as follows:
 #' fut_cfm_Spainmales <- forecast(object = cfm_Spainmales, nahead = 10,
-#'                                ktmethod = "Arimapdq")
+#'                                ktmethod = "arimauser", order = c(0,1,0))
 #'
 #' fut_cfm_Spainmales
 #' #Once the data have been adjusted, it is possible to display the fitted kt and
@@ -176,7 +180,7 @@
 #' #Once, we have fit the data, it is possible to forecast the multipopulation
 #' #mortality model several years ahead, for example 10, as follows:
 #' fut_jointk_Spainmales <- forecast(object = jointk_Spainmales, nahead = 10,
-#'                                ktmethod = "Arimapdq")
+#'                                ktmethod = "arimapdq")
 #'
 #' fut_jointk_Spainmales
 #' #Once the data have been adjusted, it is possible to display the fitted kt and
@@ -203,7 +207,7 @@
 #' #Once, we have fit the data, it is possible to forecast the multipopulation
 #' #mortality model several years ahead, for example 10, as follows:
 #' fut_acfm_Spainmales <- forecast(object = acfm_Spainmales, nahead = 10,
-#'                                ktmethod = "Arimapdq")
+#'                                ktmethod = "arimapdq")
 #'
 #' fut_acfm_Spainmales
 #' #Once the data have been adjusted, it is possible to display the fitted kt and
@@ -211,6 +215,10 @@
 #' #the logit mortality adjusted in-sample and projected out-of-sample
 #' #for the mean age of the data considered in all populations.
 #' plot(fut_acfm_Spainmales)
+#'
+#' # When the user chooses to apply a custom ARIMA specification using ktmethod = "arimauser".
+#' # It should be noted that a matrix must be provided, containing the ARIMA components
+#' # for each trend parameter, with one row corresponding to each population.
 #'
 #' #6. LEE-CARTER FOR SINGLE-POPULATION
 #' #As we mentioned in the details of the function, if we only provide the data
@@ -231,7 +239,7 @@
 #' #Once, we have fit the data, it is possible to forecast the multipopulation
 #' #mortality model several years ahead, for example 10, as follows:
 #' fut_LC_Spainmales <- forecast(object = LC_Spainmales, nahead = 10,
-#'                               ktmethod = "Arimapdq")
+#'                               ktmethod = "arimapdq")
 #'
 #' #Once the data have been adjusted, it is possible to display the fitted kt and
 #' #its out-of-sample forecasting. In addition, the function shows
@@ -242,8 +250,8 @@
 #' }
 #'
 #' @export
-forecast.fitLCmulti <- function(object, nahead,
-                                ktmethod = c("Arimapdq", "arima010"), ...){
+forecast.fitLCmulti <- function(object, nahead, order = NULL,
+                                ktmethod = c("arima010"), ...){
 
   #First check the structure of object is equal to the previous object created using our function
   if(!is.null(object)){
@@ -253,6 +261,13 @@ forecast.fitLCmulti <- function(object, nahead,
   if(!is.list(object)){
     stop("The object is not a list. Use 'fitLCmulti' function first.")
   }
+
+  #Check that the arima option corresponds to one of the options in the function
+  #if the user do not provide any value for ktmethod, the function applies arima010.
+
+  valid_ktmethod <- c("arimapdq", "arima010", "arimauser")
+  ktmethod <- match.arg(ktmethod, valid_ktmethod)
+
 
   if (!is.numeric(nahead)) {
     stop("nahead has to be a numeric variable.")
@@ -273,7 +288,7 @@ forecast.fitLCmulti <- function(object, nahead,
     lastperiod <- object$Periods[length(object$kt)]+ nahead
     periods <- c((object$Periods[length(object$kt)]+1):lastperiod)
 
-    if(ktmethod == "Arimapdq"){
+    if(ktmethod == "arimapdq"){
       kt.a2 <- auto.arima(object$kt, ... )
       fut.kt <- forecast(kt.a2, h = nahead)
 
@@ -282,8 +297,10 @@ forecast.fitLCmulti <- function(object, nahead,
 
       kt.fut <- matrix(kt.var$mean.kt[1:nahead], nrow= nahead, ncol=1,
                        dimnames= list(c(max(object$Periods+1):(max(object$Periods)+nahead)),"kt"))
+      kt.order <- arimaorder(kt.a2)
 
     } else if(ktmethod == "arima010"){
+
       kt.a2 <- Arima(object$kt, order = c(0,1,0), ...)
       fut.kt <- forecast(kt.a2, h = nahead)
 
@@ -291,9 +308,24 @@ forecast.fitLCmulti <- function(object, nahead,
                      lower = fut.kt$lower, upper = fut.kt$upper)
       kt.fut <- matrix(kt.var$mean.kt[1:nahead], nrow= nahead, ncol=1,
                        dimnames= list(c(max(object$Periods+1):(max(object$Periods)+nahead)),"kt"))
+      kt.order <- arimaorder(kt.a2)
+
+    } else if(ktmethod == "arimauser"){
+      if(is.null(order)){
+        stop("provide a vector specifying the order of the ARIMA for the trend parameter.")
+      }
+
+      kt.a2 <- Arima(object$kt, order = order, ...)
+      fut.kt <- forecast(kt.a2, h = nahead)
+
+      kt.var <- list(kt.arima = kt.a2, mean.kt = fut.kt$mean,
+                     lower = fut.kt$lower, upper = fut.kt$upper)
+      kt.fut <- matrix(kt.var$mean.kt[1:nahead], nrow= nahead, ncol=1,
+                       dimnames= list(c(max(object$Periods+1):(max(object$Periods)+nahead)),"kt"))
+      kt.order <- arimaorder(kt.a2)
 
     } else{
-      stop("the ktmethod provided does not correspond with 'Arimapdq' or 'arima010'.")
+      stop("the ktmethod provided does not correspond with 'arimapdq' or 'arima010'.")
     }
   }else if(object$model == "ACFM"){
     nages <- length(object$ax[1,])
@@ -301,10 +333,12 @@ forecast.fitLCmulti <- function(object, nahead,
     lastperiod <- as.numeric(rownames(object$kt)[length(object$kt[,1])])+ nahead
     periods <- c((as.numeric(rownames(object$kt)[length(object$kt[,1])])+1):lastperiod)
 
-    if(ktmethod == "Arimapdq"){
+    if(ktmethod == "arimapdq"){
       kt.a2 <- fut.kt <- kt.var <- list()
       kt.fut<- matrix(NA, nrow= nahead, ncol=object$nPop,
                       dimnames= list(c(max(object$Periods+1):(max(object$Periods)+nahead)),c(1:object$nPop)))
+      kt.order <- matrix(NA, nrow = object$nPop, ncol = 3,
+                         dimnames = list(c(1:object$nPop), c("p", "d", "q")))
 
       for(pe in 1:object$nPop){
         kt.a2[[paste0("Pop", pe)]] <- auto.arima(object$kt[,pe], ... )
@@ -314,12 +348,15 @@ forecast.fitLCmulti <- function(object, nahead,
                                             lower = fut.kt[[pe]]$lower,
                                             upper = fut.kt[[pe]]$upper)
         kt.fut[,pe] <- kt.var[[pe]]$mean.kt[1:nahead]
+        kt.order[pe,] <- arimaorder(kt.a2[[paste0("Pop", pe)]])
       }
 
     } else if(ktmethod == "arima010"){
       kt.a2 <- fut.kt <- kt.var <- list()
       kt.fut<- matrix(NA, nrow= nahead, ncol=object$nPop,
                       dimnames= list(c(max(object$Periods+1):(max(object$Periods)+nahead)),c(1:object$nPop)))
+      kt.order <- matrix(NA, nrow = object$nPop, ncol = 3,
+                         dimnames = list(c(1:object$nPop), c("p", "d", "q")))
       for(pe in 1:object$nPop){
         kt.a2[[paste0("Pop", pe)]] <- Arima(object$kt[,pe], order = c(0,1,0), ...)
         fut.kt[[paste0("Pop", pe)]] <- forecast(kt.a2[[pe]], h = nahead)
@@ -328,9 +365,41 @@ forecast.fitLCmulti <- function(object, nahead,
                                             lower = fut.kt[[pe]]$lower,
                                             upper = fut.kt[[pe]]$upper)
         kt.fut[,pe] <- kt.var[[pe]]$mean.kt[1:nahead]
+        kt.order[pe,] <- arimaorder(kt.a2[[paste0("Pop", pe)]])
       }
+    } else if(ktmethod == "arimauser"){
+
+      #Check the size of the order matrix
+      if(is.null(order)){
+        stop("provide a matrix specifying the order of the ARIMA for the trend parameters.")
+      }
+      if(is.matrix(order)){
+        if(dim(order)[1] != object$nPop | dim(order)[2] != 3){
+          stop("provide a matrix with the ARIMA order for the trend parameters with the appropiate size, check nPop.")
+        }
+      } else{
+        stop("provide a matrix specifying the order of the ARIMA for the trend parameters.")}
+
+      kt.a2 <- fut.kt <- kt.var <- list()
+      kt.fut<- matrix(NA, nrow= nahead, ncol=object$nPop,
+                      dimnames= list(c(max(object$Periods+1):(max(object$Periods)+nahead)),c(1:object$nPop)))
+      kt.order <- matrix(NA, nrow = object$nPop, ncol = 3,
+                         dimnames = list(c(1:object$nPop), c("p", "d", "q")))
+
+      for(pe in 1:object$nPop){
+        kt.a2[[paste0("Pop", pe)]] <- Arima(object$kt[,pe], order = order[pe,], ...)
+        fut.kt[[paste0("Pop", pe)]] <- forecast(kt.a2[[pe]], h = nahead)
+        kt.var[[paste0("Pop", pe)]] <- list(kt.arima = kt.a2[[pe]],
+                                            mean.kt = fut.kt[[pe]]$mean,
+                                            lower = fut.kt[[pe]]$lower,
+                                            upper = fut.kt[[pe]]$upper)
+        kt.fut[,pe] <- kt.var[[pe]]$mean.kt[1:nahead]
+        kt.order[pe,] <- arimaorder(kt.a2[[paste0("Pop", pe)]])
+      }
+
+
     } else{
-      stop("the ktmethod provided does not correspond with 'Arimapdq' or 'arima010'.")
+      stop("the ktmethod provided does not correspond with 'arimapdq' or 'arima010'.")
     }
   }
 
@@ -413,6 +482,7 @@ forecast.fitLCmulti <- function(object, nahead,
                  kt.fitted = object$kt,
                  kt.fut = kt.fut,
                  kt.futintervals = kt.var,
+                 kt.order = kt.order,
                  Ii = object$Ii,
                  ktmethod = ktmethod,
                  formula = object$formula,

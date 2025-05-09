@@ -4,14 +4,7 @@
 \alias{fitLCmulti}
 \title{Function to fit multi-population mortality models}
 \usage{
-fitLCmulti(
-  model = c("additive", "multiplicative", "CFM", "joint-K", "ACFM"),
-  qxt,
-  periods,
-  ages,
-  nPop,
-  lxt = NULL
-)
+fitLCmulti(model = c("additive"), qxt, periods, ages, nPop, lxt = NULL)
 }
 \arguments{
 \item{model}{multi-population mortality model chosen to fit the mortality rates c("\code{additive}", "\code{multiplicative}", "\code{CFM}","\code{ACFM}", "\code{joint-K}"). In case you do not provide any value, the function will apply the "\code{additive}" option.}
@@ -27,7 +20,7 @@ fitLCmulti(
 \item{lxt}{survivor function considered for every population, not necessary to provide.}
 }
 \value{
-A list with class \code{"LCmulti"} including different components of the fitting process:
+A list with class \code{LCmulti} including different components of the fitting process:
 \itemize{
 \item \code{ax} parameter that captures the average shape of the mortality curve in all considered populations.
 \item \code{bx} parameter that explains the age effect x with respect to the general trend \code{kt} in the mortality rates of all considered populations.

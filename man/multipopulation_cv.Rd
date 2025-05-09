@@ -7,12 +7,13 @@ of multi-population mortality models}
 \usage{
 multipopulation_cv(
   qxt,
-  model = c("additive", "multiplicative", "CFM", "joint-K", "ACFM"),
+  model = c("additive"),
   periods,
   ages,
   nPop,
   lxt = NULL,
-  ktmethod = c("Arimapdq", "arima010"),
+  ktmethod = c("arima010"),
+  order = NULL,
   nahead,
   trainset1,
   fixed_train_origin = TRUE,
@@ -33,17 +34,19 @@ multipopulation_cv(
 
 \item{lxt}{survivor function considered for every population, not necessary to provide.}
 
-\item{ktmethod}{method used to forecast the value of \code{kt} Arima(p,d,q) or ARIMA(0,1,0); c("\code{Arimapdq}", "\code{arima010}").}
+\item{ktmethod}{method used to forecast the value of \code{kt} ARIMA(p,d,q), ARIMA(0,1,0) or an ARIMA(p,d,q) selected by the user with \code{order} argument; c("\code{arimapdq}", "\code{arima010}", "\code{arimauser}"), respectivelly. The selection process will be used for the single or all trend parameters considered in each model.}
+
+\item{order}{a vector or matrix (only when the model = "\code{ACFM}" was used in the \code{"fitLCmulti"} function) with one row per trend parameter, specifying the fixed components p, d, and q for the ARIMA models applied for every iteration. The same fixed ARIMA components will be used for every trend parameter across the iterations in the cross-validation method selected. This argument is only used when \code{ktmethod} is set to "\code{arimauser}".}
 
 \item{nahead}{is a vector specifying the number of periods to forecast \code{nahead} periods ahead. It should be noted that when \code{nahead} is equal to \code{trainset1} a k-fold CV will be applied. Whereas when \code{nahead} is equal to 1, the CV process will be a Leave-One-Out CV.}
 
 \item{trainset1}{is a vector with the periods for the first training set.  This value must be greater than 2 to meet the minimum time series size (Hyndman and Khandakar, 2008).}
 
-\item{fixed_train_origin}{option to select whether the origin in the first train set is fixed or not. The default value is \code{TRUE} where the origin of the first training sets is fixed. The alternatives are: \code{FALSE} when the first train set is moved in every iteration according to the provided \code{nahead} value, and 2. \code{1} when the train set is moved one period ahead in every repetition keeping constant the amount of data, and incorporating the next period observation, and discarding the last available period.}
+\item{fixed_train_origin}{option to select whether the origin in the first train set is fixed or not. The default value is \code{TRUE} where the origin of the first training sets is fixed. The alternatives are: \code{FALSE} when the first train set is moved in every iteration according to the provided \code{nahead} value, and 2. '\code{add_remove1}' when the train set is moved one period ahead in every repetition keeping constant the amount of data, and incorporating the next period observation, and discarding the last available period.}
 
 \item{measures}{choose the non-penalized measure of forecasting accuracy that you want to use; c("\code{SSE}", "\code{MSE}", "\code{MAE}", "\code{MAPE}", "\code{All}"). Check the function. In case you do not provide any value, the function will apply the "\code{SSE}" as measure of forecasting accuracy.}
 
-\item{...}{other arguments for \code{\link[StMoMo:iarima]{iarima}}.}
+\item{...}{additional arguments depending on the \code{ktmethod} provided by the user for the corresponding \code{auto.arima} or \code{Arima} function.}
 }
 \value{
 An object of the class \code{"MultiCv"} including a \code{list()} with different components of the cross-validation process:
@@ -52,7 +55,8 @@ An object of the class \code{"MultiCv"} including a \code{list()} with different
 \item \code{bx} parameter that explains the age effect x with respect to the general trend \code{kt} in the mortality rates of all considered populations.
 \item \code{kt.fitted} obtained values for the tendency behavior captured by \code{kt} .
 \item \code{kt.future} future values of \code{kt} for every iteration in the cross-validation.
-\item \code{kt.arima}  the arima selected for each \code{kt} time series.
+\item \code{kt.arima}  the ARIMA selected for each \code{kt} time series.
+\item \code{kt.order } order of the components in the ARIMA models used for the trend parameters in every iteration.
 \item \code{Ii} parameter that captures the differences in the pattern of mortality in any region i with respect to Region 1.
 \item \code{formula} multi-population mortality formula used to fit the mortality rates.
 \item \code{model} provided the model selected in every case.
@@ -82,7 +86,7 @@ This process predicts only once for different forecast horizons which are evalua
 {\figure{FIXED-ORIGIN.jpg}{options: width="100\%" alt="Figure: mai.png"}}
 }
 
-The function "\code{multipopulation_cv()}" understands FIXED-ORIGIN when \code{trainset1} + \code{nahead} = number of provided periods and \code{fixed_train_origin} = \code{TRUE} (default value).
+The function \code{multipopulation_cv()} understands FIXED-ORIGIN when \code{trainset1} + \code{nahead} = number of provided periods and \code{fixed_train_origin} = \code{TRUE} (default value).
 As an example, data set with periods from 1991 to 2020, \code{trainset1} = 25 and \code{nahead}= 5, with a total of 30, equals to length of the periods 1991:2020.
 \enumerate{
 \item Rolling-Origin recalibration (RO-recalibration) evaluation.
@@ -96,9 +100,9 @@ The idea is to keep the origin fixed and move the forecast origin in every itera
 
 In the package, to apply this technique the users must provided a value of \code{trainset1} higher than two (to meet with the minimum time-series size), and \code{fixed_train_origin} = \code{TRUE} (default value), independently of the assigned value of \code{nahead}.
 There are different resampling techniques that can be applied based on the values of \code{trainset1} and \code{nahead}.
-Indeed, when \code{nahead} = 1 --- Leave-One-Out-Cross-Validation (LOOCV) with RO-recalibration will be applied.
+Indeed, when \code{nahead} = 1 a Leave-One-Out-Cross-Validation (LOOCV) with RO-recalibration will be applied.
 Independently, of the number of periods in the first train set (\code{trainset1}).
-When, \code{nahead} and \code{trainset1} are equal --- K-Fold-Cross-Validation (LOOCV) with RO-recalibration will be applied.
+When, \code{nahead} and \code{trainset1} are equal a K-Fold-Cross-Validation (LOOCV) with RO-recalibration will be applied.
 For the rest values of \code{nahead} and \code{trainset1} a standard time-series CV technique will be implemented.
 \enumerate{
 \item Rolling-Window (RW) evaluation
@@ -106,17 +110,17 @@ The approach is very similar to the RO-recalibration, but maintaining the traini
 Maintaining the chronological order in each forecast, the training set adds the previous. projected periods of the test set and discards the earliest observations, as can be seen in the next Figure.
 }
 
-{\figure{RW_RECALIBRATION}{options: width="100\%" alt="Figure: mai.png"}}
+{\figure{RW_RECALIBRATION.jpg}{options: width="100\%" alt="Figure: mai.png"}}
 
-To apply this technique, the \code{multipopulation_cv()} function requires that \code{fixed_train_origin} = c("\code{FALSE}", "\code{1}"), regardless of the values of \code{nahead} and \code{trainset1}.
+To apply this technique, the \code{multipopulation_cv()} function requires that \code{fixed_train_origin} = c(\code{FALSE}, "\code{add_remove1}"), regardless of the values of \code{nahead} and \code{trainset1}.
 Equally as in RO-recalibration, LOOCV, and k-fold can be applied with \code{nahead} = 1, or \code{nahead} equals to \code{trainset1}, respectively, but keeping the training set constant through the iterations.
 Additionally, the common time-series CV approach can be applied for different values of \code{nahead} and \code{trainset1}.
-When \code{fixed_train_origin} = "\code{FALSE}", at each iteration the training set adds the next \code{nahead} periods and discards the oldest keeping the training set size constant.
-While \code{fixed_train_origin} = "\code{1}", at every iteration the training set only incorporates the next period ahead and discards only the latest period; maintaining the length of the training set constant and allowing to assess the forecasting accuracy of the mortality models in the long and medium term with different periods.
+When \code{fixed_train_origin} = \code{FALSE}, at each iteration the training set adds the next \code{nahead} periods and discards the oldest keeping the training set size constant.
+While \code{fixed_train_origin} = "\code{add_remove1}", at every iteration the training set only incorporates the next period ahead and discards only the latest period; maintaining the length of the training set constant and allowing to assess the forecasting accuracy of the mortality models in the long and medium term with different periods.
 
 It should be mentioned that this function is developed for cross-validation the forecasting accuracy of several populations.
 However, in case you only consider one population, the function will forecast the Lee-Carter model for one population.
-To test the forecasting accuracy of the selected model, the function provides five different measures: SSE, MSE, MAE, MAPE or All.
+To test the forecasting accuracy of the selected model, the function provides five different measures: SSE, MSE, MAE, MAPE or All of them.
 This measure of accuracy will be provided in different ways: a total measure, among ages considered, among populations and among projected blocked (periods).
 Depending on how you want to check the forecasting accuracy of the model you could select one or other.
 In this case, the measures will be obtained using the mortality rates in the normal scale as recommended by Santolino (2023) against the log scale.
@@ -142,7 +146,7 @@ ho_Spainmales_addit <- multipopulation_cv(qxt = SpainRegions$qx_male,
                                          nPop = 18, lxt = SpainRegions$lx_male,
                                          nahead = 5,
                                          trainset1 = 25,
-                                         ktmethod = c("Arimapdq"),
+                                         ktmethod = c("arimapdq"),
                                          measures = c("SSE"))
 ho_Spainmales_addit
 
@@ -162,7 +166,7 @@ loocv_Spainmales_addit <- multipopulation_cv(qxt = SpainRegions$qx_male,
                                          periods =  c(1991:2020), ages = c(ages),
                                          nPop = 18, lxt = SpainRegions$lx_male,
                                          nahead = 1, trainset1 = 10,
-                                         ktmethod = c("Arimapdq"),
+                                         ktmethod = c("arimapdq"),
                                          measures = c("SSE"))
 loocv_Spainmales_addit
 
@@ -178,7 +182,7 @@ kfoldcv_Spainmales_addit <- multipopulation_cv(qxt = SpainRegions$qx_male,
                                          periods =  c(1991:2020), ages = c(ages),
                                          nPop = 18, lxt = SpainRegions$lx_male,
                                          nahead = 5, trainset1 = 5,
-                                         ktmethod = c("Arimapdq"),
+                                         ktmethod = c("arimapdq"),
                                          measures = c("SSE"))
 kfoldcv_Spainmales_addit
 
@@ -194,8 +198,8 @@ cv_Spainmales_addit <- multipopulation_cv(qxt = SpainRegions$qx_male,
                                          periods =  c(1991:2020), ages = c(ages),
                                          nPop = 18, lxt = SpainRegions$lx_male,
                                          nahead = 5, trainset1 = 10,
-                                         fixed_train_origin = "TRUE",
-                                         ktmethod = c("Arimapdq"),
+                                         fixed_train_origin = TRUE,
+                                         ktmethod = c("arimapdq"),
                                          measures = c("SSE"))
 
 cv_Spainmales_addit
@@ -205,10 +209,10 @@ cv_Spainmales_addit$meas_periodsfut
 cv_Spainmales_addit$meas_pop
 cv_Spainmales_addit$meas_total
 
-#3. RW-evaluation (fixed_train_origin = c("FALSE", "1"))
-#3.1. fixed_train_origin == "TRUE" (The default value)
+#3. RW-evaluation (fixed_train_origin = c(FALSE, "add_remove1"))
+#3.1. fixed_train_origin = TRUE (The default value)
 #In this case, the previous processes (Fixed-Origin or RO-recalibration)
-#3.2. fixed_train_origin == "FALSE"
+#3.2. fixed_train_origin = FALSE
 #where the origin in the training set is moved "nahead" period ahead in every iteration.
 #This process allows to test the forecasting accuracy of "nahead" periods ahead
 #keeping constant the size of the training and test set. As an example, we present
@@ -219,8 +223,8 @@ loocv_Spainmales_addit_rw <- multipopulation_cv(qxt = SpainRegions$qx_male,
                                          periods =  c(1991:2020), ages = c(ages),
                                          nPop = 18, lxt = SpainRegions$lx_male,
                                          nahead = 1, trainset1 = 10,
-                                         fixed_train_origin = "FALSE",
-                                         ktmethod = c("Arimapdq"),
+                                         fixed_train_origin = FALSE,
+                                         ktmethod = c("arimapdq"),
                                          measures = c("SSE"))
 
 loocv_Spainmales_addit_rw
@@ -237,8 +241,8 @@ kfoldcv_Spainmales_addit_rw <- multipopulation_cv(qxt = SpainRegions$qx_male,
                                          periods =  c(1991:2020), ages = c(ages),
                                          nPop = 18, lxt = SpainRegions$lx_male,
                                          nahead = 5, trainset1 = 5,
-                                         fixed_train_origin = "FALSE",
-                                         ktmethod = c("Arimapdq"),
+                                         fixed_train_origin = FALSE,
+                                         ktmethod = c("arimapdq"),
                                          measures = c("SSE"))
 
 kfoldcv_Spainmales_addit_rw
@@ -255,8 +259,8 @@ cv_Spainmales_addit_rw <- multipopulation_cv(qxt = SpainRegions$qx_male,
                                          periods =  c(1991:2020), ages = c(ages),
                                          nPop = 18, lxt = SpainRegions$lx_male,
                                          nahead = 5, trainset1 = 10,
-                                         fixed_train_origin = "FALSE",
-                                         ktmethod = c("Arimapdq"),
+                                         fixed_train_origin = FALSE,
+                                         ktmethod = c("arimapdq"),
                                          measures = c("SSE"))
 
 cv_Spainmales_addit_rw
@@ -267,8 +271,9 @@ cv_Spainmales_addit_rw$meas_periodsfut
 cv_Spainmales_addit_rw$meas_pop
 cv_Spainmales_addit_rw$meas_total
 
-#3.3  RW-evaluation (fixed_train_origin = c("1"))
-#where the origin in the training set is moved 1 period ahead in every iteration.
+#3.3  RW-evaluation (fixed_train_origin = c("add_remove1"))
+#where the origin in the training set is moved 1 period ahead in every iteration,
+#adding the next period and removing the last period in the trainset.
 #This process allows to test the forecasting accuracy of "nahead" periods ahead
 #modifying the origin in the training set by 1.
 #When "nahead" = 1 --- we will have a loocv equally as in the previous process,
@@ -279,8 +284,8 @@ cv_Spainmales_addit_rw1 <- multipopulation_cv(qxt = SpainRegions$qx_male,
                                          periods =  c(1991:2020), ages = c(ages),
                                          nPop = 18, lxt = SpainRegions$lx_male,
                                          nahead = 5, trainset1 = 15,
-                                         fixed_train_origin = "1",
-                                         ktmethod = c("Arimapdq"),
+                                         fixed_train_origin = "add_remove1",
+                                         ktmethod = c("arimapdq"),
                                          measures = c("SSE"))
 cv_Spainmales_addit_rw1
 

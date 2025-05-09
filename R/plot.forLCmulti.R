@@ -65,7 +65,7 @@
 #' #Once, we have fit the data, it is possible to forecast the multipopulation
 #' #mortality model several years ahead, for example 10, as follows:
 #' fut_additive_Spainmales <- forecast(object = additive_Spainmales, nahead = 10,
-#'                                     ktmethod = "Arimapdq")
+#'                                     ktmethod = "arimapdq")
 #'
 #' fut_additive_Spainmales
 #' #Once the data have been adjusted, it is possible to display the fitted kt and
@@ -92,7 +92,7 @@
 #' #Once, we have fit the data, it is possible to forecast the multipopulation
 #' #mortality model several years ahead, for example 10, as follows:
 #' fut_multi_Spainmales <- forecast(object = multiplicative_Spainmales, nahead = 10,
-#'                                  ktmethod = "Arimapdq")
+#'                                  ktmethod = "arimapdq")
 #'
 #' fut_multi_Spainmales
 #' #Once the data have been adjusted, it is possible to display the fitted kt and
@@ -117,9 +117,11 @@
 #' plot(cfm_Spainmales)
 #'
 #' #Once, we have fit the data, it is possible to forecast the multipopulation
-#' #mortality model several years ahead, for example 10, as follows:
+#' #mortality model several years ahead, for example 10.
+#' #In this case, we apply another ktmethod = arimauser which implies to specify
+#' #by the user the order of the trend parameters as follows:
 #' fut_cfm_Spainmales <- forecast(object = cfm_Spainmales, nahead = 10,
-#'                                ktmethod = "Arimapdq")
+#'                                ktmethod = "arimauser", order = c(0,1,0))
 #'
 #' fut_cfm_Spainmales
 #' #Once the data have been adjusted, it is possible to display the fitted kt and
@@ -146,7 +148,7 @@
 #' #Once, we have fit the data, it is possible to forecast the multipopulation
 #' #mortality model several years ahead, for example 10, as follows:
 #' fut_acfm_Spainmales <- forecast(object = acfm_Spainmales, nahead = 10,
-#'                                ktmethod = "Arimapdq")
+#'                                ktmethod = "arimapdq")
 #'
 #' fut_acfm_Spainmales
 #' #Once the data have been adjusted, it is possible to display the fitted kt and
@@ -173,7 +175,7 @@
 #' #Once, we have fit the data, it is possible to forecast the multipopulation
 #' #mortality model several years ahead, for example 10, as follows:
 #' fut_jointk_Spainmales <- forecast(object = jointk_Spainmales, nahead = 10,
-#'                                ktmethod = "Arimapdq")
+#'                                ktmethod = "arimapdq")
 #'
 #' fut_jointk_Spainmales
 #' #Once the data have been adjusted, it is possible to display the fitted kt and
@@ -201,7 +203,7 @@
 #' #Once, we have fit the data, it is possible to forecast the multipopulation
 #' #mortality model several years ahead, for example 10, as follows:
 #' fut_LC_Spainmales <- forecast(object = LC_Spainmales, nahead = 10,
-#'                               ktmethod = "Arimapdq")
+#'                               ktmethod = "arimapdq")
 #'
 #' #Once the data have been adjusted, it is possible to display the fitted kt and
 #' #its out-of-sample forecasting. In addition, the function shows
@@ -226,20 +228,31 @@ plot.forLCmulti<- function(x, ...){
   layout(matrix(c(1,2,3,3), ncol = 2, byrow = T),
          heights = c(0.9, 0.1))
   if(x$model == "ACFM"){
-    if(x$ktmethod == "Arimapdq"){
+    if(x$ktmethod == "arimapdq"){
     plot(forecast(auto.arima(x$kt.fitted[,1], ...), h = length(x$FutPeriods)),
          xlab = "periods", ylab = "kt")
     }else if(x$ktmethod == "arima010"){
       plot(forecast(Arima(x$kt.fitted[,1], c(0,1,0), ...), h = length(x$FutPeriods)),
-      xlab = "periods", ylab = "kt", main = "Forecasts from Arima (0,1,0)")
+      xlab = "periods", ylab = "kt", main = "Forecasts from ARIMA (0,1,0)")
+    }else if(x$ktmethod == "arimauser"){
+      kt.prue <- c(x$kt.order[1,1], x$kt.order[1,2], x$kt.order[1,3])
+      title <- paste("Forecast from ARIMA (", paste(kt.prue, collapse = ","), ")")
+      plot(forecast(Arima(x$kt.fitted[,1], x$kt.order[1,], ...), h = length(x$FutPeriods)),
+           xlab = "periods", ylab = "kt", main = title)
     }
   }else{
-    if(x$ktmethod == "Arimapdq"){
+    if(x$ktmethod == "arimapdq"){
       plot(forecast(auto.arima(x$kt.fitted[,1], ...), h = length(x$FutPeriods)),
            xlab = "periods", ylab = "kt")
     }else if(x$ktmethod == "arima010"){
       plot(forecast(Arima(x$kt.fitted[,1], c(0,1,0), ...), h = length(x$FutPeriods)),
-           xlab = "periods", ylab = "kt", main = "Forecasts from Arima (0,1,0)")
+           xlab = "periods", ylab = "kt", main = "Forecasts from ARIMA (0,1,0)")
+    }
+    else if(x$ktmethod == "arimauser"){
+      kt.prue <- c(x$kt.order[1], x$kt.order[2], x$kt.order[3])
+      title <- paste("Forecast from ARIMA (", paste(kt.prue, collapse = ","), ")")
+      plot(forecast(Arima(x$kt.fitted[,1], x$kt.order, ...), h = length(x$FutPeriods)),
+           xlab = "periods", ylab = "kt", main = title)
     }
   }
 

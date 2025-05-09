@@ -14,7 +14,7 @@
 #' This process predicts only once for different forecast horizons which are evaluated to assess the accuracy of the multi-population model, as can be seen in the next Figure.
 #' {\figure{FIXED-ORIGIN.jpg}{options: width="100\%" alt="Figure: mai.png"}}
 #'
-#' The function "`multipopulation_cv()`" understands FIXED-ORIGIN when `trainset1` + `nahead` = number of provided periods and `fixed_train_origin` = `TRUE` (default value).
+#' The function `multipopulation_cv()` understands FIXED-ORIGIN when `trainset1` + `nahead` = number of provided periods and `fixed_train_origin` = `TRUE` (default value).
 #' As an example, data set with periods from 1991 to 2020, `trainset1` = 25 and `nahead`= 5, with a total of 30, equals to length of the periods 1991:2020.
 #'
 #' 2. Rolling-Origin recalibration (RO-recalibration) evaluation.
@@ -27,26 +27,26 @@
 #'
 #' In the package, to apply this technique the users must provided a value of `trainset1` higher than two (to meet with the minimum time-series size), and `fixed_train_origin` = `TRUE` (default value), independently of the assigned value of `nahead`.
 #' There are different resampling techniques that can be applied based on the values of `trainset1` and `nahead`.
-#' Indeed, when `nahead` = 1 --- Leave-One-Out-Cross-Validation (LOOCV) with RO-recalibration will be applied.
+#' Indeed, when `nahead` = 1 a Leave-One-Out-Cross-Validation (LOOCV) with RO-recalibration will be applied.
 #' Independently, of the number of periods in the first train set (`trainset1`).
-#' When, `nahead` and `trainset1` are equal --- K-Fold-Cross-Validation (LOOCV) with RO-recalibration will be applied.
+#' When, `nahead` and `trainset1` are equal a K-Fold-Cross-Validation (LOOCV) with RO-recalibration will be applied.
 #' For the rest values of `nahead` and `trainset1` a standard time-series CV technique will be implemented.
 #'
 #' 3. Rolling-Window (RW) evaluation
 #' The approach is very similar to the RO-recalibration, but maintaining the training set size constant at each forecast/iteration.
 #' Maintaining the chronological order in each forecast, the training set adds the previous. projected periods of the test set and discards the earliest observations, as can be seen in the next Figure.
 #'
-#' {\figure{RW_RECALIBRATION}{options: width="100\%" alt="Figure: mai.png"}}
+#' {\figure{RW_RECALIBRATION.jpg}{options: width="100\%" alt="Figure: mai.png"}}
 #'
-#' To apply this technique, the `multipopulation_cv()` function requires that `fixed_train_origin` = c("`FALSE`", "`1`"), regardless of the values of `nahead` and `trainset1`.
+#' To apply this technique, the `multipopulation_cv()` function requires that `fixed_train_origin` = c(`FALSE`, "`add_remove1`"), regardless of the values of `nahead` and `trainset1`.
 #' Equally as in RO-recalibration, LOOCV, and k-fold can be applied with `nahead` = 1, or `nahead` equals to `trainset1`, respectively, but keeping the training set constant through the iterations.
 #' Additionally, the common time-series CV approach can be applied for different values of `nahead` and `trainset1`.
-#' When `fixed_train_origin` = "`FALSE`", at each iteration the training set adds the next `nahead` periods and discards the oldest keeping the training set size constant.
-#' While `fixed_train_origin` = "`1`", at every iteration the training set only incorporates the next period ahead and discards only the latest period; maintaining the length of the training set constant and allowing to assess the forecasting accuracy of the mortality models in the long and medium term with different periods.
+#' When `fixed_train_origin` = `FALSE`, at each iteration the training set adds the next `nahead` periods and discards the oldest keeping the training set size constant.
+#' While `fixed_train_origin` = "`add_remove1`", at every iteration the training set only incorporates the next period ahead and discards only the latest period; maintaining the length of the training set constant and allowing to assess the forecasting accuracy of the mortality models in the long and medium term with different periods.
 #'
 #' It should be mentioned that this function is developed for cross-validation the forecasting accuracy of several populations.
 #' However, in case you only consider one population, the function will forecast the Lee-Carter model for one population.
-#' To test the forecasting accuracy of the selected model, the function provides five different measures: SSE, MSE, MAE, MAPE or All.
+#' To test the forecasting accuracy of the selected model, the function provides five different measures: SSE, MSE, MAE, MAPE or All of them.
 #' This measure of accuracy will be provided in different ways: a total measure, among ages considered, among populations and among projected blocked (periods).
 #' Depending on how you want to check the forecasting accuracy of the model you could select one or other.
 #' In this case, the measures will be obtained using the mortality rates in the normal scale as recommended by Santolino (2023) against the log scale.
@@ -59,17 +59,19 @@
 #' @param lxt survivor function considered for every population, not necessary to provide.
 #' @param nahead is a vector specifying the number of periods to forecast `nahead` periods ahead. It should be noted that when `nahead` is equal to `trainset1` a k-fold CV will be applied. Whereas when `nahead` is equal to 1, the CV process will be a Leave-One-Out CV.
 #' @param trainset1 is a vector with the periods for the first training set.  This value must be greater than 2 to meet the minimum time series size (Hyndman and Khandakar, 2008).
-#' @param fixed_train_origin option to select whether the origin in the first train set is fixed or not. The default value is `TRUE` where the origin of the first training sets is fixed. The alternatives are: `FALSE` when the first train set is moved in every iteration according to the provided `nahead` value, and 2. `1` when the train set is moved one period ahead in every repetition keeping constant the amount of data, and incorporating the next period observation, and discarding the last available period.
-#' @param ktmethod method used to forecast the value of `kt` Arima(p,d,q) or ARIMA(0,1,0); c("`Arimapdq`", "`arima010`").
+#' @param fixed_train_origin option to select whether the origin in the first train set is fixed or not. The default value is `TRUE` where the origin of the first training sets is fixed. The alternatives are: `FALSE` when the first train set is moved in every iteration according to the provided `nahead` value, and 2. '`add_remove1`' when the train set is moved one period ahead in every repetition keeping constant the amount of data, and incorporating the next period observation, and discarding the last available period.
+#' @param ktmethod method used to forecast the value of `kt` ARIMA(p,d,q), ARIMA(0,1,0) or an ARIMA(p,d,q) selected by the user with `order` argument; c("`arimapdq`", "`arima010`", "`arimauser`"), respectivelly. The selection process will be used for the single or all trend parameters considered in each model.
+#' @param order a vector or matrix (only when the model = "`ACFM`" was used in the \code{"fitLCmulti"} function) with one row per trend parameter, specifying the fixed components p, d, and q for the ARIMA models applied for every iteration. The same fixed ARIMA components will be used for every trend parameter across the iterations in the cross-validation method selected. This argument is only used when `ktmethod` is set to "`arimauser`".
 #' @param measures choose the non-penalized measure of forecasting accuracy that you want to use; c("`SSE`", "`MSE`", "`MAE`", "`MAPE`", "`All`"). Check the function. In case you do not provide any value, the function will apply the "`SSE`" as measure of forecasting accuracy.
-#' @param ... other arguments for \code{\link[StMoMo:iarima]{iarima}}.
+#' @param ... additional arguments depending on the `ktmethod` provided by the user for the corresponding `auto.arima` or `Arima` function.
 #'
 #' @return An object of the class \code{"MultiCv"} including a `list()` with different components of the cross-validation process:
 #' * `ax` parameter that captures the average shape of the mortality curve in all considered populations.
 #' * `bx` parameter that explains the age effect x with respect to the general trend `kt` in the mortality rates of all considered populations.
 #' * `kt.fitted` obtained values for the tendency behavior captured by `kt` .
 #' * `kt.future` future values of `kt` for every iteration in the cross-validation.
-#' * `kt.arima`  the arima selected for each `kt` time series.
+#' * `kt.arima`  the ARIMA selected for each `kt` time series.
+#' * `kt.order ` order of the components in the ARIMA models used for the trend parameters in every iteration.
 #' * `Ii` parameter that captures the differences in the pattern of mortality in any region i with respect to Region 1.
 #' * `formula` multi-population mortality formula used to fit the mortality rates.
 #' * `model` provided the model selected in every case.
@@ -152,7 +154,7 @@
 #'                                          nPop = 18, lxt = SpainRegions$lx_male,
 #'                                          nahead = 5,
 #'                                          trainset1 = 25,
-#'                                          ktmethod = c("Arimapdq"),
+#'                                          ktmethod = c("arimapdq"),
 #'                                          measures = c("SSE"))
 #' ho_Spainmales_addit
 #'
@@ -172,7 +174,7 @@
 #'                                          periods =  c(1991:2020), ages = c(ages),
 #'                                          nPop = 18, lxt = SpainRegions$lx_male,
 #'                                          nahead = 1, trainset1 = 10,
-#'                                          ktmethod = c("Arimapdq"),
+#'                                          ktmethod = c("arimapdq"),
 #'                                          measures = c("SSE"))
 #' loocv_Spainmales_addit
 #'
@@ -188,7 +190,7 @@
 #'                                          periods =  c(1991:2020), ages = c(ages),
 #'                                          nPop = 18, lxt = SpainRegions$lx_male,
 #'                                          nahead = 5, trainset1 = 5,
-#'                                          ktmethod = c("Arimapdq"),
+#'                                          ktmethod = c("arimapdq"),
 #'                                          measures = c("SSE"))
 #' kfoldcv_Spainmales_addit
 #'
@@ -204,8 +206,8 @@
 #'                                          periods =  c(1991:2020), ages = c(ages),
 #'                                          nPop = 18, lxt = SpainRegions$lx_male,
 #'                                          nahead = 5, trainset1 = 10,
-#'                                          fixed_train_origin = "TRUE",
-#'                                          ktmethod = c("Arimapdq"),
+#'                                          fixed_train_origin = TRUE,
+#'                                          ktmethod = c("arimapdq"),
 #'                                          measures = c("SSE"))
 #'
 #' cv_Spainmales_addit
@@ -215,10 +217,10 @@
 #' cv_Spainmales_addit$meas_pop
 #' cv_Spainmales_addit$meas_total
 #'
-#' #3. RW-evaluation (fixed_train_origin = c("FALSE", "1"))
-#' #3.1. fixed_train_origin == "TRUE" (The default value)
+#' #3. RW-evaluation (fixed_train_origin = c(FALSE, "add_remove1"))
+#' #3.1. fixed_train_origin = TRUE (The default value)
 #' #In this case, the previous processes (Fixed-Origin or RO-recalibration)
-#' #3.2. fixed_train_origin == "FALSE"
+#' #3.2. fixed_train_origin = FALSE
 #' #where the origin in the training set is moved "nahead" period ahead in every iteration.
 #' #This process allows to test the forecasting accuracy of "nahead" periods ahead
 #' #keeping constant the size of the training and test set. As an example, we present
@@ -229,8 +231,8 @@
 #'                                          periods =  c(1991:2020), ages = c(ages),
 #'                                          nPop = 18, lxt = SpainRegions$lx_male,
 #'                                          nahead = 1, trainset1 = 10,
-#'                                          fixed_train_origin = "FALSE",
-#'                                          ktmethod = c("Arimapdq"),
+#'                                          fixed_train_origin = FALSE,
+#'                                          ktmethod = c("arimapdq"),
 #'                                          measures = c("SSE"))
 #'
 #' loocv_Spainmales_addit_rw
@@ -247,8 +249,8 @@
 #'                                          periods =  c(1991:2020), ages = c(ages),
 #'                                          nPop = 18, lxt = SpainRegions$lx_male,
 #'                                          nahead = 5, trainset1 = 5,
-#'                                          fixed_train_origin = "FALSE",
-#'                                          ktmethod = c("Arimapdq"),
+#'                                          fixed_train_origin = FALSE,
+#'                                          ktmethod = c("arimapdq"),
 #'                                          measures = c("SSE"))
 #'
 #' kfoldcv_Spainmales_addit_rw
@@ -265,8 +267,8 @@
 #'                                          periods =  c(1991:2020), ages = c(ages),
 #'                                          nPop = 18, lxt = SpainRegions$lx_male,
 #'                                          nahead = 5, trainset1 = 10,
-#'                                          fixed_train_origin = "FALSE",
-#'                                          ktmethod = c("Arimapdq"),
+#'                                          fixed_train_origin = FALSE,
+#'                                          ktmethod = c("arimapdq"),
 #'                                          measures = c("SSE"))
 #'
 #' cv_Spainmales_addit_rw
@@ -277,8 +279,9 @@
 #' cv_Spainmales_addit_rw$meas_pop
 #' cv_Spainmales_addit_rw$meas_total
 #'
-#' #3.3  RW-evaluation (fixed_train_origin = c("1"))
-#' #where the origin in the training set is moved 1 period ahead in every iteration.
+#' #3.3  RW-evaluation (fixed_train_origin = c("add_remove1"))
+#' #where the origin in the training set is moved 1 period ahead in every iteration,
+#' #adding the next period and removing the last period in the trainset.
 #' #This process allows to test the forecasting accuracy of "nahead" periods ahead
 #' #modifying the origin in the training set by 1.
 #' #When "nahead" = 1 --- we will have a loocv equally as in the previous process,
@@ -289,8 +292,8 @@
 #'                                          periods =  c(1991:2020), ages = c(ages),
 #'                                          nPop = 18, lxt = SpainRegions$lx_male,
 #'                                          nahead = 5, trainset1 = 15,
-#'                                          fixed_train_origin = "1",
-#'                                          ktmethod = c("Arimapdq"),
+#'                                          fixed_train_origin = "add_remove1",
+#'                                          ktmethod = c("arimapdq"),
 #'                                          measures = c("SSE"))
 #' cv_Spainmales_addit_rw1
 #'
@@ -302,10 +305,11 @@
 #'
 #' }
 #' @export
-multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM", "joint-K", "ACFM"),
+multipopulation_cv <- function(qxt, model = c("additive"),
                                periods, ages, nPop,
                                lxt=NULL,
-                               ktmethod = c("Arimapdq", "arima010"),
+                               ktmethod = c("arima010"),
+                               order = NULL,
                                nahead,
                                trainset1,
                                fixed_train_origin = TRUE,
@@ -330,9 +334,20 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
     stop("trainset1 must be numeric variable.")
   }
 
+  #check the value of fixed_train_origin
+  valid_fixed_train_origin <- c("TRUE", "FALSE", "add_remove1")
+  fixed_train_origin <- match.arg(as.character(fixed_train_origin), valid_fixed_train_origin)
+  if (fixed_train_origin %in% c("TRUE", "FALSE")) {
+    fixed_train_origin <- as.logical(fixed_train_origin)
+  }
+
+
   valid_model <- c("additive", "multiplicative", "CFM","ACFM", "joint-K")
   model <- match.arg(model, valid_model)
   #In case, you donot provide any value of model, the function applies the additive one.
+
+  valid_ktmethod <- c("arimapdq", "arima010", "arimauser")
+  ktmethod <- match.arg(ktmethod, valid_ktmethod)
 
   valid_measures <- c("SSE", "MSE", "MAE", "MAPE", "All")
   measures <- match.arg(measures, valid_measures)
@@ -490,10 +505,10 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
 
   #We create several items to fill them
   fitting.data <- forecasting.data <- list()
-  ax <- bx <- kt <- Ii <- kt.fut <- kt.arima <- warn <- list()
+  ax <- bx <- kt <- Ii <- kt.fut <- kt.arima <- warn <- kt.order <- list()
   CV <- NULL
 
-  if(fixed_train_origin == TRUE){
+  if(isTRUE(fixed_train_origin)){
     #Fixed-Origin --- Hold-Out
     if((nahead + trainset1) == nperiods){
       CV <- "Fixed-Origin (Hold-Out) procedure without rolling-window"
@@ -518,7 +533,8 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
                              nPop = nPop, lxt = df_qxtdata2$lxt)
         forecast.obj <- forecast(object,
                                  nahead = nahead,
-                                 ktmethod = ktmethod, ...)
+                                 ktmethod = ktmethod,
+                                 order = order, ...)
 
       } else if(model == "multiplicative"){
         object <- fitLCmulti(model = "multiplicative",
@@ -528,7 +544,8 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
                              nPop = nPop, lxt = df_qxtdata2$lxt)
         forecast.obj <- forecast(object,
                                  nahead = nahead,
-                                 ktmethod = ktmethod, ...)
+                                 ktmethod = ktmethod,
+                                 order = order, ...)
 
       } else if(model == "CFM"){
         object <- fitLCmulti(model = "CFM",
@@ -538,7 +555,8 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
                              nPop = nPop, lxt = df_qxtdata2$lxt)
         forecast.obj <- forecast(object,
                                  nahead = nahead,
-                                 ktmethod = ktmethod, ...)
+                                 ktmethod = ktmethod,
+                                 order = order, ...)
       } else if(model == "ACFM"){
         object <- fitLCmulti(model = "ACFM",
                              qxt = df_qxtdata2$qxt,
@@ -547,7 +565,8 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
                              nPop = nPop, lxt = df_qxtdata2$lxt)
         forecast.obj <- forecast(object,
                                  nahead = nahead,
-                                 ktmethod = ktmethod, ...)
+                                 ktmethod = ktmethod,
+                                 order = order, ...)
 
       } else if(model == "joint-K"){
         object <- fitLCmulti(model = "joint-K",
@@ -557,7 +576,8 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
                              nPop = nPop, lxt = df_qxtdata2$lxt)
         forecast.obj <- forecast(object,
                                  nahead = nahead,
-                                 ktmethod = ktmethod, ...)
+                                 ktmethod = ktmethod,
+                                 order = order, ...)
 
       }
 
@@ -575,6 +595,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
 
       kt.fut[[paste0("loop-1 from ", periods[1], " to ", (periods2 - 1))]] <- forecast.obj$kt.fut
       kt.arima[[paste0("loop-1 from ", periods[1], " to ", (periods2 - 1))]] <- forecast.obj$arimakt
+      kt.order[[paste0("loop-1 from ", periods[1], " to ", (periods2 - 1))]] <- forecast.obj$kt.order
 
       if(model == "ACFM"){
         warn[[paste0("loop-1 from ", periods[1], " to ", periods2-1)]] <- object$warn_msgs
@@ -631,9 +652,11 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
                                periods = c(min(periods):(periods2-1)),
                                ages = ages,
                                nPop = nPop, lxt = df_qxtdata2$lxt)
+          #if(is.matrix(order) & dim(order)[1] == nPop & dim(order)[2] == nPop)
           forecast.obj <- forecast(object,
                                    nahead = test1[reps],
-                                   ktmethod = ktmethod, ...)
+                                   ktmethod = ktmethod,
+                                   order = order,...)
 
         } else if(model == "multiplicative"){
           object <- fitLCmulti(model = "multiplicative",
@@ -643,7 +666,8 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
                                nPop = nPop, lxt = df_qxtdata2$lxt)
           forecast.obj <- forecast(object,
                                    nahead = test1[reps],
-                                   ktmethod = ktmethod, ...)
+                                   ktmethod = ktmethod,
+                                   order = order,...)
 
         } else if(model == "CFM"){
           object <- fitLCmulti(model = "CFM",
@@ -653,7 +677,8 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
                                nPop = nPop, lxt = df_qxtdata2$lxt)
           forecast.obj <- forecast(object,
                                    nahead = test1[reps],
-                                   ktmethod = ktmethod, ...)
+                                   ktmethod = ktmethod,
+                                   order = order,...)
 
         } else if(model == "ACFM"){
           object <- fitLCmulti(model = "ACFM",
@@ -663,7 +688,8 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
                                nPop = nPop, lxt = df_qxtdata2$lxt)
           forecast.obj <- forecast(object,
                                    nahead = test1[reps],
-                                   ktmethod = ktmethod, ...)
+                                   ktmethod = ktmethod,
+                                   order = order,...)
 
         } else if(model == "joint-K"){
           object <- fitLCmulti(model = "joint-K",
@@ -673,7 +699,8 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
                                nPop = nPop, lxt = df_qxtdata2$lxt)
           forecast.obj <- forecast(object,
                                    nahead = test1[reps],
-                                   ktmethod = ktmethod, ...)
+                                   ktmethod = ktmethod,
+                                   order = order,...)
 
         }
 
@@ -700,6 +727,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
 
         kt.fut[[paste0("loop-", reps, " from ", periods[1], " to ", periods2-1)]] <- forecast.obj$kt.fut
         kt.arima[[paste0("loop-", reps, " from ", periods[1], " to ", periods2-1)]] <- forecast.obj$arimakt
+        kt.order[[paste0("loop-", reps, " from ", periods[1], " to ", periods2-1)]] <- forecast.obj$kt.order
 
         if(model == "ACFM"){
           warn[[paste0("loop-", reps, " from ", periods[1], " to ", periods2-1)]] <- object$warn_msgs
@@ -707,7 +735,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
       }
     }
 
-    }else if(fixed_train_origin == "FALSE"){
+    }else if(isFALSE(fixed_train_origin)){
       #when the user wants a rolling-window-evaluation and every
       if((nahead + trainset1) == nperiods){
         stop("Fixed-Origin or Hold-Out method can not apply this kind of cross-validation, only one training set and one test set.")
@@ -767,7 +795,8 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
                                  nPop = nPop, lxt = df_qxtdata2$lxt)
             forecast.obj <- forecast(object,
                                      nahead = test1[reps],
-                                     ktmethod = ktmethod, ...)
+                                     ktmethod = ktmethod,
+                                     order = order, ...)
 
           } else if(model == "multiplicative"){
             object <- fitLCmulti(model = "multiplicative",
@@ -777,7 +806,8 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
                                  nPop = nPop, lxt = df_qxtdata2$lxt)
             forecast.obj <- forecast(object,
                                      nahead = test1[reps],
-                                     ktmethod = ktmethod, ...)
+                                     ktmethod = ktmethod,
+                                     order = order, ...)
 
           } else if(model == "CFM"){
             object <- fitLCmulti(model = "CFM",
@@ -787,7 +817,8 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
                                  nPop = nPop, lxt = df_qxtdata2$lxt)
             forecast.obj <- forecast(object,
                                      nahead = test1[reps],
-                                     ktmethod = ktmethod, ...)
+                                     ktmethod = ktmethod,
+                                     order = order, ...)
 
           } else if(model == "ACFM"){
             object <- fitLCmulti(model = "ACFM",
@@ -797,7 +828,8 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
                                  nPop = nPop, lxt = df_qxtdata2$lxt)
             forecast.obj <- forecast(object,
                                      nahead = test1[reps],
-                                     ktmethod = ktmethod, ...)
+                                     ktmethod = ktmethod,
+                                     order = order, ...)
 
           } else if(model == "joint-K"){
             object <- fitLCmulti(model = "joint-K",
@@ -807,7 +839,8 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
                                  nPop = nPop, lxt = df_qxtdata2$lxt)
             forecast.obj <- forecast(object,
                                      nahead = test1[reps],
-                                     ktmethod = ktmethod, ...)
+                                     ktmethod = ktmethod,
+                                     order = order, ...)
 
           }
           if(reps == 1){
@@ -833,6 +866,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
 
           kt.fut[[paste0("loop-", reps, " from ", (periods3+1), " to ", periods2-1)]] <- forecast.obj$kt.fut
           kt.arima[[paste0("loop-", reps, " from ", (periods3+1), " to ", periods2-1)]] <- forecast.obj$arimakt
+          kt.order[[paste0("loop-", reps, " from ", (periods3+1), " to ", periods2-1)]] <- forecast.obj$kt.order
 
           if(model == "ACFM"){
             warn[[paste0("loop-", reps, " from ", (periods3+1), " to ", periods2-1)]] <- object$warn_msgs
@@ -840,7 +874,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
       }
 
     }
-    }else if(fixed_train_origin == "1"){
+    }else if(fixed_train_origin == "add_remove1"){
       CV <- "Rolling-window evaluation using the nahead-step-ahead forecast procedure, keeping the size of the test and train sets while add and discard one period in every iteration."
       #When the user wants to test the forecast accuracy of
       #nahead-step-ahead forecast with nahead != 1 keeping the size of the
@@ -883,7 +917,8 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
                                nPop = nPop, lxt = df_qxtdata2$lxt)
           forecast.obj <- forecast(object,
                                    nahead = test1[reps],
-                                   ktmethod = ktmethod, ...)
+                                   ktmethod = ktmethod,
+                                   order = order, ...)
 
         } else if(model == "multiplicative"){
           object <- fitLCmulti(model = "multiplicative",
@@ -893,7 +928,8 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
                                nPop = nPop, lxt = df_qxtdata2$lxt)
           forecast.obj <- forecast(object,
                                    nahead = test1[reps],
-                                   ktmethod = ktmethod, ...)
+                                   ktmethod = ktmethod,
+                                   order = order, ...)
 
         } else if(model == "CFM"){
           object <- fitLCmulti(model = "CFM",
@@ -903,7 +939,8 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
                                nPop = nPop, lxt = df_qxtdata2$lxt)
           forecast.obj <- forecast(object,
                                    nahead = test1[reps],
-                                   ktmethod = ktmethod, ...)
+                                   ktmethod = ktmethod,
+                                   order = order, ...)
 
         } else if(model == "ACFM"){
           object <- fitLCmulti(model = "ACFM",
@@ -913,7 +950,8 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
                                nPop = nPop, lxt = df_qxtdata2$lxt)
           forecast.obj <- forecast(object,
                                    nahead = test1[reps],
-                                   ktmethod = ktmethod, ...)
+                                   ktmethod = ktmethod,
+                                   order = order, ...)
 
         } else if(model == "joint-K"){
           object <- fitLCmulti(model = "joint-K",
@@ -923,7 +961,8 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
                                nPop = nPop, lxt = df_qxtdata2$lxt)
           forecast.obj <- forecast(object,
                                    nahead = test1[reps],
-                                   ktmethod = ktmethod, ...)
+                                   ktmethod = ktmethod,
+                                   order = order, ...)
 
         }
         logit.qxt.forecast[[paste0("loop-", reps, " from ", (periods3+1), " to ", periods2-1)]] <- list()
@@ -946,6 +985,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
 
         kt.fut[[paste0("loop-", reps, " from ", (periods3+1), " to ", periods2-1)]] <- forecast.obj$kt.fut
         kt.arima[[paste0("loop-", reps, " from ", (periods3+1), " to ", periods2-1)]] <- forecast.obj$arimakt
+        kt.order[[paste0("loop-", reps, " from ", (periods3+1), " to ", periods2-1)]] <- forecast.obj$kt.order
 
         if(model == "ACFM"){
           warn[[paste0("loop-", reps, " from ", (periods3+1), " to ", periods2-1)]] <- object$warn_msgs
@@ -954,7 +994,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
     }
 
   #We estimate the logit for the forecast qxt
-  if(fixed_train_origin != '1'){
+  if(fixed_train_origin != "add_remove1"){
     for(i in 1:nPop){
     logit.qxt.forecast[[i]] <- qlogis(qxt.forecast[[i]])
     }
@@ -1670,7 +1710,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
     }
     else(stop("measures must be equal to SSE, MSE, MAE, MAPE or All."))
 
-  }else if(fixed_train_origin == '1'){
+  }else if(fixed_train_origin == "add_remove1"){
 
     if(measures == "SSE"){
       #We estimate SSE in different options
@@ -2225,6 +2265,7 @@ multipopulation_cv <- function(qxt, model = c("additive", "multiplicative", "CFM
                  kt.fitted = kt,
                  kt.future = kt.fut,
                  kt.arima = kt.arima,
+                 kt.order = kt.order,
                  Ii = Ii,
                  formula = object$formula,
                  model = object$model,
